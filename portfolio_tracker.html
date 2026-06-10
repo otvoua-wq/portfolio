@@ -745,7 +745,7 @@ function renderTable(bucket) {
         (holdDays!=null?'<div style="font-size:10px;color:#aaa">'+holdDays+' ימים</div>':'')+
         (s.notes?'<div style="font-size:10px;color:#888;margin-top:1px" title="'+s.notes+'">📝 '+s.notes.substring(0,18)+(s.notes.length>18?'...':'')+'</div>':'')+
       '</td>'+
-      '<td><div>'+(s.price?'$'+fmt(s.price):'—')+'</div>'+(s.changePct!=null?'<div><span class="rb '+chgC+'">'+(s.changePct>=0?'+':'')+fmt(s.changePct,2)+'%</span></div>':'')+'</td>'+
+      '<td><div>'+(s.price?'$'+fmt(s.price):'—')+'</div>'+(s.changePct!=null?'<div><span class="rb '+chgC+'">'+(s.changePct>=0?'+':'')+fmt(s.changePct,2)+'%</span>'+(s.price&&s.qty&&s.prevClose?' <span style="font-size:10px;color:'+(s.changePct>=0?'#1a9e6e':'#c0392b')+'">'+(s.changePct>=0?'+':'')+' $'+fmt(Math.abs((s.price-s.prevClose)*s.qty),0)+'</span>':'')+'</div>':'')+'</td>'+
       '<td style="font-size:11px">'+(val!=null?'<div>$'+fmt(val,0)+'</div>'+(ilsRate?'<div style="color:#888">₪'+fmt(val*ilsRate,0)+'</div>':''):'—')+'</td>'+
       '<td style="font-size:11px">'+(pctPf!=null?'<div>'+fmt(pctPf,1)+'%</div><div class="pb"><div class="pbf" style="width:'+Math.min(pctPf,100)+'%;background:#378ADD"></div></div>':'—')+'</td>'+
       '<td class="'+pnlC+'" style="font-size:11px">'+(pnl!=null?'<div>'+(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0)+(pnlPct!=null?' ('+(pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%)':'')+'</div>'+(ilsRate?'<div style="color:'+(pnl>=0?'#1a9e6e':'#c0392b')+'">'+(pnl>=0?'+':'')+' ₪'+fmt(Math.abs(pnl*ilsRate),0)+'</div>':''):'—')+'</td>'+
