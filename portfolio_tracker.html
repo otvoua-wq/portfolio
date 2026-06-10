@@ -203,9 +203,9 @@ tr.dragging{opacity:.4}
       <div class="metric"><div class="label">ציון AI ממוצע</div><div class="value" id="s-score">—</div></div>
     </div>
 
-    <div class="table-card" id="tbl-main"><div class="table-header"><h3>📁 ראשי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>₪</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $</th><th>% תיק</th><th>רווח/הפסד</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-main"></tbody></table></div></div>
-    <div class="table-card" id="tbl-spec"><div class="table-header"><h3>🎯 ספקולטיבי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>₪</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $</th><th>% תיק</th><th>רווח/הפסד</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-spec"></tbody></table></div></div>
-    <div class="table-card" id="tbl-watch"><div class="table-header"><h3>👁 מעקב</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>₪</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $</th><th>% תיק</th><th>רווח/הפסד</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-watch"></tbody></table></div></div>
+    <div class="table-card" id="tbl-main"><div class="table-header"><h3>📁 ראשי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רווח/הפסד $ / ₪</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-main"></tbody></table></div></div>
+    <div class="table-card" id="tbl-spec"><div class="table-header"><h3>🎯 ספקולטיבי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רווח/הפסד $ / ₪</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-spec"></tbody></table></div></div>
+    <div class="table-card" id="tbl-watch"><div class="table-header"><h3>👁 מעקב</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רווח/הפסד $ / ₪</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-watch"></tbody></table></div></div>
 
     <div class="charts-grid">
       <div class="chart-card"><h3>התפלגות שווי</h3><div style="position:relative;height:200px"><canvas id="pieC"></canvas></div></div>
@@ -641,20 +641,19 @@ function renderRows(bucket,totalVal){
     const tC=tDiff>0?'positive':tDiff<0?'negative':'';
     const pctOfPf=totalVal&&val?(val/totalVal*100):null;
     const alertHit=s.alertPrice&&s.price&&Math.abs(s.price-s.alertPrice)/s.alertPrice<0.02;
-    return`<tr draggable="true" ondragstart="dragStart(event,'${s.ticker}','${bucket}')" ondragover="dragOver(event)" ondrop="dragDrop(event,'${s.ticker}','${bucket}')" ondragend="dragEnd(event)" style="cursor:grab">
+    return`<tr draggable="true" ondragstart="dragStart(event,'${s.ticker}','${bucket}')" ondragover="dragOver(event)" ondrop="dragDrop(event,'${s.ticker}','${bucket}')" ondragend="dragEnd(event)" data-ticker="${s.ticker}" data-bucket="${bucket}" style="cursor:grab">
       <td><div class="ticker-cell" onclick="showDetail('${s.ticker}')">${s.ticker}</div>
         <div class="company-cell">${(s.company||'').substring(0,16)}</div>
         ${s.sector?`<span class="sector-tag">${s.sector}</span>`:''}
         ${s.notes?`<div style="font-size:10px;color:#888;margin-top:2px" title="${s.notes}">📝 ${s.notes.substring(0,20)}${s.notes.length>20?'...':''}</div>`:''}
       </td>
       <td>${s.price?'$'+fmt(s.price):'—'}</td>
-      <td style="font-size:11px;color:#888">${val!=null&&ilsRate?'<div>₪'+fmt(val*ilsRate,0)+'</div>'+(pnl!=null?'<div style="color:'+(pnl>=0?'#1a9e6e':'#c0392b')+'">'+(pnl>=0?'+':'')+' ₪'+fmt(Math.abs(pnl*ilsRate),0)+'</div>':''):'—'}</td>
       <td>${s.changePct!=null?`<span class="badge ${chgC}">${s.changePct>=0?'+':''}${fmt(s.changePct,2)}%</span>`:'—'}</td>
       <td>${fmt(s.qty,s.qty%1===0?0:2)}</td>
       <td>${s.cost?'$'+fmt(s.cost):'—'}</td>
-      <td>${val!=null?'$'+fmt(val,0):'—'}</td>
+      <td style="font-size:11px">${val!=null?'<div>$'+fmt(val,0)+'</div>'+(ilsRate?'<div style="color:#888">₪'+fmt(val*ilsRate,0)+'</div>':''):'—'}</td>
       <td style="font-size:11px">${pctOfPf!=null?`<div>${fmt(pctOfPf,1)}%</div><div class="pct-bar-wrap"><div class="pct-bar-fill" style="width:${Math.min(pctOfPf,100)}%;background:#378ADD"></div></div>`:'—'}</td>
-      <td class="${pnlC}" style="font-size:11px">${pnl!=null?(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0)+(pnlPct!=null?`<br>(${pnlPct>=0?'+':''}${fmt(pnlPct,1)}%)`:''):'—'}</td>
+      <td class="${pnlC}" style="font-size:11px">${pnl!=null?'<div>'+(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0)+(pnlPct!=null?' ('+( pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%)':'')+'</div>'+(ilsRate?'<div style="color:'+(pnl>=0?'#1a9e6e':'#c0392b')+'">'+(pnl>=0?'+':'')+' ₪'+fmt(Math.abs(pnl*ilsRate),0)+'</div>':''):'—'}</td>
       <td>${recBar(s.rec)}</td>
       <td class="${tC}" style="font-size:11px">${s.target?'$'+fmt(s.target,0)+(tDiff!=null?`<br>${tDiff>=0?'+':''}${fmt(tDiff,1)}%`:''):'—'}</td>
       <td>${scoreCircle(s.aiScore)}</td>
@@ -906,33 +905,32 @@ let dragSrc=null;
 function dragStart(e,ticker,bucket){
   dragSrc={ticker,bucket};
   e.dataTransfer.effectAllowed='move';
-  e.dataTransfer.setData('text/plain',ticker);
-  setTimeout(()=>e.currentTarget.classList.add('dragging'),0);
+  e.dataTransfer.setData('text',ticker);
+  const tr=e.currentTarget;
+  setTimeout(()=>{if(tr)tr.style.opacity='0.4';},0);
 }
 function dragOver(e){
   e.preventDefault();
-  e.stopPropagation();
-  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
-  const row=e.target.closest('tr');
-  if(row)row.classList.add('drag-over');
-  e.dataTransfer.dropEffect='move';
+  const tr=e.target.closest('tr[draggable]');
+  if(!tr)return;
+  document.querySelectorAll('tr.drag-over').forEach(r=>r.classList.remove('drag-over'));
+  tr.classList.add('drag-over');
 }
 function dragDrop(e,targetTicker,targetBucket){
-  e.preventDefault();e.stopPropagation();
-  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  e.preventDefault();
+  document.querySelectorAll('tr.drag-over').forEach(r=>r.classList.remove('drag-over'));
   if(!dragSrc||dragSrc.ticker===targetTicker)return;
   const srcIdx=portfolio.findIndex(s=>s.ticker===dragSrc.ticker);
-  const tgtIdx=portfolio.findIndex(s=>s.ticker===targetTicker);
-  if(srcIdx<0||tgtIdx<0)return;
-  const [item]=portfolio.splice(srcIdx,1);
+  if(srcIdx<0)return;
+  const[item]=portfolio.splice(srcIdx,1);
   const newIdx=portfolio.findIndex(s=>s.ticker===targetTicker);
-  portfolio.splice(newIdx,0,item);
+  if(newIdx<0){portfolio.push(item);}else{portfolio.splice(newIdx,0,item);}
   dragSrc=null;
   save();renderAll();
 }
 function dragEnd(e){
-  e.currentTarget.classList.remove('dragging');
-  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  if(e.currentTarget)e.currentTarget.style.opacity='1';
+  document.querySelectorAll('tr.drag-over').forEach(r=>r.classList.remove('drag-over'));
   dragSrc=null;
 }
 
