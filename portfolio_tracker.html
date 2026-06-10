@@ -151,6 +151,7 @@ tr.dragging{opacity:.4}
 </style>
 </head>
 <body>
+
 <div class="header">
   <h1>🤖 פורטפוליו AI</h1>
   <div class="header-right">
@@ -1165,192 +1166,6 @@ tr.dragging{opacity:.4}
 </style>
 </head>
 <body>
-<div class="header">
-  <h1>🤖 פורטפוליו AI</h1>
-  <div class="header-right">
-    <span class="rate-badge" id="ils-rate">USD/ILS: —</span>
-    <span class="sheets-status disconnected" id="sheets-status">Sheets: לא מחובר</span>
-    <span class="status" id="status-bar">ממתין...</span>
-    <button class="btn" onclick="showSettings()" style="font-size:11px;height:28px;padding:0 10px">⚙️</button>
-  </div>
-</div>
-
-<div class="nav">
-  <div class="nav-tab active" onclick="showPage('portfolio',this)">💼 תיק</div>
-  <div class="nav-tab" onclick="showPage('ai',this)">🤖 AI</div>
-  <div class="nav-tab" onclick="showPage('news',this)">📰 חדשות</div>
-  <div class="nav-tab" onclick="showPage('suggestions',this)">💡 המלצות</div>
-  <div class="nav-tab" onclick="showPage('history',this)">📋 היסטוריה</div>
-  <div class="nav-tab" onclick="showPage('chat',this)">💬 צאט</div>
-</div>
-
-<div class="main">
-  <div class="setup-banner" id="setup-banner">
-    <h2>🔑 הגדרה ראשונית</h2>
-    <p>1. <a href="https://finnhub.io/register" target="_blank">finnhub.io/register</a> — הירשם חינם וקבל API Key</p>
-    <div class="setup-row"><input type="text" id="api-key-input" placeholder="Finnhub API Key..."/><button class="btn primary" onclick="saveApiKey()">שמור</button></div>
-    <p style="margin-top:8px">2. (אופציונלי) Google Sheets Web App URL:</p>
-    <div class="setup-row"><input type="text" id="sheets-url-input" placeholder="https://script.google.com/macros/s/.../exec"/><button class="btn" onclick="saveSheets()">חבר Sheets</button></div>
-  </div>
-
-  <!-- PORTFOLIO -->
-  <div class="page active" id="page-portfolio">
-    <div class="add-bar">
-      <div class="field ticker"><label>טיקר</label><input id="inp-ticker" placeholder="AAPL" style="text-transform:uppercase" onkeydown="if(event.key==='Enter')addStock()"/></div>
-      <div class="field qty"><label>כמות</label><input id="inp-qty" type="number" placeholder="10" min="0" step="any"/></div>
-      <div class="field cost"><label>כניסה $</label><input id="inp-cost" type="number" placeholder="150" min="0" step="any"/></div>
-      <div class="field bucket"><label>קטגוריה</label>
-        <select id="inp-bucket"><option value="main">ראשי</option><option value="spec">ספקולטיבי</option><option value="watch">מעקב</option></select>
-      </div>
-      <div class="field sector"><label>סקטור</label><input id="inp-sector" placeholder="טק / AI / חלל..."/></div>
-      <button class="btn primary" onclick="addStock()" id="add-btn">+ הוסף</button>
-      <button class="btn" onclick="refreshAll()" id="refresh-btn">⟳</button>
-      <button class="btn" onclick="exportCSV()" style="margin-right:auto">📥</button>
-      <button class="btn danger" onclick="clearAll()">🗑</button>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:100%"></div></div>
-
-    <div class="sort-bar" id="sort-bar">
-      <span style="font-size:12px;color:#888">מיון:</span>
-      <div class="sort-btn active" onclick="setSort('ticker',this)">שם</div>
-      <div class="sort-btn" onclick="setSort('value',this)">שווי</div>
-      <div class="sort-btn" onclick="setSort('pnlPct',this)">רווח%</div>
-      <div class="sort-btn" onclick="setSort('changePct',this)">יומי</div>
-      <div class="sort-btn" onclick="setSort('aiScore',this)">ציון AI</div>
-      <div class="sort-btn" onclick="setSort('targetUpside',this)">אפסייד</div>
-      <div class="sort-btn" onclick="setSort('pctOfPortfolio',this)">% תיק</div>
-    </div>
-
-    <div class="summary-grid">
-      <div class="metric"><div class="label">שווי $</div><div class="value" id="s-value">—</div></div>
-      <div class="metric"><div class="label">שווי ₪</div><div class="value" id="s-value-ils">—</div></div>
-      <div class="metric"><div class="label">רווח/הפסד</div><div class="value" id="s-pnl">—</div><div class="sub" id="s-pnl-pct"></div></div>
-      <div class="metric"><div class="label">היום $</div><div class="value" id="s-today">—</div><div class="sub" id="s-today-ils"></div></div>
-      <div class="metric"><div class="label">פוזיציות</div><div class="value" id="s-count">0</div></div>
-      <div class="metric"><div class="label">ציון AI ממוצע</div><div class="value" id="s-score">—</div></div>
-    </div>
-
-    <div class="table-card" id="tbl-main"><div class="table-header"><h3>📁 ראשי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רווח/הפסד $ / ₪</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-main"></tbody></table></div></div>
-    <div class="table-card" id="tbl-spec"><div class="table-header"><h3>🎯 ספקולטיבי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רווח/הפסד $ / ₪</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-spec"></tbody></table></div></div>
-    <div class="table-card" id="tbl-watch"><div class="table-header"><h3>👁 מעקב</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רווח/הפסד $ / ₪</th><th>אנליסטים</th><th>יעד/אפסייד</th><th>AI</th><th>התראה</th><th>✏️</th><th>🗑</th></tr></thead><tbody id="ptable-watch"></tbody></table></div></div>
-
-    <div class="charts-grid">
-      <div class="chart-card"><h3>התפלגות שווי</h3><div style="position:relative;height:200px"><canvas id="pieC"></canvas></div></div>
-      <div class="chart-card"><h3>רווח/הפסד</h3><div id="barWrap" style="position:relative;height:200px"><canvas id="barC"></canvas></div></div>
-    </div>
-    <div class="charts-grid">
-      <div class="chart-card"><h3>התפלגות סקטורים</h3><div style="position:relative;height:180px"><canvas id="sectorC"></canvas></div></div>
-      <div class="chart-card"><h3>📈 היסטוריית תיק</h3><div style="position:relative;height:180px"><canvas id="histC"></canvas></div></div>
-    </div>
-  </div>
-
-  <!-- AI -->
-  <div class="page" id="page-ai">
-    <div class="morning-card"><h3>🌅 סיכום בוקר</h3><div id="morning-body"><button class="btn ai" onclick="loadMorning()">⚡ קבל סיכום ↗</button></div></div>
-    <div class="ai-panel"><div class="ai-panel-header"><h3>🏆 דירוג מניות</h3><button class="btn ai" onclick="loadRanking()">נתח תיק ↗</button></div><div class="ai-panel-body" id="ranking-body"><div style="color:#aaa;font-size:13px">דירוג AI: קנה / המתן / מכור עם ציון</div></div></div>
-    <div class="ai-panel"><div class="ai-panel-header"><h3>⚠️ ניתוח סיכונים</h3><button class="btn ai" onclick="loadRisk()">נתח ↗</button></div><div class="ai-panel-body" id="risk-body"><div style="color:#aaa;font-size:13px">ריכוז, קורלציות, חולשות</div></div></div>
-    <div class="ai-panel"><div class="ai-panel-header"><h3>🚨 התראות חכמות</h3><button class="btn ai" onclick="loadAlerts()">בדוק ↗</button></div><div class="ai-panel-body" id="alerts-body"><div style="color:#aaa;font-size:13px">AI מזהה שינויים משמעותיים</div></div></div>
-    <div class="ai-panel">
-      <div class="ai-panel-header"><h3>🔍 ניתוח מניה בודדת</h3>
-        <div style="display:flex;gap:6px;align-items:center">
-          <select id="single-sel" style="height:32px;border:1px solid #ddd;border-radius:8px;padding:0 8px;font-size:13px"><option value="">בחר...</option></select>
-          <button class="btn ai" onclick="loadSingle()">נתח ↗</button>
-        </div>
-      </div>
-      <div class="ai-panel-body" id="single-body"><div style="color:#aaa;font-size:13px">ניתוח מעמיק: הערכת שווי, קטליזטורים, סיכונים, ציון</div></div>
-    </div>
-  </div>
-
-  <!-- NEWS -->
-  <div class="page" id="page-news">
-    <div class="news-filter" id="news-filter"></div>
-    <div id="news-container"><div class="empty">בחר מניה לחדשות</div></div>
-  </div>
-
-  <!-- SUGGESTIONS -->
-  <div class="page" id="page-suggestions">
-    <div class="ai-panel" style="margin-bottom:1rem">
-      <div class="ai-panel-header"><h3>🤖 המלצות AI לתיק שלך</h3><button class="btn ai" onclick="loadAISugg()">קבל המלצות ↗</button></div>
-      <div class="ai-panel-body" id="ai-sugg-body"><div style="color:#aaa;font-size:13px">AI ינתח את התיק ויציע מניות מתאימות</div></div>
-    </div>
-    <div id="sugg-container"></div>
-  </div>
-
-  <!-- CHAT -->
-  <div class="page" id="page-chat">
-    <div class="chat-wrap">
-      <div class="chat-suggestions">
-        <div class="chat-chip" onclick="sendChatSugg(this)">📊 נתח את התיק שלי</div>
-        <div class="chat-chip" onclick="sendChatSugg(this)">⚠️ מה הסיכונים הכי גדולים?</div>
-        <div class="chat-chip" onclick="sendChatSugg(this)">🏆 איזו מניה הכי שווה להגדיל?</div>
-        <div class="chat-chip" onclick="sendChatSugg(this)">📉 איזו מניה כדאי לשקול למכור?</div>
-        <div class="chat-chip" onclick="sendChatSugg(this)">💡 המלץ על מניה חדשה לתיק</div>
-      </div>
-      <div class="chat-messages" id="chat-messages">
-        <div class="chat-msg ai">שלום! אני כאן לעזור לך לנתח את הפורטפוליו שלך. שאל אותי כל שאלה על המניות שלך, ניתוח שוק, או המלצות.</div>
-      </div>
-      <div class="chat-input-bar">
-        <input type="text" id="chat-input" placeholder="שאל שאלה על התיק שלך..." onkeydown="if(event.key==='Enter')sendChat()"/>
-        <button onclick="sendChat()">➤</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- HISTORY -->
-  <div class="page" id="page-history">
-    <div class="table-card">
-      <div class="table-header"><h3>📋 היסטוריית פעולות</h3><button class="btn danger" onclick="clearHistory()" style="height:28px;font-size:11px;padding:0 10px">נקה</button></div>
-      <div style="padding:12px" id="history-body"><div class="empty">אין פעולות עדיין</div></div>
-    </div>
-    <div class="chart-card" style="margin-top:1rem">
-      <h3>📈 שווי תיק לאורך זמן</h3>
-      <div style="position:relative;height:200px"><canvas id="histC2"></canvas></div>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Modal -->
-<div class="overlay" id="edit-overlay" onclick="closeEdit(event)">
-  <div class="modal">
-    <div class="modal-head"><h2>✏️ עריכת מניה</h2><span class="modal-close" onclick="closeEdit()">✕</span></div>
-    <div id="edit-body"></div>
-  </div>
-</div>
-
-<!-- Detail Modal -->
-<div class="overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-head"><h2 id="modal-title">פרטים</h2><span class="modal-close" onclick="closeModal()">✕</span></div>
-    <div id="modal-body"></div>
-  </div>
-</div>
-
-<!-- Settings Modal -->
-<div class="overlay" id="settings-overlay" onclick="closeSettings(event)">
-  <div class="modal">
-    <div class="modal-head"><h2>⚙️ הגדרות</h2><span class="modal-close" onclick="closeSettings()">✕</span></div>
-    <div>
-      <p style="font-size:13px;color:#888;margin-bottom:.5rem">Finnhub API Key</p>
-      <div class="setup-row"><input type="text" id="settings-key" placeholder="API Key..."/><button class="btn primary" onclick="updateKey()">עדכן</button></div>
-      <p style="font-size:13px;color:#888;margin:.875rem 0 .5rem">Google Sheets URL</p>
-      <div class="setup-row"><input type="text" id="settings-sheets" placeholder="https://script.google.com/..."/><button class="btn success" onclick="updateSheets()">חבר</button></div>
-      <div style="font-size:12px;margin-top:4px" id="sheets-test-result"></div>
-      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #f0f0ec">
-        <p style="font-size:12px;color:#888;margin-bottom:.5rem">קוד Apps Script:</p>
-        <div style="background:#1a1a1a;border-radius:8px;padding:.75rem;overflow-x:auto"><pre id="apps-script-code" style="font-size:10px;color:#e8e8e8;line-height:1.6;white-space:pre-wrap"></pre></div>
-        <button class="btn" style="margin-top:6px;font-size:12px" onclick="copyScript()">📋 העתק</button>
-      </div>
-      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0ec">
-        <p style="font-size:13px;font-weight:600;margin-bottom:.5rem">📱 אייקון בטלפון</p>
-        <p style="font-size:12px;color:#666;line-height:1.6">כרום מובייל ← ⋮ ← "Add to Home screen"</p>
-      </div>
-      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0ec">
-        <button class="btn" onclick="requestNotifications()" id="notif-btn">🔔 הפעל התראות</button>
-        <span style="font-size:11px;color:#888;margin-right:8px" id="notif-status"></span>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
 const FINN='https://finnhub.io/api/v1';
@@ -2036,6 +1851,5 @@ function resetCountdown(){
 if(sheetsUrl&&apiKey){syncFromSheets().then(ok=>{if(!ok){init();}else{document.getElementById('setup-banner').classList.add('hidden');refreshAll();resetCountdown();updateSheetsStatus();}});}
 else init();
 </script>
-
 </body>
 </html>
