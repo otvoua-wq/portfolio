@@ -126,6 +126,9 @@ tr:hover td{background:#fafafa}
 .sheets-status.disconnected{background:#f0f0ec;color:#888}
 .sheets-status.error{background:#fdf0ef;color:#c0392b}
 .empty{text-align:center;padding:2rem;color:#bbb;font-size:13px}
+.drag-over{background:#e8f0ff!important;border-top:2px solid #378ADD!important}
+tr[draggable]{transition:opacity .15s}
+tr.dragging{opacity:.4}
 .loading{color:#aaa;font-size:13px;padding:.75rem 0}
 .hidden{display:none}
 .pct-bar-wrap{width:60px;height:5px;background:#f0f0ec;border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle}
@@ -180,7 +183,7 @@ tr:hover td{background:#fafafa}
     </div>
     <div class="progress-bar"><div class="progress-fill" id="prog" style="width:100%"></div></div>
 
-    <div class="sort-bar">
+    <div class="sort-bar" id="sort-bar">
       <span style="font-size:12px;color:#888">מיון:</span>
       <div class="sort-btn active" onclick="setSort('ticker',this)">שם</div>
       <div class="sort-btn" onclick="setSort('value',this)">שווי</div>
@@ -584,6 +587,7 @@ function fmt(n,d=2){if(n==null||isNaN(n))return'—';return n.toLocaleString('en
 function toILS(usd){if(!usd||!ilsRate)return'';return'₪'+fmt(usd*ilsRate,0);}
 
 function setSort(field,el){
+  document.getElementById('manual-sort-badge')?.remove();
   if(sortField===field)sortDir*=-1;else{sortField=field;sortDir=-1;}
   document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');renderAll();
@@ -637,7 +641,7 @@ function renderRows(bucket,totalVal){
     const tC=tDiff>0?'positive':tDiff<0?'negative':'';
     const pctOfPf=totalVal&&val?(val/totalVal*100):null;
     const alertHit=s.alertPrice&&s.price&&Math.abs(s.price-s.alertPrice)/s.alertPrice<0.02;
-    return`<tr>
+    return`<tr draggable="true" ondragstart="dragStart(event,'${s.ticker}','${bucket}')" ondragover="dragOver(event)" ondrop="dragDrop(event,'${s.ticker}','${bucket}')" ondragend="dragEnd(event)" style="cursor:grab">
       <td><div class="ticker-cell" onclick="showDetail('${s.ticker}')">${s.ticker}</div>
         <div class="company-cell">${(s.company||'').substring(0,16)}</div>
         ${s.sector?`<span class="sector-tag">${s.sector}</span>`:''}
@@ -897,6 +901,24 @@ function exportCSV(){
   a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));
   a.download='portfolio_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
 }
+
+let dragSrc=null;
+function dragStart(e,ticker,bucket){dragSrc={ticker,bucket};e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+function dragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over');e.dataTransfer.dropEffect='move';}
+function dragDrop(e,targetTicker,targetBucket){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(!dragSrc||dragSrc.ticker===targetTicker)return;
+  const rows=portfolio.filter(s=>s.bucket===dragSrc.bucket);
+  const srcIdx=portfolio.findIndex(s=>s.ticker===dragSrc.ticker);
+  const tgtIdx=portfolio.findIndex(s=>s.ticker===targetTicker);
+  if(srcIdx<0||tgtIdx<0)return;
+  const [item]=portfolio.splice(srcIdx,1);
+  const newTgt=portfolio.findIndex(s=>s.ticker===targetTicker);
+  portfolio.splice(newTgt,0,item);
+  save();renderAll();
+}
+function dragEnd(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));}
 
 function resetCountdown(){
   secondsLeft=60;clearInterval(countdownTimer);
