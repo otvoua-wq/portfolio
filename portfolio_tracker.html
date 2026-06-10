@@ -648,7 +648,7 @@ function renderRows(bucket,totalVal){
         ${s.notes?`<div style="font-size:10px;color:#888;margin-top:2px" title="${s.notes}">📝 ${s.notes.substring(0,20)}${s.notes.length>20?'...':''}</div>`:''}
       </td>
       <td>${s.price?'$'+fmt(s.price):'—'}</td>
-      <td style="font-size:11px;color:#888">${s.price&&ilsRate?'₪'+fmt(s.price*ilsRate):'—'}</td>
+      <td style="font-size:11px;color:#888">${val!=null&&ilsRate?'<div>₪'+fmt(val*ilsRate,0)+'</div>'+(pnl!=null?'<div style="color:'+(pnl>=0?'#1a9e6e':'#c0392b')+'">'+(pnl>=0?'+':'')+' ₪'+fmt(Math.abs(pnl*ilsRate),0)+'</div>':''):'—'}</td>
       <td>${s.changePct!=null?`<span class="badge ${chgC}">${s.changePct>=0?'+':''}${fmt(s.changePct,2)}%</span>`:'—'}</td>
       <td>${fmt(s.qty,s.qty%1===0?0:2)}</td>
       <td>${s.cost?'$'+fmt(s.cost):'—'}</td>
@@ -903,22 +903,38 @@ function exportCSV(){
 }
 
 let dragSrc=null;
-function dragStart(e,ticker,bucket){dragSrc={ticker,bucket};e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
-function dragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over');e.dataTransfer.dropEffect='move';}
-function dragDrop(e,targetTicker,targetBucket){
+function dragStart(e,ticker,bucket){
+  dragSrc={ticker,bucket};
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain',ticker);
+  setTimeout(()=>e.currentTarget.classList.add('dragging'),0);
+}
+function dragOver(e){
   e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
+  e.stopPropagation();
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  const row=e.target.closest('tr');
+  if(row)row.classList.add('drag-over');
+  e.dataTransfer.dropEffect='move';
+}
+function dragDrop(e,targetTicker,targetBucket){
+  e.preventDefault();e.stopPropagation();
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
   if(!dragSrc||dragSrc.ticker===targetTicker)return;
-  const rows=portfolio.filter(s=>s.bucket===dragSrc.bucket);
   const srcIdx=portfolio.findIndex(s=>s.ticker===dragSrc.ticker);
   const tgtIdx=portfolio.findIndex(s=>s.ticker===targetTicker);
   if(srcIdx<0||tgtIdx<0)return;
   const [item]=portfolio.splice(srcIdx,1);
-  const newTgt=portfolio.findIndex(s=>s.ticker===targetTicker);
-  portfolio.splice(newTgt,0,item);
+  const newIdx=portfolio.findIndex(s=>s.ticker===targetTicker);
+  portfolio.splice(newIdx,0,item);
+  dragSrc=null;
   save();renderAll();
 }
-function dragEnd(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));}
+function dragEnd(e){
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  dragSrc=null;
+}
 
 function resetCountdown(){
   secondsLeft=60;clearInterval(countdownTimer);
