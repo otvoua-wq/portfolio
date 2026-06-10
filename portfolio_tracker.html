@@ -662,9 +662,12 @@ function recBar(rec){
 
 function renderRows(bucket,totalVal){
   const rows=sortPortfolio(portfolio.filter(s=>s.bucket===bucket),totalVal);
-  const card=document.getElementById(`tbl-${bucket}`),tbody=document.getElementById(`ptable-${bucket}`);
-  if(!rows.length){card.style.display='none';return;}card.style.display='';
-  tbody.innerHTML=rows.map(s=>{
+  const card=document.getElementById('tbl-'+bucket);
+  const tbody=document.getElementById('ptable-'+bucket);
+  if(!rows.length){card.style.display='none';return;}
+  card.style.display='';
+  tbody.innerHTML='';
+  rows.forEach(s=>{
     const val=s.price&&s.qty?s.price*s.qty:null;
     const cost=s.cost&&s.qty?s.cost*s.qty:null;
     const pnl=(val!=null&&cost!=null)?val-cost:null;
@@ -675,28 +678,39 @@ function renderRows(bucket,totalVal){
     const tC=tDiff>0?'positive':tDiff<0?'negative':'';
     const pctOfPf=totalVal&&val?(val/totalVal*100):null;
     const alertHit=s.alertPrice&&s.price&&Math.abs(s.price-s.alertPrice)/s.alertPrice<0.02;
-    return`<tr draggable="true" ondragstart="dragStart(event,'${s.ticker}','${bucket}')" ondragover="dragOver(event)" ondrop="dragDrop(event,'${s.ticker}','${bucket}')" ondragend="dragEnd(event)" data-ticker="${s.ticker}" data-bucket="${bucket}" style="cursor:grab">
-      <td><div class="ticker-cell" onclick="showDetail('${s.ticker}')">${s.ticker}</div>
-        <div class="company-cell">${(s.company||'').substring(0,16)}</div>
-        ${s.sector?`<span class="sector-tag">${s.sector}</span>`:''}
-        ${s.notes?`<div style="font-size:10px;color:#888;margin-top:2px" title="${s.notes}">📝 ${s.notes.substring(0,20)}${s.notes.length>20?'...':''}</div>`:''}
-      </td>
-      <td>${s.price?'$'+fmt(s.price):'—'}</td>
-      <td>${s.changePct!=null?`<span class="badge ${chgC}">${s.changePct>=0?'+':''}${fmt(s.changePct,2)}%</span>`:'—'}</td>
-      <td>${fmt(s.qty,s.qty%1===0?0:2)}</td>
-      <td>${s.cost?'$'+fmt(s.cost):'—'}</td>
-      <td style="font-size:11px">${val!=null?'<div>$'+fmt(val,0)+'</div>'+(ilsRate?'<div style="color:#888">₪'+fmt(val*ilsRate,0)+'</div>':''):'—'}</td>
-      <td style="font-size:11px">${pctOfPf!=null?`<div>${fmt(pctOfPf,1)}%</div><div class="pct-bar-wrap"><div class="pct-bar-fill" style="width:${Math.min(pctOfPf,100)}%;background:#378ADD"></div></div>`:'—'}</td>
-      <td class="${pnlC}" style="font-size:11px">${pnl!=null?'<div>'+(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0)+(pnlPct!=null?' ('+( pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%)':'')+'</div>'+(ilsRate?'<div style="color:'+(pnl>=0?'#1a9e6e':'#c0392b')+'">'+(pnl>=0?'+':'')+' ₪'+fmt(Math.abs(pnl*ilsRate),0)+'</div>':''):'—'}</td>
-      <td>${recBar(s.rec)}</td>
-      <td class="${tC}" style="font-size:11px">${s.target?'$'+fmt(s.target,0)+(tDiff!=null?`<br>${tDiff>=0?'+':''}${fmt(tDiff,1)}%`:''):'—'}</td>
-      <td>${scoreCircle(s.aiScore)}</td>
-      <td style="font-size:11px">${s.alertPrice?`<span style="color:${alertHit?'#c0392b':'#888'}">$${fmt(s.alertPrice,0)}${alertHit?' 🔔':''}</span>`:'—'}</td>
-      <td><button class="edit-btn" onclick="showEdit('${s.ticker}')">✏️</button></td>
-      <td><button class="remove-btn" onclick="removeStock('${s.ticker}')">✕</button></td>
-    </tr>`;
-  }).join('');
-}
+    const tr=document.createElement('tr');
+    tr.draggable=true;
+    tr.dataset.ticker=s.ticker;
+    tr.dataset.bucket=bucket;
+    tr.addEventListener('dragstart',function(e){dragStart(e,s.ticker,bucket);});
+    tr.addEventListener('dragover',dragOver);
+    tr.addEventListener('drop',function(e){dragDrop(e,s.ticker,bucket);});
+    tr.addEventListener('dragend',dragEnd);
+    tr.innerHTML=
+      '<td>'+
+        '<div class="ticker-cell">' + s.ticker + '</div>'+
+        '<div class="company-cell">'+(s.company||'').substring(0,16)+'</div>'+
+        (s.sector?'<span class="sector-tag">'+s.sector+'</span>':'')+
+        (s.notes?'<div style="font-size:10px;color:#888;margin-top:2px">📝 '+s.notes.substring(0,20)+(s.notes.length>20?'...':'')+'</div>':'')+
+      '</td>'+
+      '<td>'+(s.price?'$'+fmt(s.price):'—')+'</td>'+
+      '<td>'+(s.changePct!=null?'<span class="badge '+chgC+'">'+(s.changePct>=0?'+':'')+fmt(s.changePct,2)+'%</span>':'—')+'</td>'+
+      '<td>'+fmt(s.qty,s.qty%1===0?0:2)+'</td>'+
+      '<td>'+(s.cost?'$'+fmt(s.cost):'—')+'</td>'+
+      '<td style="font-size:11px">'+(val!=null?'<div>$'+fmt(val,0)+'</div>'+(ilsRate?'<div style="color:#888">₪'+fmt(val*ilsRate,0)+'</div>':''):'—')+'</td>'+
+      '<td style="font-size:11px">'+(pctOfPf!=null?'<div>'+fmt(pctOfPf,1)+'%</div><div class="pct-bar-wrap"><div class="pct-bar-fill" style="width:'+Math.min(pctOfPf,100)+'%;background:#378ADD"></div></div>':'—')+'</td>'+
+      '<td class="'+pnlC+'" style="font-size:11px">'+(pnl!=null?'<div>'+(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0)+(pnlPct!=null?' ('+( pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%)':'')+'</div>'+(ilsRate?'<div style="color:'+(pnl>=0?'#1a9e6e':'#c0392b')+'">'+(pnl>=0?'+':'')+' ₪'+fmt(Math.abs(pnl*ilsRate),0)+'</div>':''):'—')+'</td>'+
+      '<td>'+recBar(s.rec)+'</td>'+
+      '<td class="'+tC+'" style="font-size:11px">'+(s.target?'$'+fmt(s.target,0)+(tDiff!=null?'<br>'+(tDiff>=0?'+':'')+fmt(tDiff,1)+'%':''):'—')+'</td>'+
+      '<td>'+scoreCircle(s.aiScore)+'</td>'+
+      '<td style="font-size:11px">'+(s.alertPrice?'<span style="color:'+(alertHit?'#c0392b':'#888')+'">$'+fmt(s.alertPrice,0)+(alertHit?' 🔔':'')+'</span>':'—')+'</td>'+
+      '<td><button class="edit-btn">✏️</button></td>'+
+      '<td><button class="remove-btn">✕</button></td>';
+    tr.querySelector('.ticker-cell').onclick=function(){showDetail(s.ticker);};
+    tr.querySelector('.edit-btn').onclick=function(){showEdit(s.ticker);};
+    tr.querySelector('.remove-btn').onclick=function(){removeStock(s.ticker);};
+    tbody.appendChild(tr);
+  });
 
 function renderAll(){
   const totalVal=portfolio.reduce((sum,s)=>sum+(s.price&&s.qty?s.price*s.qty:0),0);
@@ -761,23 +775,35 @@ function renderHistoryPage(){
     </div>`).join('');
 }
 
+function openEdit(btn){showEdit(btn.getAttribute('data-ticker'));}
+function delStock(btn){removeStock(btn.getAttribute('data-ticker'));}
 function showEdit(ticker){
   const s=portfolio.find(p=>p.ticker===ticker);if(!s)return;
-  document.getElementById('edit-body').innerHTML=`
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <div class="field"><label>כמות</label><input type="number" id="edit-qty" value="${s.qty||''}" min="0" step="any"/></div>
-      <div class="field"><label>מחיר כניסה $</label><input type="number" id="edit-cost" value="${s.cost||''}" min="0" step="any"/></div>
-      <div class="field"><label>קטגוריה</label><select id="edit-bucket"><option value="main" ${s.bucket==='main'?'selected':''}>ראשי</option><option value="spec" ${s.bucket==='spec'?'selected':''}>ספקולטיבי</option><option value="watch" ${s.bucket==='watch'?'selected':''}>מעקב</option></select></div>
-      <div class="field"><label>סקטור</label><input type="text" id="edit-sector" value="${s.sector||''}" placeholder="טק / AI / חלל..."/></div>
-      <div class="field"><label>התראת שער $ (יקפוץ כשמגיע)</label><input type="number" id="edit-alert" value="${s.alertPrice||''}" min="0" step="any" placeholder="לדוגמה: 200"/></div>
-      <div class="field"><label>הערות</label><textarea id="edit-notes" placeholder="מטרה, נימוק, תאריך יעד...">${s.notes||''}</textarea></div>
-      <div class="field"><label>הקצאה רצויה % מהתיק</label><input type="number" id="edit-alloc" value="${s.allocation||''}" min="0" max="100" step="any" placeholder="לדוגמה: 10"/></div>
-      <button class="btn primary" onclick="saveEdit('${ticker}')">💾 שמור</button>
-    </div>`;
+  const body=document.getElementById('edit-body');
+  body.innerHTML='';
+  const wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;flex-direction:column;gap:12px';
+  wrap.innerHTML=
+    '<div class="field"><label>כמות</label><input type="number" id="edit-qty" min="0" step="any"/></div>'+
+    '<div class="field"><label>מחיר כניסה $</label><input type="number" id="edit-cost" min="0" step="any"/></div>'+
+    '<div class="field"><label>קטגוריה</label><select id="edit-bucket"><option value="main">ראשי</option><option value="spec">ספקולטיבי</option><option value="watch">מעקב</option></select></div>'+
+    '<div class="field"><label>סקטור</label><input type="text" id="edit-sector" placeholder="טק / AI / חלל..."/></div>'+
+    '<div class="field"><label>התראת שער $</label><input type="number" id="edit-alert" min="0" step="any" placeholder="200"/></div>'+
+    '<div class="field"><label>הערות</label><textarea id="edit-notes" placeholder="מטרה, נימוק..."></textarea></div>'+
+    '<div class="field"><label>הקצאה % מהתיק</label><input type="number" id="edit-alloc" min="0" max="100" step="any" placeholder="10"/></div>'+
+    '<button class="btn primary" id="save-edit-btn">שמור</button>';
+  body.appendChild(wrap);
+  document.getElementById('edit-qty').value=s.qty||'';
+  document.getElementById('edit-cost').value=s.cost||'';
+  document.getElementById('edit-bucket').value=s.bucket||'main';
+  document.getElementById('edit-sector').value=s.sector||'';
+  document.getElementById('edit-alert').value=s.alertPrice||'';
+  document.getElementById('edit-notes').value=s.notes||'';
+  document.getElementById('edit-alloc').value=s.allocation||'';
+  document.getElementById('save-edit-btn').onclick=function(){saveEdit(ticker);};
   document.getElementById('edit-overlay').classList.add('open');
-}
 
-function saveEdit(ticker){
+function saveEdit(ticker){if(ticker&&ticker.dataset)ticker=ticker.dataset.t;
   const s=portfolio.find(p=>p.ticker===ticker);if(!s)return;
   const newQty=parseFloat(document.getElementById('edit-qty').value);
   const newCost=parseFloat(document.getElementById('edit-cost').value);
