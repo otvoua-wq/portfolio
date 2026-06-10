@@ -307,7 +307,6 @@ tr.dragging{opacity:.4}
 
 <script>
 const FINN='https://finnhub.io/api/v1';
-const CLAUDE_API='https://api.anthropic.com/v1/messages';
 let portfolio=JSON.parse(localStorage.getItem('portfolio_v4')||localStorage.getItem('portfolio_v3')||localStorage.getItem('portfolio_v2')||'[]');
 let apiKey=localStorage.getItem('finnhub_key')||'';
 let sheetsUrl=localStorage.getItem('sheets_url')||'';
@@ -454,11 +453,12 @@ async function finn(path){
   return r.json();
 }
 
+const WORKER_URL='https://black-shadow-92e2.otvoua.workers.dev';
 async function claudeAsk(prompt){
-  const r=await fetch(CLAUDE_API,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+  const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prompt})});
   const d=await r.json();
-  return d.content?.filter(b=>b.type==='text').map(b=>b.text).join('')||'';
+  return d.text||d.error||'שגיאה';
 }
 
 async function fetchILS(){
