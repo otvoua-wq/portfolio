@@ -457,10 +457,18 @@ async function claudeAsk(prompt){
 
 async function fetchILS(){
   try{
-    const d=await finn('/forex/rates?base=USD');
-    const rate=d?.quote?.ILS;
+    const r=await fetch('https://open.er-api.com/v6/latest/USD',{signal:AbortSignal.timeout(5000)});
+    const d=await r.json();
+    const rate=d?.rates?.ILS;
     if(rate){ilsRate=rate;document.getElementById('ils-rate').textContent=`₪${rate.toFixed(3)}`;}
-  }catch(e){}
+  }catch(e){
+    try{
+      const r2=await fetch('https://api.exchangerate-api.com/v4/latest/USD',{signal:AbortSignal.timeout(5000)});
+      const d2=await r2.json();
+      const rate2=d2?.rates?.ILS;
+      if(rate2){ilsRate=rate2;document.getElementById('ils-rate').textContent=`₪${rate2.toFixed(3)}`;}
+    }catch(e2){}
+  }
 }
 
 async function fetchQuote(ticker){
