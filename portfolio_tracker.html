@@ -483,7 +483,7 @@ async function fetchQuote(ticker){
   }catch(e){return null;}
 }
 async function fetchRec(ticker){try{const d=await finn(`/stock/recommendation?symbol=${ticker}`);if(!d||!d.length)return null;const r=d[0];return{buy:r.buy,hold:r.hold,sell:r.sell,strongBuy:r.strongBuy,strongSell:r.strongSell};}catch(e){return null;}}
-async function fetchTarget(ticker){try{const d=await finn(`/stock/price-target?symbol=${ticker}`);return d?.targetMean||null;}catch(e){return null;}}
+async function fetchTarget(ticker){return null;}
 async function fetchPriceHistory(ticker){
   try{const to=Math.floor(Date.now()/1000),from=to-90*86400;const d=await finn(`/stock/candle?symbol=${ticker}&resolution=D&from=${from}&to=${to}`);if(!d||d.s!=='ok')return null;return{dates:d.t.map(t=>new Date(t*1000).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'})),closes:d.c};}catch(e){return null;}
 }
