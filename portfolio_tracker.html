@@ -13,12 +13,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .header{background:#fff;border-bottom:1px solid #e5e5e0;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
 .header h1{font-size:16px;font-weight:700}
 .hr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:#f0f0ec;color:#555}
-.badge.green{background:#e8f8f2;color:#1a9e6e}
-.badge.red{background:#fdf0ef;color:#c0392b}
-.badge.neutral{background:#f0f0ec;color:#888}
-.status{font-size:11px;color:#888}
-.status.live{color:#1a9e6e}
+.xbadge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:#f0f0ec;color:#555}
+.xbadge.green{background:#e8f8f2;color:#1a9e6e}
+.xbadge.red{background:#fdf0ef;color:#c0392b}
+.xstatus{font-size:11px;color:#888}
+.xstatus.live{color:#1a9e6e}
 .nav{background:#fff;border-bottom:1px solid #e5e5e0;display:flex;padding:0 1rem;overflow-x:auto}
 .nav::-webkit-scrollbar{display:none}
 .tab{padding:10px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:#888;white-space:nowrap}
@@ -28,20 +27,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .setup{background:#fff8e1;border:1px solid #f0c040;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
 .setup h2{font-size:14px;font-weight:600;margin-bottom:8px;color:#7a5800}
 .setup p{font-size:13px;color:#7a5800;margin-bottom:8px;line-height:1.6}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
-.row input{height:36px;border:1px solid #ddd;border-radius:8px;padding:0 10px;font-size:13px;flex:1;min-width:180px}
+.xrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.xrow input{height:36px;border:1px solid #ddd;border-radius:8px;padding:0 10px;font-size:13px;flex:1;min-width:180px}
 .btn{height:36px;padding:0 14px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:13px;font-weight:500;white-space:nowrap}
 .btn:hover{background:#f0f0ec}
 .btn.dark{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
 .btn.dark:hover{background:#333}
 .btn.ai{background:#5b4fcf;color:#fff;border:none}
 .btn.ai:hover{background:#4a3fbe}
+.btn.grn{background:#1a9e6e;color:#fff;border-color:#1a9e6e}
 .add-bar{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:.875rem 1rem;margin-bottom:1rem;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
 .field{display:flex;flex-direction:column}
 .field label{font-size:11px;color:#888;margin-bottom:3px}
 .field input,.field select{height:36px;border:1px solid #ddd;border-radius:8px;padding:0 10px;font-size:13px;background:#fafafa;outline:none}
 .field input:focus,.field select:focus{border-color:#378ADD;background:#fff}
 .f1{width:95px}.f2{width:75px}.f3{width:105px}.f4{width:130px}.f5{width:115px}
+.sort-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem;align-items:center}
+.sort-bar span{font-size:12px;color:#888}
+.sbtn{padding:3px 10px;border-radius:20px;border:1px solid #ddd;background:#fff;font-size:12px;cursor:pointer;transition:all .15s}
+.sbtn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
 .prog{height:2px;background:#e5e5e0;border-radius:2px;overflow:hidden;margin-bottom:1rem}
 .prog-fill{height:100%;background:#378ADD;border-radius:2px;transition:width 1s linear}
 .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1rem}
@@ -55,20 +59,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .card-hd h3{font-size:13px;font-weight:600;color:#555}
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{padding:7px 8px;text-align:right;font-size:10px;font-weight:600;color:#999;background:#fafafa;border-bottom:1px solid #e5e5e0;white-space:nowrap}
+th{padding:7px 8px;text-align:right;font-size:10px;font-weight:600;color:#999;background:#fafafa;border-bottom:1px solid #e5e5e0;white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{background:#f0f0ec}
 td{padding:8px 8px;border-bottom:1px solid #f5f5f0;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#fafafa}
 .tc{font-weight:700;font-size:13px;color:#378ADD;cursor:pointer}
-.tc:hover{text-decoration:underline}
 .co{font-size:10px;color:#bbb;margin-top:1px}
 .rb{display:inline-block;font-size:10px;padding:2px 5px;border-radius:4px;font-weight:600}
 .rb.up{background:#e8f8f2;color:#1a9e6e}
 .rb.dn{background:#fdf0ef;color:#c0392b}
 .rb.nt{background:#f0f0ec;color:#888}
 .rec-bar{display:flex;gap:1px;height:4px;border-radius:3px;overflow:hidden;min-width:55px}
-.sc{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:10px;font-weight:700;color:#fff}
-.sc.hi{background:#1a9e6e}.sc.mi{background:#e67e22}.sc.lo{background:#c0392b}
+.xsc{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:10px;font-weight:700;color:#fff}
+.xsc.hi{background:#1a9e6e}.xsc.mi{background:#e67e22}.xsc.lo{background:#c0392b}
 .xbtn{background:none;border:none;cursor:pointer;color:#ddd;font-size:13px;padding:2px 5px;border-radius:4px}
 .xbtn:hover{color:#c0392b;background:#fdf0ef}
 .ebtn{background:none;border:none;cursor:pointer;color:#aaa;font-size:12px;padding:2px 5px;border-radius:4px}
@@ -102,7 +106,7 @@ tr:hover td{background:#fafafa}
 .nc{padding:4px 12px;border-radius:20px;border:1px solid #ddd;background:#fff;font-size:12px;cursor:pointer;white-space:nowrap}
 .nc.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
 .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-.sc2{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:.875rem 1rem}
+.sgc{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:.875rem 1rem}
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .ov.open{display:flex}
 .md{background:#fff;border-radius:16px;padding:1.25rem;max-width:560px;width:92%;max-height:85vh;overflow-y:auto}
@@ -116,6 +120,9 @@ tr:hover td{background:#fafafa}
 .pb{width:60px;height:5px;background:#f0f0ec;border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle}
 .pbf{height:100%;border-radius:3px}
 .stag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:8px;background:#eef3ff;color:#4a6cf7;font-weight:500}
+.risk-meter{display:flex;align-items:center;gap:8px;margin-top:4px}
+.risk-bar{flex:1;height:6px;background:#f0f0ec;border-radius:3px;overflow:hidden}
+.risk-fill{height:100%;border-radius:3px}
 .chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 180px);min-height:400px;background:#fff;border:1px solid #e5e5e0;border-radius:12px;overflow:hidden}
 .chat-msgs{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:10px}
 .cm{max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6}
@@ -129,21 +136,28 @@ tr:hover td{background:#fafafa}
 .csugg{display:flex;gap:6px;flex-wrap:wrap;padding:.5rem 1rem;border-bottom:1px solid #f0f0ec}
 .cch{padding:4px 12px;border-radius:20px;border:1px solid #ddd;background:#fff;font-size:12px;cursor:pointer;white-space:nowrap}
 .cch:hover{background:#f0f0ec}
+.morn-card{background:#f8f6ff;border:1px solid #667eea30;border-radius:12px;padding:1rem;margin-bottom:1rem}
+.morn-card h3{font-size:13px;font-weight:600;color:#4a3f8a;margin-bottom:.75rem}
+.ipo-card{background:#fff;border:1px solid #e5e5e0;border-radius:10px;padding:.875rem 1rem;margin-bottom:8px}
+.ipo-card .it{font-size:14px;font-weight:600;margin-bottom:4px}
+.ipo-card .id{font-size:12px;color:#555;line-height:1.5}
+.ipo-card .im{font-size:11px;color:#aaa;margin-top:4px}
 </style>
 </head>
 <body>
 <div class="header">
   <h1>📈 פורטפוליו AI</h1>
   <div class="hr">
-    <span class="badge" id="ils-badge">USD/ILS: —</span>
-    <span class="badge" id="sheets-badge">Sheets: לא מחובר</span>
-    <span class="status" id="status">ממתין...</span>
+    <span class="xbadge" id="ils-badge">USD/ILS: —</span>
+    <span class="xbadge" id="sheets-badge">Sheets: לא מחובר</span>
+    <span class="xstatus" id="xstatus">ממתין...</span>
     <button class="btn" onclick="openSettings()" style="height:28px;font-size:11px;padding:0 10px">⚙️</button>
   </div>
 </div>
 <div class="nav">
   <div class="tab active" onclick="showTab('pf',this)">💼 תיק</div>
   <div class="tab" onclick="showTab('ai',this)">🤖 AI</div>
+  <div class="tab" onclick="showTab('market',this)">🌍 שוק</div>
   <div class="tab" onclick="showTab('news',this)">📰 חדשות</div>
   <div class="tab" onclick="showTab('sugg',this)">💡 המלצות</div>
   <div class="tab" onclick="showTab('chat',this)">💬 צאט</div>
@@ -152,10 +166,10 @@ tr:hover td{background:#fafafa}
 
 <div class="setup hidden" id="setup">
   <h2>🔑 הגדרה ראשונית</h2>
-  <p>1. <a href="https://finnhub.io/register" target="_blank">finnhub.io/register</a> — הירשם חינם</p>
-  <div class="row"><input type="text" id="inp-key" placeholder="Finnhub API Key..."/><button class="btn dark" onclick="saveKey()">שמור</button></div>
-  <p>2. Google Sheets URL (אופציונלי):</p>
-  <div class="row"><input type="text" id="inp-sheets" placeholder="https://script.google.com/macros/s/.../exec"/><button class="btn" onclick="saveSheets()">חבר</button></div>
+  <p>1. <a href="https://finnhub.io/register" target="_blank">finnhub.io/register</a> — הירשם חינם וקבל API Key</p>
+  <div class="xrow"><input type="text" id="inp-key" placeholder="Finnhub API Key..."/><button class="btn dark" onclick="saveKey()">שמור</button></div>
+  <p>2. Google Sheets URL (אופציונלי לסנכרון בין מכשירים):</p>
+  <div class="xrow"><input type="text" id="inp-sheets" placeholder="https://script.google.com/macros/s/.../exec"/><button class="btn" onclick="saveSheets()">חבר</button></div>
 </div>
 
 <!-- PORTFOLIO -->
@@ -168,10 +182,22 @@ tr:hover td{background:#fafafa}
     <div class="field f5"><label>סקטור</label><input id="i-sector" placeholder="טק / AI..."/></div>
     <button class="btn dark" onclick="addStock()" id="add-btn">+ הוסף</button>
     <button class="btn" onclick="refreshAll()" id="ref-btn">⟳</button>
-    <button class="btn" onclick="exportCSV()" style="margin-right:auto">📥</button>
+    <button class="btn" onclick="exportCSV()" style="margin-right:auto">📥 CSV</button>
     <button class="btn" onclick="clearAll()" style="color:#c0392b">🗑</button>
   </div>
   <div class="prog"><div class="prog-fill" id="prog" style="width:100%"></div></div>
+
+  <div class="sort-bar">
+    <span>מיון:</span>
+    <div class="sbtn active" onclick="setSort('ticker',this)">שם</div>
+    <div class="sbtn" onclick="setSort('value',this)">שווי</div>
+    <div class="sbtn" onclick="setSort('pnlPct',this)">רווח%</div>
+    <div class="sbtn" onclick="setSort('changePct',this)">יומי</div>
+    <div class="sbtn" onclick="setSort('aiScore',this)">ציון AI</div>
+    <div class="sbtn" onclick="setSort('upside',this)">אפסייד</div>
+    <div class="sbtn" onclick="setSort('pctPf',this)">% תיק</div>
+  </div>
+
   <div class="summary">
     <div class="metric"><div class="lbl">שווי $</div><div class="val" id="sv">—</div></div>
     <div class="metric"><div class="lbl">שווי ₪</div><div class="val" id="sv-ils">—</div></div>
@@ -179,32 +205,72 @@ tr:hover td{background:#fafafa}
     <div class="metric"><div class="lbl">היום $</div><div class="val" id="std">—</div><div class="sub" id="std-ils"></div></div>
     <div class="metric"><div class="lbl">פוזיציות</div><div class="val" id="scnt">0</div></div>
     <div class="metric"><div class="lbl">ציון AI</div><div class="val" id="sai">—</div></div>
+    <div class="metric"><div class="lbl">סיכון תיק</div><div class="val" id="srisk">—</div><div class="sub" id="srisk-bar"></div></div>
   </div>
-  <div class="card hidden" id="tbl-main"><div class="card-hd"><h3>📁 ראשי</h3></div><div class="tw"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רו"ה $ / ₪</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th>התראה</th><th></th><th></th></tr></thead><tbody id="tb-main"></tbody></table></div></div>
-  <div class="card hidden" id="tbl-spec"><div class="card-hd"><h3>🎯 ספקולטיבי</h3></div><div class="tw"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רו"ה $ / ₪</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th>התראה</th><th></th><th></th></tr></thead><tbody id="tb-spec"></tbody></table></div></div>
-  <div class="card hidden" id="tbl-watch"><div class="card-hd"><h3>👁 מעקב</h3></div><div class="tw"><table><thead><tr><th>מניה</th><th>מחיר</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי $ / ₪</th><th>% תיק</th><th>רו"ה $ / ₪</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th>התראה</th><th></th><th></th></tr></thead><tbody id="tb-watch"></tbody></table></div></div>
+
+  <div class="card hidden" id="tbl-main">
+    <div class="card-hd"><h3>📁 ראשי</h3></div>
+    <div class="tw"><table><thead><tr>
+      <th>מניה</th><th onclick="setSort('changePct',null)">מחיר / יומי ↕</th><th onclick="setSort('value',null)">שווי $ / ₪ ↕</th><th onclick="setSort('pctPf',null)">% תיק ↕</th><th onclick="setSort('pnlPct',null)">רו"ה $ / ₪ ↕</th><th>אנליסטים</th><th onclick="setSort('upside',null)">יעד ↕</th><th onclick="setSort('aiScore',null)">AI ↕</th><th>התראה</th><th></th><th></th>
+    </tr></thead><tbody id="tb-main"></tbody></table></div>
+  </div>
+  <div class="card hidden" id="tbl-spec">
+    <div class="card-hd"><h3>🎯 ספקולטיבי</h3></div>
+    <div class="tw"><table><thead><tr>
+      <th>מניה</th><th>מחיר / יומי</th><th>שווי $ / ₪</th><th>% תיק</th><th>רו"ה $ / ₪</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th>התראה</th><th></th><th></th>
+    </tr></thead><tbody id="tb-spec"></tbody></table></div>
+  </div>
+  <div class="card hidden" id="tbl-watch">
+    <div class="card-hd"><h3>👁 מעקב</h3></div>
+    <div class="tw"><table><thead><tr>
+      <th>מניה</th><th>מחיר / יומי</th><th>שווי $ / ₪</th><th>% תיק</th><th>רו"ה $ / ₪</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th>התראה</th><th></th><th></th>
+    </tr></thead><tbody id="tb-watch"></tbody></table></div>
+  </div>
+
   <div class="cgrid">
     <div class="cc"><h3>התפלגות שווי</h3><div style="position:relative;height:200px"><canvas id="pieC"></canvas></div></div>
     <div class="cc"><h3>רווח/הפסד</h3><div id="barW" style="position:relative;height:200px"><canvas id="barC"></canvas></div></div>
   </div>
-  <div class="cc" style="margin-bottom:1rem"><h3>📈 היסטוריה</h3><div style="position:relative;height:150px"><canvas id="histC"></canvas></div></div>
+  <div class="cgrid">
+    <div class="cc"><h3>סקטורים</h3><div style="position:relative;height:180px"><canvas id="secC"></canvas></div></div>
+    <div class="cc"><h3>📈 היסטוריה</h3><div style="position:relative;height:180px"><canvas id="histC"></canvas></div></div>
+  </div>
 </div>
 
 <!-- AI -->
 <div class="page" id="page-ai">
-  <div class="aipanel"><div class="aihd"><h3>🌅 סיכום בוקר</h3><button class="btn ai" onclick="doMorning()">⚡ קבל ↗</button></div><div class="aibd" id="ai-morning"><div style="color:#aaa;font-size:13px">לחץ לסיכום יומי</div></div></div>
-  <div class="aipanel"><div class="aihd"><h3>🏆 דירוג מניות</h3><button class="btn ai" onclick="doRank()">נתח ↗</button></div><div class="aibd" id="ai-rank"><div style="color:#aaa;font-size:13px">דירוג AI: קנה / המתן / מכור</div></div></div>
-  <div class="aipanel"><div class="aihd"><h3>⚠️ סיכונים</h3><button class="btn ai" onclick="doRisk()">נתח ↗</button></div><div class="aibd" id="ai-risk"><div style="color:#aaa;font-size:13px">ריכוז, קורלציות, חולשות</div></div></div>
-  <div class="aipanel"><div class="aihd"><h3>🚨 התראות</h3><button class="btn ai" onclick="doAlerts()">בדוק ↗</button></div><div class="aibd" id="ai-alerts"><div style="color:#aaa;font-size:13px">זיהוי שינויים משמעותיים</div></div></div>
+  <div class="morn-card"><h3>🌅 סיכום בוקר</h3><div id="ai-morning"><button class="btn ai" onclick="doMorning()">⚡ קבל ↗</button></div></div>
+  <div class="aipanel"><div class="aihd"><h3>🏆 דירוג מניות</h3><button class="btn ai" onclick="doRank()">נתח ↗</button></div><div class="aibd" id="ai-rank"><div style="color:#aaa;font-size:13px">דירוג AI: קנה / המתן / מכור עם ציון</div></div></div>
+  <div class="aipanel"><div class="aihd"><h3>⚠️ ניתוח סיכונים</h3><button class="btn ai" onclick="doRisk()">נתח ↗</button></div><div class="aibd" id="ai-risk"><div style="color:#aaa;font-size:13px">ריכוז, קורלציות, Beta, הפסד מקסימלי צפוי</div></div></div>
+  <div class="aipanel"><div class="aihd"><h3>🚨 התראות חכמות</h3><button class="btn ai" onclick="doAlerts()">בדוק ↗</button></div><div class="aibd" id="ai-alerts"><div style="color:#aaa;font-size:13px">זיהוי שינויים משמעותיים</div></div></div>
   <div class="aipanel">
-    <div class="aihd"><h3>🔍 ניתוח מניה</h3>
+    <div class="aihd"><h3>🔍 ניתוח מניה בודדת</h3>
       <div style="display:flex;gap:6px;align-items:center">
         <select id="ai-sel" style="height:32px;border:1px solid #ddd;border-radius:8px;padding:0 8px;font-size:13px"><option value="">בחר...</option></select>
         <button class="btn ai" onclick="doSingle()">נתח ↗</button>
       </div>
     </div>
-    <div class="aibd" id="ai-single"><div style="color:#aaa;font-size:13px">הערכת שווי, קטליזטורים, סיכונים, ציון</div></div>
+    <div class="aibd" id="ai-single"><div style="color:#aaa;font-size:13px">הערכת שווי, קטליזטורים, סיכונים, ציון 1-10</div></div>
   </div>
+</div>
+
+<!-- MARKET -->
+<div class="page" id="page-market">
+  <div class="aipanel"><div class="aihd"><h3>🌍 תחזית שוק שבועית</h3><button class="btn ai" onclick="doMarket()">קבל תחזית ↗</button></div><div class="aibd" id="ai-market"><div style="color:#aaa;font-size:13px">תחזית לסקטורים, ריביות, מאקרו</div></div></div>
+  <div class="aipanel">
+    <div class="aihd"><h3>🚀 הנפקות קרובות ומניות חמות</h3><button class="btn ai" onclick="doIPOs()">בדוק ↗</button></div>
+    <div class="aibd" id="ai-ipos"><div style="color:#aaa;font-size:13px">הנפקות קרובות, מניות טרנד, ניתוח ומה כדאי לעקוב</div></div>
+  </div>
+  <div class="aipanel">
+    <div class="aihd"><h3>🔍 ניתוח מניה / הנפקה ספציפית</h3>
+      <div style="display:flex;gap:6px;align-items:center">
+        <input id="mkt-input" style="height:32px;border:1px solid #ddd;border-radius:8px;padding:0 10px;font-size:13px;width:120px;text-transform:uppercase" placeholder="טיקר / שם..."/>
+        <button class="btn ai" onclick="doMktSingle()">נתח ↗</button>
+      </div>
+    </div>
+    <div class="aibd" id="ai-mkt-single"><div style="color:#aaa;font-size:13px">הזן טיקר או שם חברה — אקבל ניתוח מעמיק</div></div>
+  </div>
+  <div class="aipanel"><div class="aihd"><h3>📊 טרנדים בשוק</h3><button class="btn ai" onclick="doTrends()">בדוק ↗</button></div><div class="aibd" id="ai-trends"><div style="color:#aaa;font-size:13px">אילו סקטורים ותמות חמות עכשיו</div></div></div>
 </div>
 
 <!-- NEWS -->
@@ -216,10 +282,19 @@ tr:hover td{background:#fafafa}
 <!-- SUGGESTIONS -->
 <div class="page" id="page-sugg">
   <div class="aipanel" style="margin-bottom:1rem">
-    <div class="aihd"><h3>🤖 המלצות לתיק שלך</h3><button class="btn ai" onclick="doSugg()">קבל ↗</button></div>
-    <div class="aibd" id="ai-sugg-hd"><div style="color:#aaa;font-size:13px">AI ינתח ויציע מניות מתאימות</div></div>
+    <div class="aihd"><h3>🤖 המלצות AI לתיק שלך</h3><button class="btn ai" onclick="doSugg()">קבל המלצות ↗</button></div>
+    <div class="aibd" id="ai-sugg-hd"><div style="color:#aaa;font-size:13px">AI ינתח ויציע מניות מתאימות לפרופיל שלך</div></div>
   </div>
   <div id="sugg-body"></div>
+  <div class="aipanel" style="margin-top:1rem">
+    <div class="aihd"><h3>💰 אם היה לי X$ פנוי</h3>
+      <div style="display:flex;gap:6px;align-items:center">
+        <input id="budget-inp" style="height:32px;border:1px solid #ddd;border-radius:8px;padding:0 10px;font-size:13px;width:120px" placeholder="5000" type="number"/>
+        <button class="btn ai" onclick="doBudget()">קבל המלצה ↗</button>
+      </div>
+    </div>
+    <div class="aibd" id="ai-budget"><div style="color:#aaa;font-size:13px">הזן סכום — AI יציע איך להשקיע אותו</div></div>
+  </div>
 </div>
 
 <!-- CHAT -->
@@ -231,9 +306,10 @@ tr:hover td{background:#fafafa}
       <div class="cch" onclick="sendCh(this)">🏆 איזו מניה להגדיל?</div>
       <div class="cch" onclick="sendCh(this)">📉 מה כדאי למכור?</div>
       <div class="cch" onclick="sendCh(this)">💡 המלץ מניה חדשה</div>
+      <div class="cch" onclick="sendCh(this)">🚀 הנפקות חמות עכשיו</div>
     </div>
     <div class="chat-msgs" id="chat-msgs">
-      <div class="cm a">שלום! שאל אותי כל שאלה על הפורטפוליו שלך.</div>
+      <div class="cm a">שלום! אני יועץ ההשקעות שלך. שאל אותי כל שאלה — על התיק, השוק, הנפקות, מניות ספציפיות.</div>
     </div>
     <div class="cib">
       <input type="text" id="chat-inp" placeholder="שאל שאלה..." onkeydown="if(event.key==='Enter')sendChat()"/>
@@ -266,9 +342,9 @@ tr:hover td{background:#fafafa}
     <div class="mdh"><h2>⚙️ הגדרות</h2><span class="mc" onclick="closeOv('ov-settings')">✕</span></div>
     <div>
       <p style="font-size:13px;color:#888;margin-bottom:.5rem">Finnhub API Key</p>
-      <div class="row"><input type="text" id="s-key" placeholder="API Key..."/><button class="btn dark" onclick="updKey()">עדכן</button></div>
+      <div class="xrow"><input type="text" id="s-key" placeholder="API Key..."/><button class="btn dark" onclick="updKey()">עדכן</button></div>
       <p style="font-size:13px;color:#888;margin:.875rem 0 .5rem">Google Sheets URL</p>
-      <div class="row"><input type="text" id="s-sheets" placeholder="https://script.google.com/..."/><button class="btn" style="background:#1a9e6e;color:#fff;border-color:#1a9e6e" onclick="updSheets()">חבר</button></div>
+      <div class="xrow"><input type="text" id="s-sheets" placeholder="https://script.google.com/..."/><button class="btn grn" onclick="updSheets()">חבר</button></div>
       <div style="font-size:12px;margin-top:4px" id="sheets-msg"></div>
       <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0ec">
         <p style="font-size:12px;font-weight:600;margin-bottom:.5rem">📱 אייקון בטלפון</p>
@@ -289,10 +365,11 @@ var portfolio = JSON.parse(localStorage.getItem('portfolio_v4') || localStorage.
 var apiKey = localStorage.getItem('finnhub_key') || '';
 var sheetsUrl = localStorage.getItem('sheets_url') || '';
 var ilsRate = null;
-var pieChart, barChart, histChart, priceChart;
+var pieChart, barChart, secChart, histChart, priceChart;
 var countdown, secs = 60;
 var histData = JSON.parse(localStorage.getItem('pf_hist') || '[]');
 var notifOk = Notification.permission === 'granted';
+var sortField = 'ticker', sortDir = 1;
 var COLORS = ['#378ADD','#1D9E75','#D85A30','#D4537E','#7F77DD','#639922','#BA7517','#E24B4A','#5DCAA5','#888780'];
 
 function init() {
@@ -323,8 +400,7 @@ function saveSheets() {
   var u = document.getElementById('inp-sheets').value.trim();
   if (!u) return;
   sheetsUrl = u; localStorage.setItem('sheets_url', u);
-  updateSheetsBadge();
-  syncFrom();
+  updateSheetsBadge(); syncFrom();
 }
 
 function openSettings() {
@@ -352,18 +428,17 @@ function updSheets() {
       if (d.ok) {
         document.getElementById('sheets-msg').textContent = '✅ מחובר!';
         document.getElementById('sheets-badge').textContent = 'Sheets: מחובר';
-        document.getElementById('sheets-badge').className = 'badge green';
+        document.getElementById('sheets-badge').className = 'xbadge green';
       } else {
         document.getElementById('sheets-msg').textContent = '❌ שגיאה';
       }
-    })
-    .catch(function() { document.getElementById('sheets-msg').textContent = '❌ שגיאה — בדוק URL'; });
+    }).catch(function() { document.getElementById('sheets-msg').textContent = '❌ שגיאה — בדוק URL'; });
 }
 
 function updateSheetsBadge() {
   var el = document.getElementById('sheets-badge');
-  if (sheetsUrl) { el.textContent = 'Sheets: מחובר'; el.className = 'badge green'; }
-  else { el.textContent = 'Sheets: לא מחובר'; el.className = 'badge'; }
+  if (sheetsUrl) { el.textContent = 'Sheets: מחובר'; el.className = 'xbadge green'; }
+  else { el.textContent = 'Sheets: לא מחובר'; el.className = 'xbadge'; }
 }
 
 function closeOv(id, e) {
@@ -379,11 +454,11 @@ function save() {
 
 function syncTo() {
   if (!sheetsUrl || !portfolio.length) return;
-  var rows = [['ticker','qty','cost','bucket','company','price','prevClose','changePct','rec','target','aiScore','sector','notes','alertPrice','entryDate']];
+  var rows = [['ticker','qty','cost','bucket','company','price','prevClose','changePct','rec','target','aiScore','sector','notes','alertPrice','entryDate','targetPersonal']];
   portfolio.forEach(function(s) {
-    rows.push([s.ticker, s.qty||0, s.cost||'', s.bucket||'main', s.company||'', s.price||'', s.prevClose||'', s.changePct||'', JSON.stringify(s.rec||null), s.target||'', s.aiScore||'', s.sector||'', s.notes||'', s.alertPrice||'', s.entryDate||'']);
+    rows.push([s.ticker,s.qty||0,s.cost||'',s.bucket||'main',s.company||'',s.price||'',s.prevClose||'',s.changePct||'',JSON.stringify(s.rec||null),s.target||'',s.aiScore||'',s.sector||'',s.notes||'',s.alertPrice||'',s.entryDate||'',s.targetPersonal||'']);
   });
-  fetch(sheetsUrl, {method:'POST', mode:'cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify({action:'write', rows:rows})}).catch(function(){});
+  fetch(sheetsUrl, {method:'POST',mode:'cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'write',rows:rows})}).catch(function(){});
 }
 
 function syncFrom() {
@@ -397,24 +472,25 @@ function syncFrom() {
       function idx(k) { return headers.indexOf(k); }
       var loaded = rows.filter(function(r) { return r[idx('ticker')] && r[idx('ticker')] !== 'ticker'; }).map(function(r) {
         return {
-          ticker: r[idx('ticker')], qty: parseFloat(r[idx('qty')])||0,
-          cost: r[idx('cost')] ? parseFloat(r[idx('cost')]) : null,
-          bucket: r[idx('bucket')]||'main', company: r[idx('company')]||'',
-          price: r[idx('price')] ? parseFloat(r[idx('price')]) : null,
-          prevClose: r[idx('prevClose')] ? parseFloat(r[idx('prevClose')]) : null,
-          changePct: r[idx('changePct')] ? parseFloat(r[idx('changePct')]) : null,
-          rec: r[idx('rec')] ? tryParse(r[idx('rec')]) : null,
-          target: r[idx('target')] ? parseFloat(r[idx('target')]) : null,
-          aiScore: r[idx('aiScore')] ? parseInt(r[idx('aiScore')]) : null,
-          sector: r[idx('sector')]||'', notes: r[idx('notes')]||'',
-          alertPrice: r[idx('alertPrice')] ? parseFloat(r[idx('alertPrice')]) : null,
-          entryDate: r[idx('entryDate')]||''
+          ticker:r[idx('ticker')], qty:parseFloat(r[idx('qty')])||0,
+          cost:r[idx('cost')]?parseFloat(r[idx('cost')]):null,
+          bucket:r[idx('bucket')]||'main', company:r[idx('company')]||'',
+          price:r[idx('price')]?parseFloat(r[idx('price')]):null,
+          prevClose:r[idx('prevClose')]?parseFloat(r[idx('prevClose')]):null,
+          changePct:r[idx('changePct')]?parseFloat(r[idx('changePct')]):null,
+          rec:r[idx('rec')]?tryParse(r[idx('rec')]):null,
+          target:r[idx('target')]?parseFloat(r[idx('target')]):null,
+          aiScore:r[idx('aiScore')]?parseInt(r[idx('aiScore')]):null,
+          sector:r[idx('sector')]||'', notes:r[idx('notes')]||'',
+          alertPrice:r[idx('alertPrice')]?parseFloat(r[idx('alertPrice')]):null,
+          entryDate:r[idx('entryDate')]||'',
+          targetPersonal:r[idx('targetPersonal')]?parseFloat(r[idx('targetPersonal')]):null
         };
       });
       if (loaded.length) {
         portfolio = loaded; save(); renderAll(); updSel();
         document.getElementById('sheets-badge').textContent = 'Sheets: מסונכרן';
-        document.getElementById('sheets-badge').className = 'badge green';
+        document.getElementById('sheets-badge').className = 'xbadge green';
       }
     }).catch(function(){});
 }
@@ -422,17 +498,17 @@ function syncFrom() {
 function tryParse(s) { try { return JSON.parse(s); } catch(e) { return null; } }
 
 function finn(path) {
-  return fetch(FINN + path + '&token=' + apiKey, {signal: AbortSignal.timeout(8000)}).then(function(r) { return r.json(); });
+  return fetch(FINN + path + '&token=' + apiKey, {signal:AbortSignal.timeout(8000)}).then(function(r) { return r.json(); });
 }
 
 function aiAsk(prompt) {
-  return fetch(WORKER, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt: prompt})})
+  return fetch(WORKER, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:prompt})})
     .then(function(r) { return r.json(); })
     .then(function(d) { return d.text || d.error || 'שגיאה'; });
 }
 
 function fetchILS() {
-  fetch('https://open.er-api.com/v6/latest/USD', {signal: AbortSignal.timeout(5000)})
+  fetch('https://open.er-api.com/v6/latest/USD', {signal:AbortSignal.timeout(5000)})
     .then(function(r) { return r.json(); })
     .then(function(d) {
       var rate = d && d.rates && d.rates.ILS;
@@ -441,49 +517,75 @@ function fetchILS() {
 }
 
 function fetchQuote(ticker) {
-  return Promise.all([
-    finn('/quote?symbol=' + ticker),
-    finn('/search?q=' + ticker)
-  ]).then(function(res) {
-    var q = res[0], s = res[1];
-    if (!q || !q.c) return null;
-    var company = (s && s.result && s.result.find(function(r) { return r.symbol === ticker; }));
-    return {price: q.c, prevClose: q.pc, changePct: q.dp, company: company ? company.description : ticker};
-  }).catch(function() { return null; });
+  return Promise.all([finn('/quote?symbol='+ticker), finn('/search?q='+ticker)])
+    .then(function(res) {
+      var q = res[0], s = res[1];
+      if (!q || !q.c) return null;
+      var comp = s && s.result && s.result.find(function(r) { return r.symbol === ticker; });
+      return {price:q.c, prevClose:q.pc, changePct:q.dp, company:comp?comp.description:ticker};
+    }).catch(function() { return null; });
 }
 
 function fetchRec(ticker) {
-  return finn('/stock/recommendation?symbol=' + ticker)
+  return finn('/stock/recommendation?symbol='+ticker)
     .then(function(d) {
       if (!d || !d.length) return null;
       var r = d[0];
-      return {buy: r.buy, hold: r.hold, sell: r.sell, strongBuy: r.strongBuy, strongSell: r.strongSell};
+      return {buy:r.buy, hold:r.hold, sell:r.sell, strongBuy:r.strongBuy, strongSell:r.strongSell};
     }).catch(function() { return null; });
 }
 
 function fetchNews(ticker) {
   var today = new Date(), from = new Date(today - 7*86400000);
   function fmt(d) { return d.toISOString().split('T')[0]; }
-  return finn('/company-news?symbol=' + ticker + '&from=' + fmt(from) + '&to=' + fmt(today))
+  return finn('/company-news?symbol='+ticker+'&from='+fmt(from)+'&to='+fmt(today))
     .then(function(d) { return Array.isArray(d) ? d.slice(0,8) : []; })
     .catch(function() { return []; });
 }
 
 function fetchHistory(ticker) {
   var to = Math.floor(Date.now()/1000), from = to - 90*86400;
-  return finn('/stock/candle?symbol=' + ticker + '&resolution=D&from=' + from + '&to=' + to)
+  return finn('/stock/candle?symbol='+ticker+'&resolution=D&from='+from+'&to='+to)
     .then(function(d) {
       if (!d || d.s !== 'ok') return null;
       return {
-        dates: d.t.map(function(t) { return new Date(t*1000).toLocaleDateString('he-IL', {month:'numeric',day:'numeric'}); }),
+        dates: d.t.map(function(t) { return new Date(t*1000).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'}); }),
         closes: d.c
       };
     }).catch(function() { return null; });
 }
 
 function setStatus(msg, cls) {
-  var el = document.getElementById('status');
-  el.textContent = msg; el.className = 'status ' + (cls||'');
+  var el = document.getElementById('xstatus');
+  el.textContent = msg; el.className = 'xstatus ' + (cls||'');
+}
+
+function setSort(field, el) {
+  if (sortField === field) sortDir *= -1;
+  else { sortField = field; sortDir = -1; }
+  document.querySelectorAll('.sbtn').forEach(function(b) { b.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderAll();
+}
+
+function sortedRows(rows, totalVal) {
+  return rows.slice().sort(function(a, b) {
+    var av, bv;
+    var aVal = a.price&&a.qty ? a.price*a.qty : 0;
+    var bVal = b.price&&b.qty ? b.price*b.qty : 0;
+    var aCost = a.cost&&a.qty ? a.cost*a.qty : null;
+    var bCost = b.cost&&b.qty ? b.cost*b.qty : null;
+    if (sortField === 'ticker') {
+      return sortDir * (a.ticker < b.ticker ? -1 : a.ticker > b.ticker ? 1 : 0);
+    } else if (sortField === 'value') { av = aVal; bv = bVal; }
+    else if (sortField === 'pnlPct') { av = aCost ? (aVal-aCost)/aCost : 0; bv = bCost ? (bVal-bCost)/bCost : 0; }
+    else if (sortField === 'changePct') { av = a.changePct||0; bv = b.changePct||0; }
+    else if (sortField === 'aiScore') { av = a.aiScore||0; bv = b.aiScore||0; }
+    else if (sortField === 'upside') { av = a.target&&a.price ? (a.target-a.price)/a.price : 0; bv = b.target&&b.price ? (b.target-b.price)/b.price : 0; }
+    else if (sortField === 'pctPf') { av = totalVal ? aVal/totalVal : 0; bv = totalVal ? bVal/totalVal : 0; }
+    else { av = 0; bv = 0; }
+    return sortDir * (av - bv);
+  });
 }
 
 function addStock() {
@@ -504,10 +606,10 @@ function addStock() {
     }
     return fetchRec(ticker).then(function(rec) {
       portfolio.push({
-        ticker: ticker, qty: isNaN(qty) ? 0 : qty, cost: isNaN(cost) ? null : cost,
-        bucket: bucket, price: data.price, prevClose: data.prevClose, changePct: data.changePct,
-        company: data.company, rec: rec, target: null, aiScore: null,
-        sector: sector, notes: '', alertPrice: null, entryDate: new Date().toLocaleDateString('he-IL')
+        ticker:ticker, qty:isNaN(qty)?0:qty, cost:isNaN(cost)?null:cost,
+        bucket:bucket, price:data.price, prevClose:data.prevClose, changePct:data.changePct,
+        company:data.company, rec:rec, target:null, aiScore:null,
+        sector:sector, notes:'', alertPrice:null, entryDate:new Date().toLocaleDateString('he-IL'), targetPersonal:null
       });
       save(); renderAll(); updSel();
       document.getElementById('i-ticker').value = '';
@@ -528,141 +630,130 @@ function refreshAll() {
   fetchILS();
   var promises = portfolio.map(function(s) {
     return fetchQuote(s.ticker).then(function(d) {
-      if (d) { s.price = d.price; s.prevClose = d.prevClose; s.changePct = d.changePct; s.company = d.company; }
-      if (!s.rec) return fetchRec(s.ticker).then(function(rec) { s.rec = rec; });
+      if (d) { s.price=d.price; s.prevClose=d.prevClose; s.changePct=d.changePct; s.company=d.company; }
+      if (!s.rec) return fetchRec(s.ticker).then(function(rec) { s.rec=rec; });
     });
   });
   Promise.all(promises).then(function() {
-    save(); snapshotHist(); renderAll(); updSel();
-    checkPriceAlerts();
+    save(); snapshotHist(); renderAll(); updSel(); checkAlerts();
     document.getElementById('ref-btn').disabled = false;
     setStatus('עודכן: ' + new Date().toLocaleTimeString('he-IL'), 'live');
     resetCountdown();
   });
 }
 
-function checkPriceAlerts() {
+function checkAlerts() {
   if (!notifOk) return;
   portfolio.forEach(function(s) {
-    if (s.alertPrice && s.price) {
-      if (Math.abs(s.price - s.alertPrice) / s.alertPrice < 0.02) {
-        sendNotif(s.ticker + ' הגיע ליעד!', 'מחיר: $' + s.price.toFixed(2) + ' — יעד: $' + s.alertPrice);
-      }
+    if (s.alertPrice && s.price && Math.abs(s.price-s.alertPrice)/s.alertPrice < 0.02) {
+      sendNotif(s.ticker + ' הגיע ליעד!', 'מחיר: $' + s.price.toFixed(2) + ' — יעד: $' + s.alertPrice);
     }
     if (s.changePct && Math.abs(s.changePct) >= 3) {
-      sendNotif(s.ticker + ' ' + (s.changePct > 0 ? '⬆️' : '⬇️') + ' ' + s.changePct.toFixed(1) + '% היום', 'מחיר: $' + (s.price||'?'));
+      sendNotif(s.ticker + ' ' + (s.changePct>0?'⬆️':'⬇️') + ' ' + s.changePct.toFixed(1) + '% היום', 'מחיר: $'+(s.price||'?'));
     }
   });
 }
 
-function sendNotif(title, body) {
-  if (!notifOk) return;
-  try { new Notification(title, {body: body}); } catch(e) {}
-}
-
-function reqNotif() {
-  Notification.requestPermission().then(function(p) { notifOk = p === 'granted'; updNotifSt(); });
-}
-
+function sendNotif(title, body) { if (!notifOk) return; try { new Notification(title,{body:body}); } catch(e) {} }
+function reqNotif() { Notification.requestPermission().then(function(p) { notifOk=p==='granted'; updNotifSt(); }); }
 function updNotifSt() {
-  var el = document.getElementById('notif-st'), btn = document.getElementById('notif-btn');
-  if (!el || !btn) return;
-  if (Notification.permission === 'granted') { el.textContent = '✅ פעיל'; btn.disabled = true; }
-  else if (Notification.permission === 'denied') { el.textContent = '❌ נחסם'; btn.disabled = true; }
-  else el.textContent = 'לא מופעל';
+  var el=document.getElementById('notif-st'), btn=document.getElementById('notif-btn');
+  if (!el||!btn) return;
+  if (Notification.permission==='granted'){el.textContent='✅ פעיל';btn.disabled=true;}
+  else if (Notification.permission==='denied'){el.textContent='❌ נחסם';btn.disabled=true;}
+  else el.textContent='לא מופעל';
 }
 
 function snapshotHist() {
-  var total = portfolio.reduce(function(sum, s) { return sum + (s.price ? s.price * (s.qty||0) : 0); }, 0);
+  var total = portfolio.reduce(function(s,p) { return s+(p.price?p.price*(p.qty||0):0); },0);
   if (!total) return;
   var today = new Date().toLocaleDateString('he-IL');
   var last = histData[histData.length-1];
-  if (last && last.date === today) last.value = total;
-  else histData.push({date: today, value: total});
-  if (histData.length > 90) histData = histData.slice(-90);
+  if (last&&last.date===today) last.value=total; else histData.push({date:today,value:total});
+  if (histData.length>90) histData=histData.slice(-90);
   localStorage.setItem('pf_hist', JSON.stringify(histData));
 }
 
 function removeStock(ticker) {
-  if (!confirm('להסיר את ' + ticker + '?')) return;
-  portfolio = portfolio.filter(function(s) { return s.ticker !== ticker; });
+  if (!confirm('להסיר את '+ticker+'?')) return;
+  portfolio = portfolio.filter(function(s) { return s.ticker!==ticker; });
   save(); renderAll(); updSel();
 }
 
 function clearAll() {
   if (!confirm('למחוק הכל?')) return;
-  portfolio = []; save(); renderAll(); updSel();
+  portfolio=[]; save(); renderAll(); updSel();
 }
 
-function fmt(n, d) {
-  if (n == null || isNaN(n)) return '—';
-  d = d !== undefined ? d : 2;
-  return n.toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d});
+function fmt(n,d) {
+  if (n==null||isNaN(n)) return '—';
+  d = d!==undefined?d:2;
+  return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 }
+function toILS(usd) { if (!usd||!ilsRate) return ''; return '₪'+fmt(usd*ilsRate,0); }
 
-function toILS(usd) {
-  if (!usd || !ilsRate) return '';
-  return '₪' + fmt(usd * ilsRate, 0);
-}
-
-function sc(score) {
-  if (score == null) return '<span style="color:#ddd;font-size:11px">—</span>';
-  var cls = score >= 7 ? 'hi' : score >= 5 ? 'mi' : 'lo';
-  return '<span class="sc ' + cls + '">' + score + '</span>';
+function xsc(score) {
+  if (score==null) return '<span style="color:#ddd;font-size:11px">—</span>';
+  var cls = score>=7?'hi':score>=5?'mi':'lo';
+  return '<span class="xsc '+cls+'">'+score+'</span>';
 }
 
 function recBar(rec) {
   if (!rec) return '<span style="color:#ddd;font-size:11px">—</span>';
-  var total = (rec.strongBuy||0)+(rec.buy||0)+(rec.hold||0)+(rec.sell||0)+(rec.strongSell||0);
+  var total=(rec.strongBuy||0)+(rec.buy||0)+(rec.hold||0)+(rec.sell||0)+(rec.strongSell||0);
   if (!total) return '—';
   function pct(v) { return Math.round((v||0)/total*100); }
-  var buyPct = pct(rec.strongBuy) + pct(rec.buy);
-  var tip = 'SB:' + (rec.strongBuy||0) + ' B:' + (rec.buy||0) + ' H:' + (rec.hold||0) + ' S:' + (rec.sell||0) + ' SS:' + (rec.strongSell||0);
-  var label = buyPct >= 60 ? '<span style="color:#1a9e6e;font-size:10px">✔' + buyPct + '%</span>' : buyPct <= 30 ? '<span style="color:#c0392b;font-size:10px">✘</span>' : '<span style="color:#e67e22;font-size:10px">↔</span>';
-  return '<div title="' + tip + '"><div class="rec-bar">' +
-    '<div style="width:' + pct(rec.strongBuy) + '%;height:100%;background:#1a9e6e"></div>' +
-    '<div style="width:' + pct(rec.buy) + '%;height:100%;background:#5dbfa0"></div>' +
-    '<div style="width:' + pct(rec.hold) + '%;height:100%;background:#e0c050"></div>' +
-    '<div style="width:' + pct(rec.sell) + '%;height:100%;background:#e08060"></div>' +
-    '<div style="width:' + pct(rec.strongSell) + '%;height:100%;background:#c0392b"></div>' +
-    '</div><div style="margin-top:1px">' + label + '</div></div>';
+  var buyPct = pct(rec.strongBuy)+pct(rec.buy);
+  var tip = 'SB:'+(rec.strongBuy||0)+' B:'+(rec.buy||0)+' H:'+(rec.hold||0)+' S:'+(rec.sell||0)+' SS:'+(rec.strongSell||0);
+  var label = buyPct>=60?'<span style="color:#1a9e6e;font-size:10px">✔'+buyPct+'%</span>':buyPct<=30?'<span style="color:#c0392b;font-size:10px">✘</span>':'<span style="color:#e67e22;font-size:10px">↔</span>';
+  return '<div title="'+tip+'"><div class="rec-bar">'+
+    '<div style="width:'+pct(rec.strongBuy)+'%;height:100%;background:#1a9e6e"></div>'+
+    '<div style="width:'+pct(rec.buy)+'%;height:100%;background:#5dbfa0"></div>'+
+    '<div style="width:'+pct(rec.hold)+'%;height:100%;background:#e0c050"></div>'+
+    '<div style="width:'+pct(rec.sell)+'%;height:100%;background:#e08060"></div>'+
+    '<div style="width:'+pct(rec.strongSell)+'%;height:100%;background:#c0392b"></div>'+
+    '</div><div style="margin-top:1px">'+label+'</div></div>';
 }
 
 function renderTable(bucket) {
-  var rows = portfolio.filter(function(s) { return s.bucket === bucket; });
-  var card = document.getElementById('tbl-' + bucket);
-  var tbody = document.getElementById('tb-' + bucket);
+  var totalVal = portfolio.reduce(function(s,p) { return s+(p.price&&p.qty?p.price*p.qty:0); },0);
+  var rows = sortedRows(portfolio.filter(function(s) { return s.bucket===bucket; }), totalVal);
+  var card = document.getElementById('tbl-'+bucket);
+  var tbody = document.getElementById('tb-'+bucket);
   if (!rows.length) { card.classList.add('hidden'); return; }
   card.classList.remove('hidden');
-  var totalVal = portfolio.reduce(function(sum, s) { return sum + (s.price && s.qty ? s.price * s.qty : 0); }, 0);
   tbody.innerHTML = '';
   rows.forEach(function(s) {
-    var val = s.price && s.qty ? s.price * s.qty : null;
-    var cost = s.cost && s.qty ? s.cost * s.qty : null;
-    var pnl = (val != null && cost != null) ? val - cost : null;
-    var pnlPct = (pnl != null && cost) ? (pnl / cost * 100) : null;
-    var chgC = s.changePct > 0 ? 'up' : s.changePct < 0 ? 'dn' : 'nt';
-    var pnlC = pnl > 0 ? 'pos' : pnl < 0 ? 'neg' : '';
-    var tDiff = (s.target && s.price) ? ((s.target - s.price) / s.price * 100) : null;
-    var pctPf = totalVal && val ? (val / totalVal * 100) : null;
-    var alertHit = s.alertPrice && s.price && Math.abs(s.price - s.alertPrice) / s.alertPrice < 0.02;
+    var val = s.price&&s.qty?s.price*s.qty:null;
+    var cost = s.cost&&s.qty?s.cost*s.qty:null;
+    var pnl = (val!=null&&cost!=null)?val-cost:null;
+    var pnlPct = (pnl!=null&&cost)?(pnl/cost*100):null;
+    var chgC = s.changePct>0?'up':s.changePct<0?'dn':'nt';
+    var pnlC = pnl>0?'pos':pnl<0?'neg':'';
+    var tDiff = (s.target&&s.price)?((s.target-s.price)/s.price*100):null;
+    var tpDiff = (s.targetPersonal&&s.price)?((s.targetPersonal-s.price)/s.price*100):null;
+    var pctPf = totalVal&&val?(val/totalVal*100):null;
+    var alertHit = s.alertPrice&&s.price&&Math.abs(s.price-s.alertPrice)/s.alertPrice<0.02;
+    var holdDays = s.entryDate ? Math.round((new Date()-new Date(s.entryDate.split('.').reverse().join('-')))/86400000) : null;
 
     var tr = document.createElement('tr');
     tr.innerHTML =
-      '<td><div class="tc">' + s.ticker + '</div><div class="co">' + (s.company||'').substring(0,16) + '</div>' +
-        (s.sector ? '<span class="stag">' + s.sector + '</span>' : '') + '</td>' +
-      '<td>' + (s.price ? '$' + fmt(s.price) : '—') + '</td>' +
-      '<td>' + (s.changePct != null ? '<span class="rb ' + chgC + '">' + (s.changePct >= 0 ? '+' : '') + fmt(s.changePct, 2) + '%</span>' : '—') + '</td>' +
-      '<td>' + fmt(s.qty, s.qty % 1 === 0 ? 0 : 2) + '</td>' +
-      '<td>' + (s.cost ? '$' + fmt(s.cost) : '—') + '</td>' +
-      '<td style="font-size:11px">' + (val != null ? '<div>$' + fmt(val, 0) + '</div>' + (ilsRate ? '<div style="color:#888">₪' + fmt(val * ilsRate, 0) + '</div>' : '') : '—') + '</td>' +
-      '<td style="font-size:11px">' + (pctPf != null ? '<div>' + fmt(pctPf, 1) + '%</div><div class="pb"><div class="pbf" style="width:' + Math.min(pctPf, 100) + '%;background:#378ADD"></div></div>' : '—') + '</td>' +
-      '<td class="' + pnlC + '" style="font-size:11px">' + (pnl != null ? '<div>' + (pnl >= 0 ? '+' : '') + ' $' + fmt(Math.abs(pnl), 0) + (pnlPct != null ? ' (' + (pnlPct >= 0 ? '+' : '') + fmt(pnlPct, 1) + '%)' : '') + '</div>' + (ilsRate ? '<div style="color:' + (pnl >= 0 ? '#1a9e6e' : '#c0392b') + '">' + (pnl >= 0 ? '+' : '') + ' ₪' + fmt(Math.abs(pnl * ilsRate), 0) + '</div>' : '') : '—') + '</td>' +
-      '<td>' + recBar(s.rec) + '</td>' +
-      '<td class="' + (tDiff > 0 ? 'pos' : tDiff < 0 ? 'neg' : '') + '" style="font-size:11px">' + (s.target ? '$' + fmt(s.target, 0) + (tDiff != null ? '<br>' + (tDiff >= 0 ? '+' : '') + fmt(tDiff, 1) + '%' : '') : '—') + '</td>' +
-      '<td>' + sc(s.aiScore) + '</td>' +
-      '<td style="font-size:11px">' + (s.alertPrice ? '<span style="color:' + (alertHit ? '#c0392b' : '#888') + '">$' + fmt(s.alertPrice, 0) + (alertHit ? ' 🔔' : '') + '</span>' : '—') + '</td>' +
-      '<td><button class="ebtn">✏️</button></td>' +
+      '<td>'+
+        '<div class="tc">'+s.ticker+'</div>'+
+        '<div class="co">'+(s.company||'').substring(0,16)+'</div>'+
+        (s.sector?'<span class="stag">'+s.sector+'</span>':'')+
+        (holdDays!=null?'<div style="font-size:10px;color:#aaa">'+holdDays+' ימים</div>':'')+
+        (s.notes?'<div style="font-size:10px;color:#888;margin-top:1px" title="'+s.notes+'">📝 '+s.notes.substring(0,18)+(s.notes.length>18?'...':'')+'</div>':'')+
+      '</td>'+
+      '<td><div>'+(s.price?'$'+fmt(s.price):'—')+'</div>'+(s.changePct!=null?'<div><span class="rb '+chgC+'">'+(s.changePct>=0?'+':'')+fmt(s.changePct,2)+'%</span></div>':'')+'</td>'+
+      '<td style="font-size:11px">'+(val!=null?'<div>$'+fmt(val,0)+'</div>'+(ilsRate?'<div style="color:#888">₪'+fmt(val*ilsRate,0)+'</div>':''):'—')+'</td>'+
+      '<td style="font-size:11px">'+(pctPf!=null?'<div>'+fmt(pctPf,1)+'%</div><div class="pb"><div class="pbf" style="width:'+Math.min(pctPf,100)+'%;background:#378ADD"></div></div>':'—')+'</td>'+
+      '<td class="'+pnlC+'" style="font-size:11px">'+(pnl!=null?'<div>'+(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0)+(pnlPct!=null?' ('+(pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%)':'')+'</div>'+(ilsRate?'<div style="color:'+(pnl>=0?'#1a9e6e':'#c0392b')+'">'+(pnl>=0?'+':'')+' ₪'+fmt(Math.abs(pnl*ilsRate),0)+'</div>':''):'—')+'</td>'+
+      '<td>'+recBar(s.rec)+'</td>'+
+      '<td style="font-size:11px">'+(s.target?'<div>אנליסטים: $'+fmt(s.target,0)+(tDiff!=null?'<span style="color:'+(tDiff>=0?'#1a9e6e':'#c0392b')+'"> ('+(tDiff>=0?'+':'')+fmt(tDiff,1)+'%)</span>':'')+'</div>':'')+(s.targetPersonal?'<div>אישי: $'+fmt(s.targetPersonal,0)+(tpDiff!=null?'<span style="color:'+(tpDiff>=0?'#1a9e6e':'#c0392b')+'"> ('+(tpDiff>=0?'+':'')+fmt(tpDiff,1)+'%)</span>':'')+'</div>':'')+((!s.target&&!s.targetPersonal)?'—':'')+'</td>'+
+      '<td>'+xsc(s.aiScore)+'</td>'+
+      '<td style="font-size:11px">'+(s.alertPrice?'<span style="color:'+(alertHit?'#c0392b':'#888')+'">$'+fmt(s.alertPrice,0)+(alertHit?' 🔔':'')+'</span>':'—')+'</td>'+
+      '<td><button class="ebtn">✏️</button></td>'+
       '<td><button class="xbtn">✕</button></td>';
 
     tr.querySelector('.tc').addEventListener('click', function() { showDetail(s.ticker); });
@@ -678,383 +769,374 @@ function renderAll() {
 }
 
 function updateSummary() {
-  var tv = 0, tc = 0, td = 0, hv = false, hc = false;
+  var tv=0,tc=0,td=0,hv=false,hc=false;
   portfolio.forEach(function(s) {
-    if (s.price && s.qty) { tv += s.price * s.qty; hv = true; if (s.prevClose) td += (s.price - s.prevClose) * s.qty; }
-    if (s.cost && s.qty) { tc += s.cost * s.qty; hc = true; }
+    if (s.price&&s.qty){tv+=s.price*s.qty;hv=true;if(s.prevClose)td+=(s.price-s.prevClose)*s.qty;}
+    if (s.cost&&s.qty){tc+=s.cost*s.qty;hc=true;}
   });
-  var pnl = (hv && hc) ? tv - tc : null;
-  var pnlPct = (pnl != null && tc) ? (pnl / tc * 100) : null;
-  document.getElementById('sv').textContent = hv ? '$' + fmt(tv, 0) : '—';
-  document.getElementById('sv-ils').textContent = (hv && ilsRate) ? '₪' + fmt(tv * ilsRate, 0) : (hv ? 'טוען...' : '—');
+  var pnl=(hv&&hc)?tv-tc:null, pnlPct=(pnl!=null&&tc)?(pnl/tc*100):null;
+  document.getElementById('sv').textContent = hv?'$'+fmt(tv,0):'—';
+  document.getElementById('sv-ils').textContent = (hv&&ilsRate)?'₪'+fmt(tv*ilsRate,0):(hv?'טוען...':'—');
   document.getElementById('scnt').textContent = portfolio.length;
-  var pe = document.getElementById('spnl');
-  if (pnl != null) {
-    pe.textContent = (pnl >= 0 ? '+$' : '-$') + fmt(Math.abs(pnl), 0);
-    pe.className = 'val ' + (pnl >= 0 ? 'pos' : 'neg');
-    var pp = document.getElementById('spnl-p');
-    pp.textContent = pnlPct != null ? (pnlPct >= 0 ? '+' : '') + fmt(pnlPct, 1) + '%' : '';
-    pp.className = 'sub ' + (pnl >= 0 ? 'pos' : 'neg');
-  } else { pe.textContent = '—'; pe.className = 'val'; }
-  var te = document.getElementById('std');
-  if (td !== 0) {
-    te.textContent = (td >= 0 ? '+$' : '-$') + fmt(Math.abs(td), 0);
-    te.className = 'val ' + (td >= 0 ? 'pos' : 'neg');
-    document.getElementById('std-ils').textContent = toILS(Math.abs(td));
-  } else { te.textContent = '—'; te.className = 'val'; document.getElementById('std-ils').textContent = ''; }
-  var scores = portfolio.filter(function(s) { return s.aiScore != null; }).map(function(s) { return s.aiScore; });
-  if (scores.length) {
-    var avg = Math.round(scores.reduce(function(a, b) { return a + b; }, 0) / scores.length);
-    document.getElementById('sai').textContent = avg + '/10';
-    document.getElementById('sai').className = 'val ' + (avg >= 7 ? 'pos' : avg >= 5 ? '' : 'neg');
-  }
+  var pe=document.getElementById('spnl');
+  if (pnl!=null){pe.textContent=(pnl>=0?'+$':'-$')+fmt(Math.abs(pnl),0);pe.className='val '+(pnl>=0?'pos':'neg');var pp=document.getElementById('spnl-p');pp.textContent=pnlPct!=null?(pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%':'';pp.className='sub '+(pnl>=0?'pos':'neg');}
+  else{pe.textContent='—';pe.className='val';}
+  var te=document.getElementById('std');
+  if (td!==0){te.textContent=(td>=0?'+$':'-$')+fmt(Math.abs(td),0);te.className='val '+(td>=0?'pos':'neg');document.getElementById('std-ils').textContent=toILS(Math.abs(td));}
+  else{te.textContent='—';te.className='val';document.getElementById('std-ils').textContent='';}
+  var scores=portfolio.filter(function(s){return s.aiScore!=null;}).map(function(s){return s.aiScore;});
+  if (scores.length){var avg=Math.round(scores.reduce(function(a,b){return a+b;},0)/scores.length);document.getElementById('sai').textContent=avg+'/10';document.getElementById('sai').className='val '+(avg>=7?'pos':avg>=5?'':'neg');}
+  // Risk score based on concentration
+  var riskScore = calcRisk();
+  document.getElementById('srisk').textContent = riskScore+'/10';
+  document.getElementById('srisk').className = 'val '+(riskScore<=3?'pos':riskScore<=6?'':'neg');
+  document.getElementById('srisk-bar').innerHTML = '<div class="risk-meter"><div class="risk-bar"><div class="risk-fill" style="width:'+(riskScore*10)+'%;background:'+(riskScore<=3?'#1a9e6e':riskScore<=6?'#e67e22':'#c0392b')+'"></div></div></div>';
+}
+
+function calcRisk() {
+  if (!portfolio.length) return 0;
+  var totalVal = portfolio.reduce(function(s,p){return s+(p.price&&p.qty?p.price*p.qty:0);},0);
+  if (!totalVal) return 5;
+  var maxPct = 0;
+  portfolio.forEach(function(s) { var pct=s.price&&s.qty?(s.price*s.qty/totalVal*100):0; if(pct>maxPct)maxPct=pct; });
+  var sectors = {};
+  portfolio.forEach(function(s){var sec=s.sector||'אחר';sectors[sec]=(sectors[sec]||0)+(s.price&&s.qty?s.price*s.qty:0);});
+  var sectorCount = Object.keys(sectors).length;
+  var risk = Math.round((maxPct/20)*4 + (1/sectorCount)*6);
+  return Math.min(10, Math.max(1, risk));
 }
 
 function renderCharts() {
-  var wp = portfolio.filter(function(s) { return s.price && s.qty; });
+  var wp = portfolio.filter(function(s){return s.price&&s.qty;});
   if (!wp.length) return;
-  var labels = wp.map(function(s) { return s.ticker; });
-  var values = wp.map(function(s) { return s.price * s.qty; });
-  var pnls = wp.map(function(s) { return s.cost ? (s.price - s.cost) * s.qty : 0; });
-  if (pieChart) pieChart.destroy();
-  pieChart = new Chart(document.getElementById('pieC'), {
-    type: 'doughnut',
-    data: {labels: labels, datasets: [{data: values, backgroundColor: COLORS.slice(0, labels.length), borderWidth: 2, borderColor: '#fff'}]},
-    options: {responsive: true, maintainAspectRatio: false, plugins: {legend: {position: 'right', labels: {font: {size: 10}, padding: 6, boxWidth: 8}}, tooltip: {callbacks: {label: function(ctx) { return ' $' + fmt(ctx.parsed, 0); }}}}}
-  });
-  var barH = Math.max(200, labels.length * 40 + 80);
-  document.getElementById('barW').style.height = barH + 'px';
-  if (barChart) barChart.destroy();
-  barChart = new Chart(document.getElementById('barC'), {
-    type: 'bar',
-    data: {labels: labels, datasets: [{data: pnls, backgroundColor: pnls.map(function(v) { return v >= 0 ? '#1D9E75' : '#c0392b'; }), borderRadius: 4}]},
-    options: {indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: {legend: {display: false}}, scales: {x: {ticks: {callback: function(v) { return (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString(); }}}}}
-  });
+  var labels=wp.map(function(s){return s.ticker;});
+  var values=wp.map(function(s){return s.price*s.qty;});
+  var pnls=wp.map(function(s){return s.cost?(s.price-s.cost)*s.qty:0;});
+  if(pieChart)pieChart.destroy();
+  pieChart=new Chart(document.getElementById('pieC'),{type:'doughnut',data:{labels:labels,datasets:[{data:values,backgroundColor:COLORS.slice(0,labels.length),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},padding:6,boxWidth:8}},tooltip:{callbacks:{label:function(ctx){return ' $'+fmt(ctx.parsed,0);}}}}}});
+  var barH=Math.max(200,labels.length*40+80);document.getElementById('barW').style.height=barH+'px';
+  if(barChart)barChart.destroy();
+  barChart=new Chart(document.getElementById('barC'),{type:'bar',data:{labels:labels,datasets:[{data:pnls,backgroundColor:pnls.map(function(v){return v>=0?'#1D9E75':'#c0392b';}),borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{callback:function(v){return(v<0?'-$':'$')+Math.abs(v).toLocaleString();}}}}}});
+  var sectors={};wp.forEach(function(s){var sec=s.sector||'אחר';sectors[sec]=(sectors[sec]||0)+s.price*s.qty;});
+  var sLabels=Object.keys(sectors),sValues=Object.values(sectors);
+  if(secChart)secChart.destroy();
+  secChart=new Chart(document.getElementById('secC'),{type:'doughnut',data:{labels:sLabels,datasets:[{data:sValues,backgroundColor:COLORS.slice(0,sLabels.length),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},padding:6,boxWidth:8}},tooltip:{callbacks:{label:function(ctx){return' $'+fmt(ctx.parsed,0);}}}}}});
 }
 
 function renderHistChart() {
-  if (histData.length < 2) return;
-  if (histChart) histChart.destroy();
-  histChart = new Chart(document.getElementById('histC'), {
-    type: 'line',
-    data: {labels: histData.map(function(h) { return h.date; }), datasets: [{data: histData.map(function(h) { return h.value; }), borderColor: '#378ADD', backgroundColor: 'rgba(55,138,221,0.08)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.3}]},
-    options: {responsive: true, maintainAspectRatio: false, plugins: {legend: {display: false}}, scales: {x: {ticks: {maxTicksLimit: 6, font: {size: 10}}}, y: {ticks: {callback: function(v) { return '$' + v.toLocaleString(); }}}}}
-  });
+  if (histData.length<2) return;
+  if(histChart)histChart.destroy();
+  histChart=new Chart(document.getElementById('histC'),{type:'line',data:{labels:histData.map(function(h){return h.date;}),datasets:[{data:histData.map(function(h){return h.value;}),borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,0.08)',borderWidth:2,pointRadius:2,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:6,font:{size:10}}},y:{ticks:{callback:function(v){return'$'+v.toLocaleString();}}}}}});
 }
 
 function pfText() {
   return portfolio.map(function(s) {
-    var val = s.price && s.qty ? s.price * s.qty : 0;
-    var pnlPct = s.cost && s.price ? ((s.price - s.cost) / s.cost * 100) : null;
-    var rec = s.rec ? ((s.rec.strongBuy||0)+(s.rec.buy||0)) + ' קנייה, ' + (s.rec.hold||0) + ' המתן, ' + ((s.rec.sell||0)+(s.rec.strongSell||0)) + ' מכירה' : '';
-    return s.ticker + '(' + (s.company||'') + '): $' + (s.price||'?') + ', שווי $' + fmt(val, 0) + ', ' + (pnlPct != null ? fmt(pnlPct, 1) + '% מכניסה' : '') + ', ' + rec + (s.sector ? ', סקטור:' + s.sector : '');
+    var val=s.price&&s.qty?s.price*s.qty:0;
+    var pnlPct=s.cost&&s.price?((s.price-s.cost)/s.cost*100):null;
+    var rec=s.rec?((s.rec.strongBuy||0)+(s.rec.buy||0))+' קנייה, '+(s.rec.hold||0)+' המתן, '+((s.rec.sell||0)+(s.rec.strongSell||0))+' מכירה':'';
+    return s.ticker+'('+s.company+'): $'+(s.price||'?')+', שווי $'+fmt(val,0)+', '+(pnlPct!=null?fmt(pnlPct,1)+'% מכניסה':'')+', '+rec+(s.sector?', סקטור:'+s.sector:'');
   }).join('\n');
 }
 
-function aiLoad(txt) {
-  return '<div class="ail"><div class="ald"></div><div class="ald"></div><div class="ald"></div><span>' + (txt||'מנתח...') + '</span></div>';
-}
+function aiLoad(txt) { return '<div class="ail"><div class="ald"></div><div class="ald"></div><div class="ald"></div><span>'+(txt||'מנתח...')+'</span></div>'; }
 
 function doMorning() {
-  var el = document.getElementById('ai-morning');
-  el.innerHTML = aiLoad('מכין סיכום...');
-  aiAsk('אנליסט שוק. תיק: ' + portfolio.map(function(s){return s.ticker;}).join(', ') + '.\nסיכום בוקר בעברית (6 משפטים): מה חשוב היום, מה לעקוב, המלצה אחת. ישיר.')
-    .then(function(t) { el.innerHTML = '<div class="ait">' + t + '</div>'; })
-    .catch(function() { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; });
+  var el=document.getElementById('ai-morning');el.innerHTML=aiLoad('מכין סיכום...');
+  aiAsk('אנליסט שוק. תיק: '+portfolio.map(function(s){return s.ticker;}).join(', ')+'.\nסיכום בוקר בעברית (6 משפטים): מה חשוב היום, מה לעקוב, המלצה אחת. ישיר.')
+    .then(function(t){el.innerHTML='<div class="ait">'+t+'</div>';})
+    .catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
 }
 
 function doRank() {
-  var el = document.getElementById('ai-rank');
-  if (!portfolio.length) { el.innerHTML = '<div class="empty">הוסף מניות</div>'; return; }
-  el.innerHTML = aiLoad('מדרג...');
-  aiAsk('נתח ודרג:\n' + pfText() + '\n\nJSON בלבד:\n[{"ticker":"XXX","score":8,"action":"קנה/המתן/מכור","reason":"1-2 משפטים"}]\nמיין מגבוה לנמוך.')
+  var el=document.getElementById('ai-rank');
+  if (!portfolio.length){el.innerHTML='<div class="empty">הוסף מניות</div>';return;}
+  el.innerHTML=aiLoad('מדרג...');
+  aiAsk('נתח ודרג:\n'+pfText()+'\n\nJSON בלבד:\n[{"ticker":"XXX","score":8,"action":"קנה/המתן/מכור","reason":"1-2 משפטים"}]\nמיין מגבוה לנמוך.')
     .then(function(t) {
       try {
-        var data = JSON.parse(t.replace(/```json|```/g, '').trim());
-        data.forEach(function(item) {
-          var s = portfolio.find(function(p) { return p.ticker === item.ticker; });
-          if (s) s.aiScore = item.score;
-        });
-        save(); renderAll();
-        el.innerHTML = '<div class="rnk">' + data.map(function(item, i) {
-          var ac = item.action.indexOf('קנה') >= 0 ? '#1a9e6e' : item.action.indexOf('מכור') >= 0 ? '#c0392b' : '#e67e22';
-          return '<div class="rnki"><div style="font-size:15px;font-weight:700;color:#ccc;min-width:22px">#' + (i+1) + '</div><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font-weight:700">' + item.ticker + '</span>' + sc(item.score) + '<span style="font-size:12px;font-weight:600;color:' + ac + '">' + item.action + '</span></div><div style="font-size:12px;color:#555">' + item.reason + '</div></div></div>';
-        }).join('') + '</div>';
-      } catch(e) { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; }
-    }).catch(function() { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; });
+        var data=JSON.parse(t.replace(/```json|```/g,'').trim());
+        data.forEach(function(item){var s=portfolio.find(function(p){return p.ticker===item.ticker;});if(s)s.aiScore=item.score;});
+        save();renderAll();
+        el.innerHTML='<div class="rnk">'+data.map(function(item,i){
+          var ac=item.action.indexOf('קנה')>=0?'#1a9e6e':item.action.indexOf('מכור')>=0?'#c0392b':'#e67e22';
+          return '<div class="rnki"><div style="font-size:15px;font-weight:700;color:#ccc;min-width:22px">#'+(i+1)+'</div><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:3px"><span style="font-weight:700">'+item.ticker+'</span>'+xsc(item.score)+'<span style="font-size:12px;font-weight:600;color:'+ac+'">'+item.action+'</span></div><div style="font-size:12px;color:#555">'+item.reason+'</div></div></div>';
+        }).join('')+'</div>';
+      }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';}
+    }).catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
 }
 
 function doRisk() {
-  var el = document.getElementById('ai-risk');
-  if (!portfolio.length) { el.innerHTML = '<div class="empty">הוסף מניות</div>'; return; }
-  el.innerHTML = aiLoad('מנתח סיכונים...');
-  aiAsk('מנהל סיכונים. נתח:\n' + pfText() + '\n\nבעברית: 1.ריכוז 2.קורלציות 3.חולשה עיקרית 4.המלצה לפיזור. 7 משפטים.')
-    .then(function(t) { el.innerHTML = '<div class="ait">' + t + '</div>'; })
-    .catch(function() { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; });
+  var el=document.getElementById('ai-risk');
+  if (!portfolio.length){el.innerHTML='<div class="empty">הוסף מניות</div>';return;}
+  el.innerHTML=aiLoad('מנתח סיכונים...');
+  aiAsk('מנהל סיכונים מקצועי. נתח:\n'+pfText()+'\n\nבעברית:\n1. ריכוז סקטוריאלי\n2. קורלציות בין מניות\n3. Beta משוערת של התיק\n4. הפסד מקסימלי צפוי בתרחיש שלילי\n5. חולשה עיקרית\n6. המלצה לפיזור\n8 משפטים, ישיר ומקצועי.')
+    .then(function(t){el.innerHTML='<div class="ait">'+t+'</div>';})
+    .catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
 }
 
 function doAlerts() {
-  var el = document.getElementById('ai-alerts');
-  if (!portfolio.length) { el.innerHTML = '<div class="empty">הוסף מניות</div>'; return; }
-  el.innerHTML = aiLoad('בודק...');
-  aiAsk('בדוק התראות:\n' + pfText() + '\n\nJSON בלבד:\n[{"type":"warn/good/info","ticker":"XXX","message":"עברית קצרה"}]\nעד 6.')
-    .then(function(t) {
-      try {
-        var data = JSON.parse(t.replace(/```json|```/g, '').trim());
-        el.innerHTML = '<div class="ali">' + data.map(function(a) {
-          return '<div class="al ' + (a.type === 'warn' ? 'w' : a.type === 'good' ? 'g' : 'i') + '"><span style="font-size:15px">' + (a.type === 'warn' ? '⚠️' : a.type === 'good' ? '✅' : 'ℹ️') + '</span><div><strong>' + (a.ticker||'תיק') + '</strong> — ' + a.message + '</div></div>';
-        }).join('') + '</div>';
-      } catch(e) { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; }
-    }).catch(function() { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; });
+  var el=document.getElementById('ai-alerts');
+  if (!portfolio.length){el.innerHTML='<div class="empty">הוסף מניות</div>';return;}
+  el.innerHTML=aiLoad('בודק...');
+  aiAsk('בדוק התראות:\n'+pfText()+'\n\nJSON בלבד:\n[{"type":"warn/good/info","ticker":"XXX","message":"עברית קצרה"}]\nעד 6.')
+    .then(function(t){
+      try{
+        var data=JSON.parse(t.replace(/```json|```/g,'').trim());
+        el.innerHTML='<div class="ali">'+data.map(function(a){
+          return '<div class="al '+(a.type==='warn'?'w':a.type==='good'?'g':'i')+'"><span style="font-size:15px">'+(a.type==='warn'?'⚠️':a.type==='good'?'✅':'ℹ️')+'</span><div><strong>'+(a.ticker||'תיק')+'</strong> — '+a.message+'</div></div>';
+        }).join('')+'</div>';
+      }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';}
+    }).catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
 }
 
 function doSingle() {
-  var ticker = document.getElementById('ai-sel').value;
+  var ticker=document.getElementById('ai-sel').value;
   if (!ticker) return alert('בחר מניה');
-  var el = document.getElementById('ai-single');
-  el.innerHTML = aiLoad('מנתח ' + ticker + '...');
-  var s = portfolio.find(function(p) { return p.ticker === ticker; });
-  aiAsk('אנליסט בכיר. נתח: ' + ticker + '(' + (s && s.company||'') + ').\nמחיר $' + (s && s.price||'?') + ', יעד $' + (s && s.target||'?') + ', שינוי ' + (s && s.cost && s.price ? fmt((s.price-s.cost)/s.cost*100,1)+'%' : '?') + '\n\nבעברית: 1.הערכת שווי 2.קטליזטורים 3.סיכונים 4.ציון 1-10 5.המלצה. 9 משפטים.')
-    .then(function(t) {
-      var m = t.match(/(\d+)\s*\/\s*10/);
-      if (m && s) { s.aiScore = parseInt(m[1]); save(); renderAll(); }
-      el.innerHTML = '<div class="ait">' + t + '</div>';
-    }).catch(function() { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; });
+  var el=document.getElementById('ai-single');
+  el.innerHTML=aiLoad('מנתח '+ticker+'...');
+  var s=portfolio.find(function(p){return p.ticker===ticker;});
+  aiAsk('אנליסט בכיר. נתח לעומק: '+ticker+'('+(s&&s.company||'')+'). מחיר $'+(s&&s.price||'?')+', יעד אנליסטים $'+(s&&s.target||'?')+', שינוי מכניסה '+(s&&s.cost&&s.price?fmt((s.price-s.cost)/s.cost*100,1)+'%':'?')+'.\n\nבעברית:\n1. הערכת שווי — יקר/זול/הוגן\n2. קטליזטורים עיקריים לעלייה\n3. סיכונים עיקריים\n4. מניות דומות שכדאי להכיר\n5. ציון 1-10\n6. המלצה: קנה/המתן/מכור\n9 משפטים.')
+    .then(function(t){
+      var m=t.match(/(\d+)\s*\/\s*10/);if(m&&s){s.aiScore=parseInt(m[1]);save();renderAll();}
+      el.innerHTML='<div class="ait">'+t+'</div>';
+    }).catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
+}
+
+function doMarket() {
+  var el=document.getElementById('ai-market');el.innerHTML=aiLoad('מכין תחזית...');
+  aiAsk('אנליסט שוק בכיר. כתוב תחזית שוק שבועית בעברית:\n1. מצב מאקרו כללי — ריבית, אינפלציה, מדד\n2. סקטורים חזקים השבוע\n3. סקטורים חלשים\n4. מה לעקוב — אירועים כלכליים, דוחות\n5. המלצה אחת לפעולה\n10 משפטים, ישיר ומקצועי.')
+    .then(function(t){el.innerHTML='<div class="ait">'+t+'</div>';})
+    .catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
+}
+
+function doIPOs() {
+  var el=document.getElementById('ai-ipos');el.innerHTML=aiLoad('בודק הנפקות...');
+  aiAsk('אנליסט IPO. תן רשימת הנפקות קרובות ומניות חמות בשוק:\n\nJSON בלבד:\n[{"name":"שם","ticker":"XXX","type":"IPO/מניה חמה","sector":"סקטור","date":"מועד צפוי","valuation":"הערכת שווי","outlook":"positive/neutral/negative","reason":"2 משפטים בעברית על הסיכויים"}]\nעד 6 פריטים. כלול גם הנפקות צפויות וגם מניות שנמצאות בטרנד.')
+    .then(function(t){
+      try{
+        var data=JSON.parse(t.replace(/```json|```/g,'').trim());
+        el.innerHTML=data.map(function(item){
+          var oc=item.outlook==='positive'?'#1a9e6e':item.outlook==='negative'?'#c0392b':'#e67e22';
+          var oi=item.outlook==='positive'?'📈':item.outlook==='negative'?'📉':'➡️';
+          return '<div class="ipo-card">'+
+            '<div class="it">'+oi+' '+item.name+(item.ticker?' ('+item.ticker+')':'')+'<span style="font-size:11px;color:#888;font-weight:400;margin-right:8px"> '+item.sector+'</span></div>'+
+            (item.date?'<div style="font-size:11px;color:#aaa;margin-bottom:4px">📅 '+item.date+(item.valuation?' · '+item.valuation:'')+'</div>':'')+
+            '<div class="id">'+item.reason+'</div>'+
+            '<div class="im" style="color:'+oc+'">'+item.type+'</div>'+
+            (item.ticker&&!portfolio.find(function(p){return p.ticker===item.ticker;})?
+              '<button class="btn" style="margin-top:6px;height:28px;font-size:11px;padding:0 10px;background:#1a9e6e;color:#fff;border-color:#1a9e6e" onclick="quickAdd(\''+item.ticker+'\')">+ הוסף למעקב</button>':'')+
+          '</div>';
+        }).join('');
+      }catch(e){el.innerHTML='<div class="ait">'+t+'</div>';}
+    }).catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
+}
+
+function doMktSingle() {
+  var q=document.getElementById('mkt-input').value.trim();
+  if (!q) return alert('הזן טיקר או שם חברה');
+  var el=document.getElementById('ai-mkt-single');el.innerHTML=aiLoad('מנתח '+q+'...');
+  aiAsk('אנליסט. ניתוח מעמיק על '+q+':\n1. מה החברה עושה\n2. האם זו הנפקה קרובה או מניה קיימת\n3. הערכת שווי ופוטנציאל\n4. סיכונים עיקריים\n5. השוואה למתחרים\n6. המלצה — כדאי לעקוב/להשקיע/להימנע ולמה\n8 משפטים בעברית, ישיר.')
+    .then(function(t){el.innerHTML='<div class="ait">'+t+'</div>';})
+    .catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
+}
+
+function doTrends() {
+  var el=document.getElementById('ai-trends');el.innerHTML=aiLoad('בודק טרנדים...');
+  aiAsk('אנליסט שוק. אילו סקטורים ותמות השקעה הכי חמים עכשיו?\n\nJSON בלבד:\n[{"sector":"שם","trend":"up/down/hot","reason":"משפט בעברית","examples":"NVDA,MSFT"}]\nעד 8 סקטורים.')
+    .then(function(t){
+      try{
+        var data=JSON.parse(t.replace(/```json|```/g,'').trim());
+        el.innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">'+data.map(function(item){
+          var tc=item.trend==='hot'?'#c0392b':item.trend==='up'?'#1a9e6e':'#888';
+          var ti=item.trend==='hot'?'🔥':item.trend==='up'?'📈':'📉';
+          return '<div style="background:#fff;border:1px solid #e5e5e0;border-radius:10px;padding:.75rem"><div style="font-weight:600;margin-bottom:4px">'+ti+' '+item.sector+'</div><div style="font-size:12px;color:#555;margin-bottom:4px">'+item.reason+'</div>'+(item.examples?'<div style="font-size:11px;color:#aaa">'+item.examples+'</div>':'')+'</div>';
+        }).join('')+'</div>';
+      }catch(e){el.innerHTML='<div class="ait">'+t+'</div>';}
+    }).catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
 }
 
 function doSugg() {
-  var el = document.getElementById('ai-sugg-hd');
-  el.innerHTML = aiLoad('מנתח...');
-  var tickers = portfolio.map(function(s) { return s.ticker; }).join(', ') || 'ריק';
-  aiAsk('אנליסט. תיק: ' + tickers + '.\n' + pfText() + '\n\nהמלץ 5 מניות. JSON בלבד:\n[{"ticker":"XXX","name":"שם","reason":"2 משפטים","fit":"למה מתאים","risk":"סיכון"}]')
-    .then(function(t) {
-      try {
-        var data = JSON.parse(t.replace(/```json|```/g, '').trim());
-        document.getElementById('sugg-body').innerHTML = '<div class="sg">' + data.map(function(s) {
-          return '<div class="sc2"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px"><div><div style="font-weight:700;font-size:15px">' + s.ticker + '</div><div style="font-size:10px;color:#999">' + (s.name||'').substring(0,28) + '</div></div><button class="btn" style="height:28px;font-size:12px;padding:0 10px;background:#1a9e6e;color:#fff;border-color:#1a9e6e" onclick="quickAdd(\'' + s.ticker + '\')">+ הוסף</button></div><div style="font-size:12px;color:#555;margin-bottom:6px">' + s.reason + '</div>' + (s.fit ? '<div style="font-size:11px;color:#378ADD;margin-top:4px">✓ ' + s.fit + '</div>' : '') + (s.risk ? '<div style="font-size:11px;color:#e67e22;margin-top:3px">⚠ ' + s.risk + '</div>' : '') + '</div>';
-        }).join('') + '</div>';
-        el.innerHTML = '<div style="font-size:12px;color:#1a9e6e">✓ ' + data.length + ' המלצות</div>';
-      } catch(e) { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; }
-    }).catch(function() { el.innerHTML = '<div style="color:#c0392b;font-size:13px">שגיאה</div>'; });
+  var el=document.getElementById('ai-sugg-hd');el.innerHTML=aiLoad('מנתח...');
+  var tickers=portfolio.map(function(s){return s.ticker;}).join(', ')||'ריק';
+  aiAsk('אנליסט. תיק: '+tickers+'.\n'+pfText()+'\n\nהמלץ 5 מניות שמתאימות לתיק זה ספציפית. JSON בלבד:\n[{"ticker":"XXX","name":"שם","reason":"2 משפטים","fit":"למה מתאים לתיק הזה","similar_to":"דומה למה שיש","risk":"סיכון"}]')
+    .then(function(t){
+      try{
+        var data=JSON.parse(t.replace(/```json|```/g,'').trim());
+        document.getElementById('sugg-body').innerHTML='<div class="sg">'+data.map(function(s){
+          return '<div class="sgc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px"><div><div style="font-weight:700;font-size:15px">'+s.ticker+'</div><div style="font-size:10px;color:#999">'+(s.name||'').substring(0,28)+'</div></div><button class="btn grn" style="height:28px;font-size:12px;padding:0 10px" onclick="quickAdd(\''+s.ticker+'\')">+ הוסף</button></div><div style="font-size:12px;color:#555;margin-bottom:6px">'+s.reason+'</div>'+(s.fit?'<div style="font-size:11px;color:#378ADD;margin-top:4px">✓ '+s.fit+'</div>':'')+(s.similar_to?'<div style="font-size:11px;color:#888;margin-top:2px">דומה ל: '+s.similar_to+'</div>':'')+(s.risk?'<div style="font-size:11px;color:#e67e22;margin-top:2px">⚠ '+s.risk+'</div>':'')+'</div>';
+        }).join('')+'</div>';
+        el.innerHTML='<div style="font-size:12px;color:#1a9e6e">✓ '+data.length+' המלצות מותאמות לתיק שלך</div>';
+      }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';}
+    }).catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
+}
+
+function doBudget() {
+  var budget=document.getElementById('budget-inp').value;
+  if (!budget) return alert('הזן סכום');
+  var el=document.getElementById('ai-budget');el.innerHTML=aiLoad('מחשב...');
+  aiAsk('יועץ השקעות. התיק הנוכחי:\n'+pfText()+'\n\nיש לי $'+budget+' פנויים להשקעה. המלץ איך לחלק אותם:\nJSON בלבד:\n[{"ticker":"XXX","name":"שם","amount":1000,"pct":20,"reason":"משפט בעברית"}]\nסכום כולל=$'+budget+'. עד 4 מניות.')
+    .then(function(t){
+      try{
+        var data=JSON.parse(t.replace(/```json|```/g,'').trim());
+        el.innerHTML='<div style="display:flex;flex-direction:column;gap:8px">'+data.map(function(item){
+          return '<div style="display:flex;align-items:center;gap:12px;padding:10px;background:#fafafa;border-radius:8px;border:1px solid #f0f0ec"><div style="min-width:60px"><div style="font-weight:700">'+item.ticker+'</div><div style="font-size:11px;color:#888">'+Math.round(item.pct||0)+'%</div></div><div class="pb" style="width:80px;height:8px"><div class="pbf" style="width:'+Math.min(item.pct||0,100)+'%;background:#378ADD"></div></div><div style="flex:1;font-size:12px;color:#555">'+item.reason+'</div><div style="font-weight:600;color:#1a9e6e">$'+Math.round(item.amount||0).toLocaleString()+'</div><button class="btn grn" style="height:28px;font-size:11px;padding:0 10px" onclick="quickAdd(\''+item.ticker+'\')">+ הוסף</button></div>';
+        }).join('')+'</div>';
+      }catch(e){el.innerHTML='<div class="ait">'+t+'</div>';}
+    }).catch(function(){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה</div>';});
 }
 
 function quickAdd(ticker) {
-  document.getElementById('i-ticker').value = ticker;
-  showTab('pf', document.querySelector('.tab'));
+  document.getElementById('i-ticker').value=ticker;
+  showTab('pf',document.querySelector('.tab'));
   document.getElementById('i-ticker').focus();
 }
 
 function updSel() {
-  var sel = document.getElementById('ai-sel'), cur = sel.value;
-  sel.innerHTML = '<option value="">בחר...</option>' + portfolio.map(function(s) { return '<option value="' + s.ticker + '">' + s.ticker + '</option>'; }).join('');
-  if (cur) sel.value = cur;
+  var sel=document.getElementById('ai-sel'),cur=sel.value;
+  sel.innerHTML='<option value="">בחר...</option>'+portfolio.map(function(s){return '<option value="'+s.ticker+'">'+s.ticker+'</option>';}).join('');
+  if (cur) sel.value=cur;
 }
 
 function showDetail(ticker) {
-  var s = portfolio.find(function(p) { return p.ticker === ticker; });
-  if (!s) return;
-  document.getElementById('detail-title').textContent = s.ticker + ' — ' + (s.company||'').substring(0, 25);
-  document.getElementById('detail-body').innerHTML = '<div class="ld">טוען...</div>';
+  var s=portfolio.find(function(p){return p.ticker===ticker;});if(!s)return;
+  document.getElementById('detail-title').textContent=s.ticker+' — '+(s.company||'').substring(0,25);
+  document.getElementById('detail-body').innerHTML='<div class="ld">טוען...</div>';
   document.getElementById('ov-detail').classList.add('open');
-  Promise.all([finn('/stock/profile2?symbol=' + ticker), fetchNews(ticker), fetchHistory(ticker)])
+  Promise.all([finn('/stock/profile2?symbol='+ticker),fetchNews(ticker),fetchHistory(ticker)])
     .then(function(res) {
-      var profile = res[0], news = res[1], hist = res[2];
-      var val = s.price && s.qty ? s.price * s.qty : null;
-      var pnl = val && s.cost ? val - s.cost * s.qty : null;
-      var body = document.getElementById('detail-body');
-      body.innerHTML = '';
-
-      var html = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem">';
-      html += '<div class="metric"><div class="lbl">מחיר</div><div class="val" style="font-size:14px">' + (s.price ? '$' + fmt(s.price) : '—') + '</div>' + (s.price && ilsRate ? '<div class="sub" style="color:#888">₪' + fmt(s.price * ilsRate) + '</div>' : '') + '</div>';
-      html += '<div class="metric"><div class="lbl">שווי</div><div class="val" style="font-size:14px">' + (val ? '$' + fmt(val, 0) : '—') + '</div></div>';
-      html += '<div class="metric"><div class="lbl">רווח/הפסד</div><div class="val" style="font-size:13px;color:' + (pnl > 0 ? '#1a9e6e' : pnl < 0 ? '#c0392b' : 'inherit') + '">' + (pnl != null ? (pnl >= 0 ? '+' : '') + ' $' + fmt(Math.abs(pnl), 0) : '—') + '</div></div>';
-      html += '</div>';
-
-      var meta = [];
-      if (profile && profile.marketCapitalization) meta.push('שווי שוק: $' + fmt(profile.marketCapitalization/1000, 1) + 'B');
-      if (profile && profile.finnhubIndustry) meta.push('תעשייה: ' + profile.finnhubIndustry);
-      if (s.sector) meta.push('סקטור: ' + s.sector);
-      if (meta.length) html += '<div style="display:flex;gap:12px;font-size:12px;color:#888;margin-bottom:.75rem;flex-wrap:wrap">' + meta.map(function(m) { return '<span>' + m + '</span>'; }).join('') + '</div>';
-
-      if (s.notes) html += '<div style="background:#f8f8f0;border-radius:8px;padding:8px 10px;font-size:12px;color:#555;margin-bottom:.75rem">📝 ' + s.notes + '</div>';
-      if (s.alertPrice) html += '<div style="font-size:12px;color:#e67e22;margin-bottom:.75rem">🔔 התראת שער: $' + fmt(s.alertPrice, 0) + '</div>';
-      if (s.aiScore != null) html += '<div style="font-size:13px;margin-bottom:.75rem">ציון AI: ' + sc(s.aiScore) + '</div>';
-      if (s.rec) html += '<div style="margin-bottom:1rem">' + recBar(s.rec) + '</div>';
-      if (hist) html += '<div class="sttl">מחיר 90 יום</div><div style="position:relative;height:140px;margin-bottom:.75rem"><canvas id="prc-canvas"></canvas></div>';
-
-      html += '<div class="sttl">חדשות</div>';
-      news.slice(0, 5).forEach(function(n) {
-        html += '<div style="padding:7px 0;border-bottom:1px solid #f5f5f0"><div style="font-size:10px;color:#bbb">' + new Date(n.datetime*1000).toLocaleDateString('he-IL') + ' · ' + (n.source||'') + '</div><a href="' + n.url + '" target="_blank" style="font-size:12px;font-weight:500;color:#1a1a1a;line-height:1.4">' + n.headline + '</a></div>';
-      });
-
-      body.innerHTML = html;
-
-      if (hist) {
-        setTimeout(function() {
-          var ctx = document.getElementById('prc-canvas');
-          if (!ctx) return;
-          if (priceChart) priceChart.destroy();
-          var color = hist.closes[hist.closes.length-1] >= hist.closes[0] ? '#1a9e6e' : '#c0392b';
-          priceChart = new Chart(ctx, {
-            type: 'line',
-            data: {labels: hist.dates, datasets: [{data: hist.closes, borderColor: color, backgroundColor: color+'15', borderWidth: 1.5, pointRadius: 0, fill: true, tension: 0.2}]},
-            options: {responsive: true, maintainAspectRatio: false, plugins: {legend: {display: false}}, scales: {x: {ticks: {maxTicksLimit: 6, font: {size: 9}}}, y: {ticks: {callback: function(v) { return '$' + v; }}}}}
-          });
-        }, 100);
-      }
+      var profile=res[0],news=res[1],hist=res[2];
+      var val=s.price&&s.qty?s.price*s.qty:null,pnl=val&&s.cost?val-s.cost*s.qty:null;
+      var holdDays=s.entryDate?Math.round((new Date()-new Date(s.entryDate.split('.').reverse().join('-')))/86400000):null;
+      var body=document.getElementById('detail-body');
+      body.innerHTML='';
+      var html='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem">';
+      html+='<div class="metric"><div class="lbl">מחיר</div><div class="val" style="font-size:14px">'+(s.price?'$'+fmt(s.price):'—')+'</div>'+(s.price&&ilsRate?'<div class="sub" style="color:#888">₪'+fmt(s.price*ilsRate)+'</div>':'')+'</div>';
+      html+='<div class="metric"><div class="lbl">שווי</div><div class="val" style="font-size:14px">'+(val?'$'+fmt(val,0):'—')+'</div></div>';
+      html+='<div class="metric"><div class="lbl">רווח/הפסד</div><div class="val" style="font-size:13px;color:'+(pnl>0?'#1a9e6e':pnl<0?'#c0392b':'inherit')+'">'+(pnl!=null?(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0):'—')+'</div></div>';
+      html+='</div>';
+      var meta=[];
+      if(profile&&profile.marketCapitalization)meta.push('שווי שוק: $'+fmt(profile.marketCapitalization/1000,1)+'B');
+      if(profile&&profile.finnhubIndustry)meta.push('תעשייה: '+profile.finnhubIndustry);
+      if(s.sector)meta.push('סקטור: '+s.sector);
+      if(holdDays!=null)meta.push('מחזיק: '+holdDays+' ימים');
+      if(meta.length)html+='<div style="display:flex;gap:12px;font-size:12px;color:#888;margin-bottom:.75rem;flex-wrap:wrap">'+meta.map(function(m){return'<span>'+m+'</span>';}).join('')+'</div>';
+      if(s.notes)html+='<div style="background:#f8f8f0;border-radius:8px;padding:8px 10px;font-size:12px;color:#555;margin-bottom:.75rem">📝 '+s.notes+'</div>';
+      if(s.alertPrice)html+='<div style="font-size:12px;color:#e67e22;margin-bottom:.75rem">🔔 התראת שער: $'+fmt(s.alertPrice,0)+'</div>';
+      if(s.targetPersonal)html+='<div style="font-size:12px;color:#378ADD;margin-bottom:.75rem">🎯 יעד אישי: $'+fmt(s.targetPersonal,0)+'</div>';
+      if(s.aiScore!=null)html+='<div style="font-size:13px;margin-bottom:.75rem">ציון AI: '+xsc(s.aiScore)+'</div>';
+      if(s.rec)html+='<div style="margin-bottom:1rem">'+recBar(s.rec)+'</div>';
+      if(hist)html+='<div class="sttl">מחיר 90 יום</div><div style="position:relative;height:140px;margin-bottom:.75rem"><canvas id="prc-canvas"></canvas></div>';
+      html+='<div class="sttl">חדשות</div>';
+      news.slice(0,5).forEach(function(n){html+='<div style="padding:7px 0;border-bottom:1px solid #f5f5f0"><div style="font-size:10px;color:#bbb">'+new Date(n.datetime*1000).toLocaleDateString('he-IL')+' · '+(n.source||'')+'</div><a href="'+n.url+'" target="_blank" style="font-size:12px;font-weight:500;color:#1a1a1a;line-height:1.4">'+n.headline+'</a></div>';});
+      body.innerHTML=html;
+      if(hist){setTimeout(function(){var ctx=document.getElementById('prc-canvas');if(!ctx)return;if(priceChart)priceChart.destroy();var color=hist.closes[hist.closes.length-1]>=hist.closes[0]?'#1a9e6e':'#c0392b';priceChart=new Chart(ctx,{type:'line',data:{labels:hist.dates,datasets:[{data:hist.closes,borderColor:color,backgroundColor:color+'15',borderWidth:1.5,pointRadius:0,fill:true,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:6,font:{size:9}}},y:{ticks:{callback:function(v){return'$'+v;}}}}}});},100);}
     });
 }
 
 function showEdit(ticker) {
-  var s = portfolio.find(function(p) { return p.ticker === ticker; });
-  if (!s) return;
-  var body = document.getElementById('edit-body');
-  body.innerHTML = '';
-  var wrap = document.createElement('div');
-  wrap.style.cssText = 'display:flex;flex-direction:column;gap:12px';
-  wrap.innerHTML =
-    '<div class="field"><label>כמות</label><input type="number" id="e-qty" min="0" step="any"/></div>' +
-    '<div class="field"><label>מחיר כניסה $</label><input type="number" id="e-cost" min="0" step="any"/></div>' +
-    '<div class="field"><label>קטגוריה</label><select id="e-bucket"><option value="main">ראשי</option><option value="spec">ספקולטיבי</option><option value="watch">מעקב</option></select></div>' +
-    '<div class="field"><label>סקטור</label><input type="text" id="e-sector" placeholder="טק / AI..."/></div>' +
-    '<div class="field"><label>התראת שער $</label><input type="number" id="e-alert" min="0" step="any" placeholder="200"/></div>' +
-    '<div class="field"><label>הערות</label><textarea id="e-notes" style="height:60px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:13px;resize:vertical" placeholder="מטרה, נימוק..."></textarea></div>' +
+  var s=portfolio.find(function(p){return p.ticker===ticker;});if(!s)return;
+  var body=document.getElementById('edit-body');body.innerHTML='';
+  var wrap=document.createElement('div');wrap.style.cssText='display:flex;flex-direction:column;gap:12px';
+  wrap.innerHTML=
+    '<div class="field"><label>כמות</label><input type="number" id="e-qty" min="0" step="any"/></div>'+
+    '<div class="field"><label>מחיר כניסה $</label><input type="number" id="e-cost" min="0" step="any"/></div>'+
+    '<div class="field"><label>קטגוריה</label><select id="e-bucket"><option value="main">ראשי</option><option value="spec">ספקולטיבי</option><option value="watch">מעקב</option></select></div>'+
+    '<div class="field"><label>סקטור</label><input type="text" id="e-sector" placeholder="טק / AI..."/></div>'+
+    '<div class="field"><label>יעד אישי $</label><input type="number" id="e-tgt" min="0" step="any" placeholder="מחיר שרוצה להגיע אליו"/></div>'+
+    '<div class="field"><label>התראת שער $</label><input type="number" id="e-alert" min="0" step="any" placeholder="200"/></div>'+
+    '<div class="field"><label>הערות</label><textarea id="e-notes" style="height:70px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:13px;resize:vertical;font-family:inherit" placeholder="מטרה, נימוק, אסטרטגיה..."></textarea></div>'+
     '<button class="btn dark" id="e-save">💾 שמור</button>';
   body.appendChild(wrap);
-  document.getElementById('e-qty').value = s.qty || '';
-  document.getElementById('e-cost').value = s.cost || '';
-  document.getElementById('e-bucket').value = s.bucket || 'main';
-  document.getElementById('e-sector').value = s.sector || '';
-  document.getElementById('e-alert').value = s.alertPrice || '';
-  document.getElementById('e-notes').value = s.notes || '';
-  document.getElementById('e-save').onclick = function() {
-    var nq = parseFloat(document.getElementById('e-qty').value);
-    var nc = parseFloat(document.getElementById('e-cost').value);
-    var na = parseFloat(document.getElementById('e-alert').value);
-    if (!isNaN(nq)) s.qty = nq;
-    if (!isNaN(nc)) s.cost = nc;
-    s.bucket = document.getElementById('e-bucket').value;
-    s.sector = document.getElementById('e-sector').value.trim();
-    s.alertPrice = isNaN(na) ? null : na;
-    s.notes = document.getElementById('e-notes').value.trim();
-    save(); renderAll(); closeOv('ov-edit');
+  document.getElementById('e-qty').value=s.qty||'';
+  document.getElementById('e-cost').value=s.cost||'';
+  document.getElementById('e-bucket').value=s.bucket||'main';
+  document.getElementById('e-sector').value=s.sector||'';
+  document.getElementById('e-tgt').value=s.targetPersonal||'';
+  document.getElementById('e-alert').value=s.alertPrice||'';
+  document.getElementById('e-notes').value=s.notes||'';
+  document.getElementById('e-save').onclick=function(){
+    var nq=parseFloat(document.getElementById('e-qty').value);
+    var nc=parseFloat(document.getElementById('e-cost').value);
+    var na=parseFloat(document.getElementById('e-alert').value);
+    var nt=parseFloat(document.getElementById('e-tgt').value);
+    if(!isNaN(nq))s.qty=nq;
+    if(!isNaN(nc))s.cost=nc;
+    s.bucket=document.getElementById('e-bucket').value;
+    s.sector=document.getElementById('e-sector').value.trim();
+    s.alertPrice=isNaN(na)?null:na;
+    s.targetPersonal=isNaN(nt)?null:nt;
+    s.notes=document.getElementById('e-notes').value.trim();
+    save();renderAll();closeOv('ov-edit');
   };
   document.getElementById('ov-edit').classList.add('open');
 }
 
 function loadNewsFilter() {
-  var f = document.getElementById('news-filter');
-  var items = ['כל הפורטפוליו'].concat(portfolio.map(function(s) { return s.ticker; }));
-  f.innerHTML = items.map(function(t, i) {
-    return '<div class="nc' + (i === 0 ? ' active' : '') + '" data-t="' + t + '">' + t + '</div>';
-  }).join('');
-  f.querySelectorAll('.nc').forEach(function(el) {
-    el.addEventListener('click', function() {
-      f.querySelectorAll('.nc').forEach(function(c) { c.classList.remove('active'); });
-      el.classList.add('active');
-      loadNews(el.dataset.t);
+  var f=document.getElementById('news-filter');
+  var items=['כל הפורטפוליו'].concat(portfolio.map(function(s){return s.ticker;}));
+  f.innerHTML=items.map(function(t,i){return '<div class="nc'+(i===0?' active':'')+'" data-t="'+t+'">'+t+'</div>';}).join('');
+  f.querySelectorAll('.nc').forEach(function(el){
+    el.addEventListener('click',function(){
+      f.querySelectorAll('.nc').forEach(function(c){c.classList.remove('active');});
+      el.classList.add('active');loadNews(el.dataset.t);
     });
   });
-  if (portfolio.length) loadNews('כל הפורטפוליו');
+  if(portfolio.length)loadNews('כל הפורטפוליו');
 }
 
 function loadNews(ticker) {
-  var container = document.getElementById('news-body');
-  container.innerHTML = '<div class="ld">טוען חדשות...</div>';
-  var targets = ticker === 'כל הפורטפוליו' ? portfolio.slice(0, 5) : portfolio.filter(function(s) { return s.ticker === ticker; });
-  Promise.all(targets.map(function(s) {
-    return fetchNews(s.ticker).then(function(news) {
-      return news.map(function(n) { n._t = s.ticker; return n; });
+  var container=document.getElementById('news-body');
+  container.innerHTML='<div class="ld">טוען חדשות...</div>';
+  var targets=ticker==='כל הפורטפוליו'?portfolio.slice(0,5):portfolio.filter(function(s){return s.ticker===ticker;});
+  Promise.all(targets.map(function(s){return fetchNews(s.ticker).then(function(news){return news.map(function(n){n._t=s.ticker;return n;});});}))
+    .then(function(results){
+      var all=[].concat.apply([],results);
+      all.sort(function(a,b){return b.datetime-a.datetime;});
+      if(ticker==='כל הפורטפוליו')all=all.slice(0,15);
+      if(!all.length){container.innerHTML='<div class="empty">לא נמצאו חדשות</div>';return;}
+      container.innerHTML='<div class="nl">'+all.map(function(n){
+        return '<div class="ni"><div class="nm">'+n._t+' · '+new Date(n.datetime*1000).toLocaleDateString('he-IL')+' · '+(n.source||'')+'</div><a class="nt2" href="'+n.url+'" target="_blank">'+n.headline+'</a>'+(n.summary?'<div style="font-size:11px;color:#888;margin-top:3px;line-height:1.5">'+n.summary.substring(0,150)+'...</div>':'')+'</div>';
+      }).join('')+'</div>';
     });
-  })).then(function(results) {
-    var all = [].concat.apply([], results);
-    all.sort(function(a, b) { return b.datetime - a.datetime; });
-    if (ticker === 'כל הפורטפוליו') all = all.slice(0, 15);
-    if (!all.length) { container.innerHTML = '<div class="empty">לא נמצאו חדשות</div>'; return; }
-    container.innerHTML = '<div class="nl">' + all.map(function(n) {
-      return '<div class="ni"><div class="nm">' + n._t + ' · ' + new Date(n.datetime*1000).toLocaleDateString('he-IL') + ' · ' + (n.source||'') + '</div><a class="nt2" href="' + n.url + '" target="_blank">' + n.headline + '</a>' + (n.summary ? '<div style="font-size:11px;color:#888;margin-top:3px;line-height:1.5">' + n.summary.substring(0, 150) + '...</div>' : '') + '</div>';
-    }).join('') + '</div>';
+}
+
+function showTab(name,el){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('page-'+name).classList.add('active');el.classList.add('active');
+  if(name==='news')loadNewsFilter();
+}
+
+function sendCh(el){document.getElementById('chat-inp').value=el.textContent.replace(/^[^\s]+ /,'');sendChat();}
+
+function sendChat(){
+  var inp=document.getElementById('chat-inp');var msg=inp.value.trim();if(!msg)return;inp.value='';
+  var msgs=document.getElementById('chat-msgs');
+  var ud=document.createElement('div');ud.className='cm u';ud.textContent=msg;msgs.appendChild(ud);
+  var ld=document.createElement('div');ld.className='cm a ld2';ld.textContent='מנתח...';msgs.appendChild(ld);
+  msgs.scrollTop=msgs.scrollHeight;
+  var ctx='אתה יועץ השקעות מנוסה ובקיא בשוק ההון הגלובלי. נתוני הפורטפוליו:\n'+pfText()+'\n\nענה בעברית, קצר וישיר. לשאלות על שוק/הנפקות/מניות שלא בתיק — ענה מידע כללי מקצועי.\nשאלה: '+msg;
+  aiAsk(ctx).then(function(t){ld.textContent=t;ld.className='cm a';msgs.scrollTop=msgs.scrollHeight;})
+    .catch(function(){ld.textContent='שגיאה — נסה שוב';msgs.scrollTop=msgs.scrollHeight;});
+}
+
+function exportCSV(){
+  var rows=[['טיקר','חברה','קטגוריה','סקטור','כמות','כניסה','מחיר','שווי$','שווי₪','רווח$','רווח%','יעד אנליסטים','יעד אישי','AI','התראה','הערות','תאריך']];
+  portfolio.forEach(function(s){
+    var val=s.price&&s.qty?s.price*s.qty:'',cost=s.cost&&s.qty?s.cost*s.qty:'';
+    var pnl=val&&cost?val-cost:'',pnlPct=pnl&&cost?(pnl/cost*100).toFixed(1)+'%':'';
+    rows.push([s.ticker,s.company||'',s.bucket||'',s.sector||'',s.qty||'',s.cost||'',s.price||'',val?Math.round(val):'',val&&ilsRate?Math.round(val*ilsRate):'',pnl?Math.round(pnl):'',pnlPct,s.target||'',s.targetPersonal||'',s.aiScore||'',s.alertPrice||'',s.notes||'',s.entryDate||'']);
   });
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(rows.map(function(r){return r.join(',');}).join('\n'));
+  a.download='portfolio_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
 }
 
-function showTab(name, el) {
-  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-  document.getElementById('page-' + name).classList.add('active');
-  el.classList.add('active');
-  if (name === 'news') loadNewsFilter();
-}
+function startCountdown(){secs=60;clearInterval(countdown);countdown=setInterval(function(){secs--;document.getElementById('prog').style.width=(secs/60*100)+'%';if(secs<=0){clearInterval(countdown);refreshAll();}},1000);}
+function resetCountdown(){startCountdown();}
 
-function sendCh(el) {
-  document.getElementById('chat-inp').value = el.textContent.replace(/^[^\s]+ /, '');
-  sendChat();
-}
-
-function sendChat() {
-  var inp = document.getElementById('chat-inp');
-  var msg = inp.value.trim();
-  if (!msg) return;
-  inp.value = '';
-  var msgs = document.getElementById('chat-msgs');
-  var userDiv = document.createElement('div');
-  userDiv.className = 'cm u';
-  userDiv.textContent = msg;
-  msgs.appendChild(userDiv);
-  var loadDiv = document.createElement('div');
-  loadDiv.className = 'cm a ld2';
-  loadDiv.textContent = 'מנתח...';
-  msgs.appendChild(loadDiv);
-  msgs.scrollTop = msgs.scrollHeight;
-  var context = 'אתה יועץ השקעות מנוסה. נתוני הפורטפוליו:\n' + pfText() + '\n\nענה בעברית, קצר וישיר.\nשאלת המשתמש: ' + msg;
-  aiAsk(context).then(function(t) {
-    loadDiv.textContent = t;
-    loadDiv.className = 'cm a';
-    msgs.scrollTop = msgs.scrollHeight;
-  }).catch(function() {
-    loadDiv.textContent = 'שגיאה — נסה שוב';
-    msgs.scrollTop = msgs.scrollHeight;
-  });
-}
-
-function exportCSV() {
-  var rows = [['טיקר','חברה','קטגוריה','סקטור','כמות','כניסה','מחיר','שווי$','שווי₪','רווח$','רווח%','יעד','AI','התראה','הערות','תאריך']];
-  portfolio.forEach(function(s) {
-    var val = s.price && s.qty ? s.price * s.qty : '';
-    var cost = s.cost && s.qty ? s.cost * s.qty : '';
-    var pnl = val && cost ? val - cost : '';
-    var pnlPct = pnl && cost ? (pnl/cost*100).toFixed(1) + '%' : '';
-    rows.push([s.ticker, s.company||'', s.bucket||'', s.sector||'', s.qty||'', s.cost||'', s.price||'', val ? Math.round(val) : '', val && ilsRate ? Math.round(val*ilsRate) : '', pnl ? Math.round(pnl) : '', pnlPct, s.target||'', s.aiScore||'', s.alertPrice||'', s.notes||'', s.entryDate||'']);
-  });
-  var a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(rows.map(function(r) { return r.join(','); }).join('\n'));
-  a.download = 'portfolio_' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click();
-}
-
-function startCountdown() {
-  secs = 60; clearInterval(countdown);
-  countdown = setInterval(function() {
-    secs--;
-    document.getElementById('prog').style.width = (secs/60*100) + '%';
-    if (secs <= 0) { clearInterval(countdown); refreshAll(); }
-  }, 1000);
-}
-
-function resetCountdown() {
-  secs = 60; clearInterval(countdown);
-  countdown = setInterval(function() {
-    secs--;
-    document.getElementById('prog').style.width = (secs/60*100) + '%';
-    if (secs <= 0) { clearInterval(countdown); refreshAll(); }
-  }, 1000);
-}
-
-if (sheetsUrl && apiKey) {
-  syncFrom();
-  setTimeout(function() { init(); }, 1000);
-} else {
-  init();
-}
+if(sheetsUrl&&apiKey){syncFrom();setTimeout(function(){init();},1000);}
+else{init();}
 </script>
 </body>
 </html>
