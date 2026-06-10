@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="פורטפוליו">
+<meta name="theme-color" content="#ffffff">
+<title>פורטפוליו AI</title>
+<link rel="manifest" id="pwa-manifest">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;font-size:15px;-webkit-tap-highlight-color:transparent}
+a{color:#378ADD;text-decoration:none}
+a:hover{text-decoration:underline}
+.header{background:#fff;border-bottom:1px solid #e5e5e0;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
+.header h1{font-size:16px;font-weight:700}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.status{font-size:11px;color:#888}
+.status.live{color:#1a9e6e}
+.status.error{color:#c0392b}
+.rate-badge{font-size:11px;color:#555;background:#f0f0ec;padding:2px 8px;border-radius:20px}
+.nav{background:#fff;border-bottom:1px solid #e5e5e0;display:flex;padding:0 1rem;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{display:none}
+.nav-tab{padding:10px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:#888;transition:all .15s;user-select:none;white-space:nowrap}
+.nav-tab.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:500}
+.main{max-width:1200px;margin:0 auto;padding:1rem}
+.page{display:none}
+.page.active{display:block}
+.setup-banner{background:#fff8e1;border:1px solid #f0c040;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
+.setup-banner h2{font-size:15px;font-weight:600;margin-bottom:8px;color:#7a5800}
+.setup-banner p{font-size:13px;color:#7a5800;margin-bottom:10px;line-height:1.7}
+.setup-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.setup-row input{height:36px;border:1px solid #ddd;border-radius:8px;padding:0 10px;font-size:13px;flex:1;min-width:200px;font-family:monospace}
+.btn{height:36px;padding:0 14px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;white-space:nowrap;-webkit-appearance:none}
+.btn:hover{background:#f0f0ec;border-color:#bbb}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.btn.primary:hover{background:#333}
+.btn.ai{background:#5b4fcf;color:#fff;border:none}
+.btn.ai:hover{background:#4a3fbe}
+.btn.success{background:#1a9e6e;color:#fff;border-color:#1a9e6e}
+.btn.danger{color:#c0392b}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.add-bar{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:.875rem 1rem;margin-bottom:1rem;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.field{display:flex;flex-direction:column}
+.field label{font-size:11px;color:#888;margin-bottom:3px}
+.field input,.field select{height:36px;border:1px solid #ddd;border-radius:8px;padding:0 10px;font-size:13px;background:#fafafa;outline:none;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:#378ADD;background:#fff}
+.field.ticker{width:100px}
+.field.qty{width:80px}
+.field.cost{width:110px}
+.field.bucket{width:140px}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:1rem}
+.metric{background:#fff;border:1px solid #e5e5e0;border-radius:10px;padding:.75rem .875rem}
+.metric .label{font-size:11px;color:#888;margin-bottom:4px}
+.metric .value{font-size:18px;font-weight:700}
+.metric .sub{font-size:11px;margin-top:2px}
+.positive{color:#1a9e6e}
+.negative{color:#c0392b}
+.table-card{background:#fff;border:1px solid #e5e5e0;border-radius:12px;overflow:hidden;margin-bottom:1rem}
+.table-header{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0ec}
+.table-header h3{font-size:13px;font-weight:600;color:#555}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:8px 10px;text-align:right;font-size:10px;font-weight:600;color:#999;background:#fafafa;border-bottom:1px solid #e5e5e0;white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid #f5f5f0;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.ticker-cell{font-weight:700;font-size:14px;color:#378ADD;cursor:pointer}
+.company-cell{font-size:10px;color:#bbb;margin-top:1px}
+.badge{display:inline-block;font-size:11px;padding:2px 6px;border-radius:5px;font-weight:600}
+.badge.up{background:#e8f8f2;color:#1a9e6e}
+.badge.down{background:#fdf0ef;color:#c0392b}
+.badge.neutral{background:#f0f0ec;color:#888}
+.remove-btn{background:none;border:none;cursor:pointer;color:#ddd;font-size:14px;padding:3px 6px;border-radius:5px}
+.remove-btn:hover{color:#c0392b;background:#fdf0ef}
+.score-circle{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-size:11px;font-weight:700;color:#fff}
+.score-high{background:#1a9e6e}
+.score-mid{background:#e67e22}
+.score-low{background:#c0392b}
+.rec-bar{display:flex;gap:1px;height:5px;border-radius:3px;overflow:hidden;min-width:60px}
+.rec-seg{height:100%}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+@media(max-width:640px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:.875rem 1rem}
+.chart-card h3{font-size:12px;font-weight:600;color:#666;margin-bottom:.75rem}
+.progress-bar{height:2px;background:#e5e5e0;border-radius:2px;overflow:hidden;margin-bottom:1rem}
+.progress-fill{height:100%;background:#378ADD;border-radius:2px;transition:width 1s linear}
+.ai-panel{background:#fff;border:1px solid #e5e5e0;border-radius:12px;margin-bottom:1rem;overflow:hidden}
+.ai-panel-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;background:#f8f6ff;border-bottom:1px solid #e5e5e0;flex-wrap:wrap;gap:8px}
+.ai-panel-header h3{font-size:13px;font-weight:600;color:#4a3f8a}
+.ai-panel-body{padding:14px}
+.ai-text{font-size:13px;line-height:1.75;color:#333;white-space:pre-wrap}
+.ai-loading{display:flex;align-items:center;gap:8px;color:#888;font-size:13px}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:#764ba2;animation:bounce .8s infinite}
+.ai-dot:nth-child(2){animation-delay:.15s}
+.ai-dot:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.ranking-list{display:flex;flex-direction:column;gap:8px}
+.ranking-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:#fafafa;border-radius:8px;border:1px solid #f0f0ec}
+.alert-list{display:flex;flex-direction:column;gap:8px}
+.alert-item{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px}
+.alert-item.warn{background:#fff8e1;border:1px solid #f0c04030;color:#7a5800}
+.alert-item.good{background:#e8f8f2;border:1px solid #1a9e6e30;color:#0d6b4a}
+.alert-item.info{background:#e8f0ff;border:1px solid #667eea30;color:#3a3080}
+.morning-card{background:#f8f6ff;border:1px solid #667eea30;border-radius:12px;padding:1rem;margin-bottom:1rem}
+.morning-card h3{font-size:13px;font-weight:600;color:#4a3f8a;margin-bottom:.75rem}
+.news-list{display:flex;flex-direction:column;gap:8px}
+.news-item{background:#fff;border:1px solid #e5e5e0;border-radius:10px;padding:10px 12px}
+.news-meta{font-size:10px;color:#bbb;margin-bottom:3px}
+.news-title{font-size:13px;font-weight:500;color:#1a1a1a;line-height:1.4;display:block}
+.news-summary{font-size:11px;color:#888;margin-top:3px;line-height:1.5}
+.news-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.news-filter::-webkit-scrollbar{display:none}
+.news-chip{padding:4px 12px;border-radius:20px;border:1px solid #ddd;background:#fff;font-size:12px;cursor:pointer;white-space:nowrap}
+.news-chip.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.suggest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.suggest-card{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:.875rem 1rem}
+.s-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.s-ticker{font-weight:700;font-size:15px}
+.s-name{font-size:10px;color:#999;margin-top:1px}
+.s-reason{font-size:12px;color:#555;line-height:1.5;margin-bottom:6px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:1.25rem;max-width:560px;width:92%;max-height:85vh;overflow-y:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.modal-head h2{font-size:16px;font-weight:700}
+.modal-close{cursor:pointer;color:#aaa;font-size:22px;line-height:1;padding:0 4px}
+.price-chart-wrap{position:relative;height:160px;margin-bottom:.75rem}
+.section-title{font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.05em;margin:.875rem 0 .5rem}
+.sheets-status{font-size:11px;padding:3px 8px;border-radius:10px;background:#e8f8f2;color:#1a9e6e}
+.sheets-status.disconnected{background:#f0f0ec;color:#888}
+.sheets-status.error{background:#fdf0ef;color:#c0392b}
+.empty{text-align:center;padding:2rem;color:#bbb;font-size:13px}
+.loading{color:#aaa;font-size:13px;padding:.75rem 0}
+.hidden{display:none}
+@media(max-width:600px){
+  .field.ticker{width:85px}.field.qty{width:70px}.field.cost{width:95px}.field.bucket{width:120px}
+  .metric .value{font-size:16px}
+  th,td{padding:7px 8px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 פורטפוליו AI</h1>
+  <div class="header-right">
+    <span class="rate-badge" id="ils-rate">USD/ILS: —</span>
+    <span class="sheets-status disconnected" id="sheets-status">Sheets: לא מחובר</span>
+    <span class="status" id="status-bar">ממתין...</span>
+    <button class="btn" onclick="showSettings()" style="font-size:11px;height:28px;padding:0 10px">⚙️</button>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-tab active" onclick="showPage('portfolio',this)">💼 תיק</div>
+  <div class="nav-tab" onclick="showPage('ai',this)">🤖 AI</div>
+  <div class="nav-tab" onclick="showPage('news',this)">📰 חדשות</div>
+  <div class="nav-tab" onclick="showPage('suggestions',this)">💡 המלצות</div>
+</div>
+
+<div class="main">
+
+  <!-- Setup -->
+  <div class="setup-banner" id="setup-banner">
+    <h2>🔑 הגדרה ראשונית</h2>
+    <p>1. <a href="https://finnhub.io/register" target="_blank">finnhub.io/register</a> — הירשם חינם וקבל API Key</p>
+    <div class="setup-row">
+      <input type="text" id="api-key-input" placeholder="Finnhub API Key..." />
+      <button class="btn primary" onclick="saveApiKey()">שמור</button>
+    </div>
+    <p style="margin-top:8px">2. (אופציונלי) Google Sheets Web App URL לסנכרון בין מכשירים:</p>
+    <div class="setup-row">
+      <input type="text" id="sheets-url-input" placeholder="https://script.google.com/macros/s/.../exec" />
+      <button class="btn" onclick="saveSheets()">חבר Sheets</button>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <div class="page active" id="page-portfolio">
+    <div class="add-bar">
+      <div class="field ticker"><label>טיקר</label><input id="inp-ticker" placeholder="AAPL" style="text-transform:uppercase" onkeydown="if(event.key==='Enter')addStock()"/></div>
+      <div class="field qty"><label>כמות</label><input id="inp-qty" type="number" placeholder="10" min="0" step="any"/></div>
+      <div class="field cost"><label>כניסה $</label><input id="inp-cost" type="number" placeholder="150" min="0" step="any"/></div>
+      <div class="field bucket"><label>קטגוריה</label>
+        <select id="inp-bucket">
+          <option value="main">ראשי</option>
+          <option value="spec">ספקולטיבי</option>
+          <option value="watch">מעקב</option>
+        </select>
+      </div>
+      <button class="btn primary" onclick="addStock()" id="add-btn">+ הוסף</button>
+      <button class="btn" onclick="refreshAll()" id="refresh-btn">⟳</button>
+      <button class="btn" onclick="exportCSV()" style="margin-right:auto">📥</button>
+      <button class="btn danger" onclick="clearAll()">🗑</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:100%"></div></div>
+    <div class="summary-grid">
+      <div class="metric"><div class="label">שווי $</div><div class="value" id="s-value">—</div></div>
+      <div class="metric"><div class="label">שווי ₪</div><div class="value" id="s-value-ils">—</div></div>
+      <div class="metric"><div class="label">רווח/הפסד</div><div class="value" id="s-pnl">—</div><div class="sub" id="s-pnl-pct"></div></div>
+      <div class="metric"><div class="label">היום $</div><div class="value" id="s-today">—</div><div class="sub" id="s-today-ils"></div></div>
+      <div class="metric"><div class="label">פוזיציות</div><div class="value" id="s-count">0</div></div>
+      <div class="metric"><div class="label">ציון AI</div><div class="value" id="s-score">—</div></div>
+    </div>
+    <div class="table-card" id="tbl-main"><div class="table-header"><h3>📁 ראשי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>₪</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי</th><th>רווח/הפסד</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th></th></tr></thead><tbody id="ptable-main"></tbody></table></div></div>
+    <div class="table-card" id="tbl-spec"><div class="table-header"><h3>🎯 ספקולטיבי</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>₪</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי</th><th>רווח/הפסד</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th></th></tr></thead><tbody id="ptable-spec"></tbody></table></div></div>
+    <div class="table-card" id="tbl-watch"><div class="table-header"><h3>👁 מעקב</h3></div><div class="table-wrap"><table><thead><tr><th>מניה</th><th>מחיר</th><th>₪</th><th>יומי</th><th>כמות</th><th>כניסה</th><th>שווי</th><th>רווח/הפסד</th><th>אנליסטים</th><th>יעד</th><th>AI</th><th></th></tr></thead><tbody id="ptable-watch"></tbody></table></div></div>
+    <div class="charts-grid">
+      <div class="chart-card"><h3>התפלגות שווי</h3><div style="position:relative;height:200px"><canvas id="pieC"></canvas></div></div>
+      <div class="chart-card"><h3>רווח/הפסד</h3><div id="barWrap" style="position:relative;height:200px"><canvas id="barC"></canvas></div></div>
+    </div>
+    <div class="chart-card" style="margin-bottom:1rem"><h3>📈 היסטוריית תיק</h3><div style="position:relative;height:150px"><canvas id="histC"></canvas></div></div>
+  </div>
+
+  <!-- AI -->
+  <div class="page" id="page-ai">
+    <div class="morning-card"><h3>🌅 סיכום בוקר</h3><div id="morning-body"><button class="btn ai" onclick="loadMorning()">⚡ קבל סיכום ↗</button></div></div>
+    <div class="ai-panel"><div class="ai-panel-header"><h3>🏆 דירוג מניות</h3><button class="btn ai" onclick="loadRanking()">נתח תיק ↗</button></div><div class="ai-panel-body" id="ranking-body"><div style="color:#aaa;font-size:13px">דירוג AI של כל המניות: קנה / המתן / מכור עם ציון</div></div></div>
+    <div class="ai-panel"><div class="ai-panel-header"><h3>⚠️ ניתוח סיכונים</h3><button class="btn ai" onclick="loadRisk()">נתח ↗</button></div><div class="ai-panel-body" id="risk-body"><div style="color:#aaa;font-size:13px">ריכוז, קורלציות, חולשות בתיק</div></div></div>
+    <div class="ai-panel"><div class="ai-panel-header"><h3>🚨 התראות חכמות</h3><button class="btn ai" onclick="loadAlerts()">בדוק ↗</button></div><div class="ai-panel-body" id="alerts-body"><div style="color:#aaa;font-size:13px">AI מזהה שינויים משמעותיים</div></div></div>
+    <div class="ai-panel">
+      <div class="ai-panel-header"><h3>🔍 ניתוח מניה בודדת</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <select id="single-sel" style="height:32px;border:1px solid #ddd;border-radius:8px;padding:0 8px;font-size:13px"><option value="">בחר...</option></select>
+          <button class="btn ai" onclick="loadSingle()">נתח ↗</button>
+        </div>
+      </div>
+      <div class="ai-panel-body" id="single-body"><div style="color:#aaa;font-size:13px">ניתוח מעמיק: הערכת שווי, קטליזטורים, סיכונים, ציון 1-10</div></div>
+    </div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="page" id="page-news">
+    <div class="news-filter" id="news-filter"></div>
+    <div id="news-container"><div class="empty">בחר מניה לחדשות</div></div>
+  </div>
+
+  <!-- SUGGESTIONS -->
+  <div class="page" id="page-suggestions">
+    <div class="ai-panel" style="margin-bottom:1rem">
+      <div class="ai-panel-header"><h3>🤖 המלצות AI לתיק שלך</h3><button class="btn ai" onclick="loadAISugg()">קבל המלצות ↗</button></div>
+      <div class="ai-panel-body" id="ai-sugg-body"><div style="color:#aaa;font-size:13px">AI ינתח את התיק ויציע מניות מתאימות</div></div>
+    </div>
+    <div id="sugg-container"></div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-head"><h2 id="modal-title">פרטים</h2><span class="modal-close" onclick="closeModal()">✕</span></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="overlay" id="settings-overlay" onclick="closeSettings(event)">
+  <div class="modal">
+    <div class="modal-head"><h2>⚙️ הגדרות</h2><span class="modal-close" onclick="closeSettings()">✕</span></div>
+    <div>
+      <p style="font-size:13px;color:#888;margin-bottom:.75rem">Finnhub API Key</p>
+      <div class="setup-row"><input type="text" id="settings-key" placeholder="API Key..." style="flex:1"/><button class="btn primary" onclick="updateKey()">עדכן</button></div>
+      <p style="font-size:13px;color:#888;margin:.875rem 0 .75rem">Google Sheets Web App URL</p>
+      <div class="setup-row"><input type="text" id="settings-sheets" placeholder="https://script.google.com/..." style="flex:1"/><button class="btn success" onclick="updateSheets()">חבר</button></div>
+      <div style="margin-top:.5rem;font-size:12px;color:#888" id="sheets-test-result"></div>
+      <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0ec">
+        <p style="font-size:12px;color:#888;margin-bottom:.5rem">קוד Apps Script להדבקה ב-Google Sheets:</p>
+        <div style="background:#1a1a1a;border-radius:8px;padding:.875rem;overflow-x:auto">
+          <pre id="apps-script-code" style="font-size:10px;color:#e8e8e8;line-height:1.6;white-space:pre-wrap"></pre>
+        </div>
+        <button class="btn" style="margin-top:8px;font-size:12px" onclick="copyScript()">📋 העתק קוד</button>
+      </div>
+      <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #f0f0ec">
+        <p style="font-size:13px;font-weight:600;margin-bottom:.5rem">📱 הוסף לאייקון בטלפון</p>
+        <p style="font-size:12px;color:#666;line-height:1.6">1. העלה קובץ זה ל-GitHub Pages<br>2. כרום מובייל ← ⋮ ← "Add to Home screen"<br>3. האייקון יופיע כמו אפליקציה</p>
+      </div>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #f0f0ec">
+        <button class="btn" onclick="requestNotifications()" id="notif-btn">🔔 הפעל התראות דסקטופ</button>
+        <span style="font-size:11px;color:#888;margin-right:8px" id="notif-status"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FINN='https://finnhub.io/api/v1';
+const CLAUDE_API='https://api.anthropic.com/v1/messages';
+let portfolio=JSON.parse(localStorage.getItem('portfolio_v4')||localStorage.getItem('portfolio_v3')||localStorage.getItem('portfolio_v2')||'[]');
+let apiKey=localStorage.getItem('finnhub_key')||'';
+let sheetsUrl=localStorage.getItem('sheets_url')||'';
+let ilsRate=null;
+let pieChart,barChart,histChart,priceChart;
+let countdownTimer,secondsLeft=60;
+let historyData=JSON.parse(localStorage.getItem('pf_history')||'[]');
+let notifGranted=Notification.permission==='granted';
+const COLORS=['#378ADD','#1D9E75','#D85A30','#D4537E','#7F77DD','#639922','#BA7517','#E24B4A','#5DCAA5','#888780'];
+
+const APPS_SCRIPT=`function doGet(e) {
+  return handleRequest(e);
+}
+function doPost(e) {
+  return handleRequest(e);
+}
+function handleRequest(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Portfolio') || ss.insertSheet('Portfolio');
+  const action = e.parameter.action || (e.postData ? JSON.parse(e.postData.contents).action : '');
+  const cors = ContentService.createTextOutput;
+  
+  if (action === 'read') {
+    const data = sheet.getDataRange().getValues();
+    const result = cors(JSON.stringify({ok:true,data})).setMimeType(ContentService.MimeType.JSON);
+    return result;
+  }
+  if (action === 'write') {
+    const payload = JSON.parse(e.postData.contents);
+    sheet.clearContents();
+    if (payload.rows && payload.rows.length) {
+      sheet.getRange(1,1,payload.rows.length,payload.rows[0].length).setValues(payload.rows);
+    }
+    return cors(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+  }
+  return cors(JSON.stringify({ok:false,error:'unknown action'})).setMimeType(ContentService.MimeType.JSON);
+}`;
+
+document.getElementById('apps-script-code').textContent=APPS_SCRIPT;
+
+function copyScript(){
+  navigator.clipboard.writeText(APPS_SCRIPT).then(()=>{
+    const btn=document.querySelector('button[onclick="copyScript()"]');
+    btn.textContent='✅ הועתק!';setTimeout(()=>btn.textContent='📋 העתק קוד',2000);
+  });
+}
+
+function init(){
+  if(apiKey){
+    document.getElementById('setup-banner').classList.add('hidden');
+    renderAll();refreshAll();resetCountdown();
+    updateSheetsStatus();
+  }
+  updateNotifStatus();
+  injectPWAManifest();
+}
+
+function injectPWAManifest(){
+  const manifest={name:'פורטפוליו AI',short_name:'פורטפוליו',start_url:'.',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',icons:[{src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📈</text></svg>',sizes:'192x192',type:'image/svg+xml'}]};
+  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  document.getElementById('pwa-manifest').href=URL.createObjectURL(blob);
+}
+
+function saveApiKey(){
+  const k=document.getElementById('api-key-input').value.trim();
+  if(!k)return alert('נא להזין מפתח API');
+  apiKey=k;localStorage.setItem('finnhub_key',k);
+  const su=document.getElementById('sheets-url-input').value.trim();
+  if(su){sheetsUrl=su;localStorage.setItem('sheets_url',su);}
+  document.getElementById('setup-banner').classList.add('hidden');
+  renderAll();refreshAll();resetCountdown();updateSheetsStatus();
+}
+
+function saveSheets(){
+  const u=document.getElementById('sheets-url-input').value.trim();
+  if(!u)return;
+  sheetsUrl=u;localStorage.setItem('sheets_url',u);
+  updateSheetsStatus();syncFromSheets();
+}
+
+function showSettings(){
+  document.getElementById('settings-key').value=apiKey;
+  document.getElementById('settings-sheets').value=sheetsUrl;
+  document.getElementById('settings-overlay').classList.add('open');
+}
+
+function closeSettings(e){if(!e||e.target===document.getElementById('settings-overlay'))document.getElementById('settings-overlay').classList.remove('open');}
+
+function updateKey(){
+  const k=document.getElementById('settings-key').value.trim();
+  if(!k)return;apiKey=k;localStorage.setItem('finnhub_key',k);
+  closeSettings();refreshAll();
+}
+
+function updateSheets(){
+  const u=document.getElementById('settings-sheets').value.trim();
+  if(!u)return;sheetsUrl=u;localStorage.setItem('sheets_url',u);
+  updateSheetsStatus();
+  document.getElementById('sheets-test-result').textContent='מתחבר...';
+  syncFromSheets().then(ok=>{document.getElementById('sheets-test-result').textContent=ok?'✅ מחובר!':'❌ שגיאה — בדוק את ה-URL';});
+}
+
+function updateSheetsStatus(){
+  const el=document.getElementById('sheets-status');
+  if(sheetsUrl){el.textContent='Sheets: מחובר';el.className='sheets-status';}
+  else{el.textContent='Sheets: לא מחובר';el.className='sheets-status disconnected';}
+}
+
+async function syncToSheets(){
+  if(!sheetsUrl||!portfolio.length)return;
+  try{
+    const rows=[['ticker','qty','cost','bucket','company','price','prevClose','changePct','rec','target','aiScore'],...portfolio.map(s=>[s.ticker,s.qty||0,s.cost||'',s.bucket||'main',s.company||'',s.price||'',s.prevClose||'',s.changePct||'',JSON.stringify(s.rec||null),s.target||'',s.aiScore||''])];
+    await fetch(sheetsUrl,{method:'POST',body:JSON.stringify({action:'write',rows})});
+  }catch(e){}
+}
+
+async function syncFromSheets(){
+  if(!sheetsUrl)return false;
+  try{
+    const r=await fetch(sheetsUrl+'?action=read');
+    const d=await r.json();
+    if(!d.ok||!d.data||d.data.length<2)return false;
+    const[headers,...rows]=d.data;
+    const idx=k=>headers.indexOf(k);
+    portfolio=rows.filter(r=>r[idx('ticker')]).map(r=>({
+      ticker:r[idx('ticker')],qty:parseFloat(r[idx('qty')])||0,
+      cost:r[idx('cost')]?parseFloat(r[idx('cost')]):null,
+      bucket:r[idx('bucket')]||'main',company:r[idx('company')]||'',
+      price:r[idx('price')]?parseFloat(r[idx('price')]):null,
+      prevClose:r[idx('prevClose')]?parseFloat(r[idx('prevClose')]):null,
+      changePct:r[idx('changePct')]?parseFloat(r[idx('changePct')]):null,
+      rec:r[idx('rec')]?JSON.parse(r[idx('rec')]):null,
+      target:r[idx('target')]?parseFloat(r[idx('target')]):null,
+      aiScore:r[idx('aiScore')]?parseInt(r[idx('aiScore')]):null
+    }));
+    save();renderAll();updateTickerSelect();
+    document.getElementById('sheets-status').textContent='Sheets: מסונכרן';
+    return true;
+  }catch(e){return false;}
+}
+
+function save(){
+  localStorage.setItem('portfolio_v4',JSON.stringify(portfolio));
+  syncToSheets();
+}
+
+async function finn(path){
+  const r=await fetch(`${FINN}${path}&token=${apiKey}`,{signal:AbortSignal.timeout(8000)});
+  return r.json();
+}
+
+async function claudeAsk(prompt){
+  const r=await fetch(CLAUDE_API,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+  const d=await r.json();
+  return d.content?.filter(b=>b.type==='text').map(b=>b.text).join('')||'';
+}
+
+async function fetchILS(){
+  try{const d=await finn('/quote?symbol=USDILS');if(d?.c){ilsRate=d.c;document.getElementById('ils-rate').textContent=`₪${d.c.toFixed(3)}`;}}catch(e){}
+}
+
+async function fetchQuote(ticker){
+  try{
+    const[q,s]=await Promise.all([finn(`/quote?symbol=${ticker}`),finn(`/search?q=${ticker}`)]);
+    if(!q||!q.c)return null;
+    return{price:q.c,prevClose:q.pc,changePct:q.dp,company:s?.result?.find(r=>r.symbol===ticker)?.description||ticker};
+  }catch(e){return null;}
+}
+
+async function fetchRec(ticker){
+  try{const d=await finn(`/stock/recommendation?symbol=${ticker}`);if(!d||!d.length)return null;const r=d[0];return{buy:r.buy,hold:r.hold,sell:r.sell,strongBuy:r.strongBuy,strongSell:r.strongSell};}catch(e){return null;}
+}
+
+async function fetchTarget(ticker){
+  try{const d=await finn(`/stock/price-target?symbol=${ticker}`);return d?.targetMean||null;}catch(e){return null;}
+}
+
+async function fetchPriceHistory(ticker){
+  try{
+    const to=Math.floor(Date.now()/1000);
+    const from=to-90*86400;
+    const d=await finn(`/stock/candle?symbol=${ticker}&resolution=D&from=${from}&to=${to}`);
+    if(!d||d.s!=='ok')return null;
+    return{dates:d.t.map(t=>new Date(t*1000).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'})),closes:d.c};
+  }catch(e){return null;}
+}
+
+async function fetchNews(ticker){
+  const today=new Date(),from=new Date(today-7*86400000);
+  const fmt=d=>d.toISOString().split('T')[0];
+  try{const d=await finn(`/company-news?symbol=${ticker}&from=${fmt(from)}&to=${fmt(today)}`);return Array.isArray(d)?d.slice(0,8):[];}catch(e){return[];}
+}
+
+function setStatus(msg,cls=''){const el=document.getElementById('status-bar');el.textContent=msg;el.className='status '+cls;}
+
+async function addStock(){
+  const ticker=document.getElementById('inp-ticker').value.trim().toUpperCase();
+  const qty=parseFloat(document.getElementById('inp-qty').value);
+  const cost=parseFloat(document.getElementById('inp-cost').value);
+  const bucket=document.getElementById('inp-bucket').value;
+  if(!ticker)return alert('נא להזין טיקר');
+  if(portfolio.find(s=>s.ticker===ticker))return alert(ticker+' כבר קיים');
+  document.getElementById('add-btn').disabled=true;
+  setStatus('מחפש '+ticker+'...','');
+  const data=await fetchQuote(ticker);
+  if(!data?.price){setStatus('לא נמצאו נתונים עבור '+ticker,'error');document.getElementById('add-btn').disabled=false;return;}
+  const[rec,target]=await Promise.all([fetchRec(ticker),fetchTarget(ticker)]);
+  portfolio.push({ticker,qty:isNaN(qty)?0:qty,cost:isNaN(cost)?null:cost,bucket,...data,rec,target,aiScore:null});
+  save();renderAll();updateTickerSelect();
+  document.getElementById('inp-ticker').value='';document.getElementById('inp-qty').value='';document.getElementById('inp-cost').value='';
+  document.getElementById('add-btn').disabled=false;
+  setStatus('עודכן: '+new Date().toLocaleTimeString('he-IL'),'live');
+  document.getElementById('inp-ticker').focus();
+}
+
+async function refreshAll(){
+  if(!apiKey)return;
+  document.getElementById('refresh-btn').disabled=true;
+  setStatus('מעדכן...','');
+  await fetchILS();
+  const prevValues={};
+  portfolio.forEach(s=>{if(s.price&&s.qty)prevValues[s.ticker]=s.price*s.qty;});
+  for(let s of portfolio){
+    const d=await fetchQuote(s.ticker);
+    if(d)Object.assign(s,d);
+    if(!s.rec)s.rec=await fetchRec(s.ticker);
+    if(!s.target)s.target=await fetchTarget(s.ticker);
+  }
+  save();snapshotHistory();renderAll();updateTickerSelect();
+  checkAlertNotifications(prevValues);
+  document.getElementById('refresh-btn').disabled=false;
+  setStatus('עודכן: '+new Date().toLocaleTimeString('he-IL'),'live');
+  resetCountdown();
+}
+
+function checkAlertNotifications(prevValues){
+  if(!notifGranted)return;
+  for(let s of portfolio){
+    if(!s.price||!s.qty)continue;
+    const prev=prevValues[s.ticker];
+    const curr=s.price*s.qty;
+    if(prev&&Math.abs((curr-prev)/prev)>0.03){
+      const chg=((curr-prev)/prev*100).toFixed(1);
+      sendNotification(`${s.ticker} ${chg>0?'עלה':'ירד'} ${Math.abs(chg)}%`,`שווי פוזיציה: $${Math.round(curr).toLocaleString()}`);
+    }
+  }
+}
+
+function sendNotification(title,body){
+  if(!notifGranted)return;
+  try{new Notification(title,{body,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📈</text></svg>'});}catch(e){}
+}
+
+async function requestNotifications(){
+  const perm=await Notification.requestPermission();
+  notifGranted=perm==='granted';
+  updateNotifStatus();
+}
+
+function updateNotifStatus(){
+  const el=document.getElementById('notif-status');
+  const btn=document.getElementById('notif-btn');
+  if(!el||!btn)return;
+  if(Notification.permission==='granted'){el.textContent='✅ פעיל';btn.disabled=true;}
+  else if(Notification.permission==='denied'){el.textContent='❌ נחסם בדפדפן';btn.disabled=true;}
+  else{el.textContent='לא מופעל';}
+}
+
+function snapshotHistory(){
+  const total=portfolio.reduce((sum,s)=>sum+(s.price?s.price*(s.qty||0):0),0);
+  if(!total)return;
+  const today=new Date().toLocaleDateString('he-IL');
+  const last=historyData[historyData.length-1];
+  if(last?.date===today){last.value=total;}else{historyData.push({date:today,value:total});}
+  if(historyData.length>90)historyData=historyData.slice(-90);
+  localStorage.setItem('pf_history',JSON.stringify(historyData));
+}
+
+function removeStock(ticker){
+  if(!confirm('להסיר את '+ticker+'?'))return;
+  portfolio=portfolio.filter(s=>s.ticker!==ticker);
+  save();renderAll();updateTickerSelect();
+}
+
+function clearAll(){
+  if(!confirm('למחוק הכל?'))return;
+  portfolio=[];save();renderAll();updateTickerSelect();
+}
+
+function fmt(n,d=2){if(n==null||isNaN(n))return'—';return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function toILS(usd){if(!usd||!ilsRate)return'';return'₪'+fmt(usd*ilsRate,0);}
+
+function scoreCircle(score){
+  if(score==null)return'<span style="color:#ddd;font-size:11px">—</span>';
+  const cls=score>=7?'score-high':score>=5?'score-mid':'score-low';
+  return`<span class="score-circle ${cls}">${score}</span>`;
+}
+
+function recBar(rec){
+  if(!rec)return'<span style="color:#ddd;font-size:11px">—</span>';
+  const total=(rec.strongBuy||0)+(rec.buy||0)+(rec.hold||0)+(rec.sell||0)+(rec.strongSell||0);
+  if(!total)return'—';
+  const pct=v=>Math.round((v||0)/total*100);
+  const buyPct=pct(rec.strongBuy)+pct(rec.buy);
+  const tip=`SB:${rec.strongBuy||0} B:${rec.buy||0} H:${rec.hold||0} S:${rec.sell||0} SS:${rec.strongSell||0}`;
+  const label=buyPct>=60?`<span style="color:#1a9e6e;font-size:10px">✔ ${buyPct}%</span>`:buyPct<=30?`<span style="color:#c0392b;font-size:10px">✘</span>`:`<span style="color:#e67e22;font-size:10px">↔</span>`;
+  return`<div title="${tip}"><div class="rec-bar"><div class="rec-seg" style="width:${pct(rec.strongBuy)}%;background:#1a9e6e"></div><div class="rec-seg" style="width:${pct(rec.buy)}%;background:#5dbfa0"></div><div class="rec-seg" style="width:${pct(rec.hold)}%;background:#e0c050"></div><div class="rec-seg" style="width:${pct(rec.sell)}%;background:#e08060"></div><div class="rec-seg" style="width:${pct(rec.strongSell)}%;background:#c0392b"></div></div><div style="margin-top:2px">${label}</div></div>`;
+}
+
+function renderRows(bucket){
+  const rows=portfolio.filter(s=>s.bucket===bucket);
+  const card=document.getElementById(`tbl-${bucket}`);
+  const tbody=document.getElementById(`ptable-${bucket}`);
+  if(!rows.length){card.style.display='none';return;}
+  card.style.display='';
+  tbody.innerHTML=rows.map(s=>{
+    const val=s.price&&s.qty?s.price*s.qty:null;
+    const cost=s.cost&&s.qty?s.cost*s.qty:null;
+    const pnl=(val!=null&&cost!=null)?val-cost:null;
+    const pnlPct=(pnl!=null&&cost)?(pnl/cost*100):null;
+    const chgC=s.changePct>0?'up':s.changePct<0?'down':'neutral';
+    const pnlC=pnl>0?'positive':pnl<0?'negative':'';
+    const tDiff=(s.target&&s.price)?((s.target-s.price)/s.price*100):null;
+    const tC=tDiff>0?'positive':tDiff<0?'negative':'';
+    return`<tr>
+      <td><div class="ticker-cell" onclick="showDetail('${s.ticker}')">${s.ticker}</div><div class="company-cell">${(s.company||'').substring(0,18)}</div></td>
+      <td>${s.price?'$'+fmt(s.price):'—'}</td>
+      <td style="font-size:11px;color:#888">${s.price&&ilsRate?'₪'+fmt(s.price*ilsRate):'—'}</td>
+      <td>${s.changePct!=null?`<span class="badge ${chgC}">${s.changePct>=0?'+':''}${fmt(s.changePct,2)}%</span>`:'—'}</td>
+      <td>${fmt(s.qty,s.qty%1===0?0:2)}</td>
+      <td>${s.cost?'$'+fmt(s.cost):'—'}</td>
+      <td>${val!=null?'$'+fmt(val,0):'—'}</td>
+      <td class="${pnlC}" style="font-size:12px">${pnl!=null?(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0)+(pnlPct!=null?` (${pnlPct>=0?'+':''}${fmt(pnlPct,1)}%)`:''):'—'}</td>
+      <td>${recBar(s.rec)}</td>
+      <td class="${tC}" style="font-size:11px">${s.target?'$'+fmt(s.target,0)+(tDiff!=null?` (${tDiff>=0?'+':''}${fmt(tDiff,1)}%)`:''):'—'}</td>
+      <td>${scoreCircle(s.aiScore)}</td>
+      <td><button class="remove-btn" onclick="removeStock('${s.ticker}')">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderAll(){renderRows('main');renderRows('spec');renderRows('watch');updateSummary();renderCharts();renderHistory();}
+
+function updateSummary(){
+  let tv=0,tc=0,td=0,hv=false,hc=false;
+  for(let s of portfolio){
+    if(s.price&&s.qty){tv+=s.price*s.qty;hv=true;if(s.prevClose)td+=(s.price-s.prevClose)*s.qty;}
+    if(s.cost&&s.qty){tc+=s.cost*s.qty;hc=true;}
+  }
+  const pnl=(hv&&hc)?tv-tc:null;
+  const pnlPct=(pnl!=null&&tc)?(pnl/tc*100):null;
+  document.getElementById('s-value').textContent=hv?'$'+fmt(tv,0):'—';
+  document.getElementById('s-value-ils').textContent=hv&&ilsRate?'₪'+fmt(tv*ilsRate,0):'—';
+  document.getElementById('s-count').textContent=portfolio.length;
+  const pe=document.getElementById('s-pnl');
+  if(pnl!=null){pe.textContent=(pnl>=0?'+$':'-$')+fmt(Math.abs(pnl),0);pe.className='value '+(pnl>=0?'positive':'negative');document.getElementById('s-pnl-pct').textContent=pnlPct!=null?(pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%':'';document.getElementById('s-pnl-pct').className='sub '+(pnl>=0?'positive':'negative');}
+  else{pe.textContent='—';pe.className='value';}
+  const te=document.getElementById('s-today');
+  if(td!==0){te.textContent=(td>=0?'+$':'-$')+fmt(Math.abs(td),0);te.className='value '+(td>=0?'positive':'negative');document.getElementById('s-today-ils').textContent=toILS(Math.abs(td));}
+  else{te.textContent='—';te.className='value';}
+  const scores=portfolio.filter(s=>s.aiScore!=null).map(s=>s.aiScore);
+  if(scores.length){const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);document.getElementById('s-score').textContent=avg+'/10';document.getElementById('s-score').className='value '+(avg>=7?'positive':avg>=5?'':'negative');}
+}
+
+function renderCharts(){
+  const wp=portfolio.filter(s=>s.price&&s.qty);if(!wp.length)return;
+  const labels=wp.map(s=>s.ticker),values=wp.map(s=>s.price*s.qty),pnls=wp.map(s=>s.cost?(s.price-s.cost)*s.qty:0);
+  if(pieChart)pieChart.destroy();
+  pieChart=new Chart(document.getElementById('pieC'),{type:'doughnut',data:{labels,datasets:[{data:values,backgroundColor:COLORS.slice(0,labels.length),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},padding:6,boxWidth:8}},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed,0)}}}}});
+  const barH=Math.max(200,labels.length*40+80);document.getElementById('barWrap').style.height=barH+'px';
+  if(barChart)barChart.destroy();
+  barChart=new Chart(document.getElementById('barC'),{type:'bar',data:{labels,datasets:[{data:pnls,backgroundColor:pnls.map(v=>v>=0?'#1D9E75':'#c0392b'),borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>(ctx.parsed.x>=0?' +$':' -$')+fmt(Math.abs(ctx.parsed.x),0)}}},scales:{x:{ticks:{callback:v=>(v<0?'-$':'$')+Math.abs(v).toLocaleString()}}}}});
+}
+
+function renderHistory(){
+  if(historyData.length<2)return;
+  if(histChart)histChart.destroy();
+  histChart=new Chart(document.getElementById('histC'),{type:'line',data:{labels:historyData.map(h=>h.date),datasets:[{data:historyData.map(h=>h.value),borderColor:'#378ADD',backgroundColor:'rgba(55,138,221,0.08)',borderWidth:2,pointRadius:2,fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y,0)}}},scales:{x:{ticks:{maxTicksLimit:6,font:{size:10}}},y:{ticks:{callback:v=>'$'+v.toLocaleString()}}}}});
+}
+
+function portfolioText(){
+  return portfolio.map(s=>{
+    const pnlPct=s.cost&&s.price?((s.price-s.cost)/s.cost*100):null;
+    const val=s.price&&s.qty?s.price*s.qty:0;
+    const rec=s.rec?`אנליסטים: ${(s.rec.strongBuy||0)+(s.rec.buy||0)} קנייה, ${s.rec.hold||0} המתן, ${(s.rec.sell||0)+(s.rec.strongSell||0)} מכירה`:'';
+    return`${s.ticker}(${s.company||''}): $${s.price||'?'}, שווי $${fmt(val,0)}, ${pnlPct!=null?fmt(pnlPct,1)+'% מכניסה':''}, יעד $${s.target?fmt(s.target,0):'?'}, ${rec}`;
+  }).join('\n');
+}
+
+function aiLoad(txt='מנתח...'){return`<div class="ai-loading"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>${txt}</span></div>`;}
+
+async function loadMorning(){
+  const el=document.getElementById('morning-body');el.innerHTML=aiLoad('מכין סיכום בוקר...');
+  const tickers=portfolio.map(s=>s.ticker).join(', ');
+  try{
+    const text=await claudeAsk(`אתה אנליסט שוק. הפורטפוליו: ${tickers}.\nכתוב סיכום בוקר תכליתי בעברית (6 משפטים): מה חשוב היום, מה לעקוב, המלצה אחת ספציפית. ישיר ומקצועי.`);
+    el.innerHTML=`<div class="ai-text">${text}</div>`;
+  }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה — נסה שוב</div>';}
+}
+
+async function loadRanking(){
+  const el=document.getElementById('ranking-body');
+  if(!portfolio.length){el.innerHTML='<div class="empty">הוסף מניות קודם</div>';return;}
+  el.innerHTML=aiLoad('מדרג מניות...');
+  try{
+    const text=await claudeAsk(`נתח ודרג את המניות הבאות:\n${portfolioText()}\n\nהחזר JSON בלבד:\n[{"ticker":"XXX","score":8,"action":"קנה/המתן/מכור","reason":"1-2 משפטים בעברית"}]\nמיין מגבוה לנמוך.`);
+    const data=JSON.parse(text.replace(/\`\`\`json|\`\`\`/g,'').trim());
+    data.forEach(item=>{const s=portfolio.find(p=>p.ticker===item.ticker);if(s)s.aiScore=item.score;});
+    save();renderAll();
+    el.innerHTML=`<div class="ranking-list">${data.map((item,i)=>{
+      const ac=item.action.includes('קנה')?'#1a9e6e':item.action.includes('מכור')?'#c0392b':'#e67e22';
+      return`<div class="ranking-item"><div style="font-size:16px;font-weight:700;color:#ccc;min-width:24px">#${i+1}</div><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-weight:700">${item.ticker}</span>${scoreCircle(item.score)}<span style="font-size:12px;font-weight:600;color:${ac}">${item.action}</span></div><div style="font-size:12px;color:#555">${item.reason}</div></div></div>`;
+    }).join('')}</div>`;
+  }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה — נסה שוב</div>';}
+}
+
+async function loadRisk(){
+  const el=document.getElementById('risk-body');
+  if(!portfolio.length){el.innerHTML='<div class="empty">הוסף מניות קודם</div>';return;}
+  el.innerHTML=aiLoad('מנתח סיכונים...');
+  try{
+    const text=await claudeAsk(`מנהל סיכונים מנוסה. נתח:\n${portfolioText()}\n\nכתוב ניתוח בעברית: 1.ריכוז סקטוריאלי 2.קורלציות 3.חולשה עיקרית 4.המלצה לפיזור. 7 משפטים, ישיר.`);
+    el.innerHTML=`<div class="ai-text">${text}</div>`;
+  }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה — נסה שוב</div>';}
+}
+
+async function loadAlerts(){
+  const el=document.getElementById('alerts-body');
+  if(!portfolio.length){el.innerHTML='<div class="empty">הוסף מניות קודם</div>';return;}
+  el.innerHTML=aiLoad('בודק התראות...');
+  try{
+    const text=await claudeAsk(`בדוק התראות דחופות:\n${portfolioText()}\n\nהחזר JSON בלבד:\n[{"type":"warn/good/info","ticker":"XXX","message":"עברית קצרה"}]\nעד 6 התראות, הכי חשובות בלבד.`);
+    const data=JSON.parse(text.replace(/\`\`\`json|\`\`\`/g,'').trim());
+    el.innerHTML=`<div class="alert-list">${data.map(a=>`<div class="alert-item ${a.type}"><span style="font-size:15px">${a.type==='warn'?'⚠️':a.type==='good'?'✅':'ℹ️'}</span><div><strong>${a.ticker||'תיק'}</strong> — ${a.message}</div></div>`).join('')}</div>`;
+  }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה — נסה שוב</div>';}
+}
+
+async function loadSingle(){
+  const ticker=document.getElementById('single-sel').value;
+  if(!ticker)return alert('בחר מניה');
+  const el=document.getElementById('single-body');
+  el.innerHTML=aiLoad(`מנתח ${ticker}...`);
+  const s=portfolio.find(p=>p.ticker===ticker);
+  try{
+    const text=await claudeAsk(`אנליסט מניות בכיר. נתח לעומק: ${ticker}(${s?.company||''}).\nמחיר $${s?.price||'?'}, יעד $${s?.target||'?'}, שינוי מכניסה ${s?.cost&&s?.price?fmt((s.price-s.cost)/s.cost*100,1)+'%':'?'}\nאנליסטים: ${s?.rec?`${(s.rec.strongBuy||0)+(s.rec.buy||0)} קנייה, ${s.rec.hold||0} המתן, ${(s.rec.sell||0)+(s.rec.strongSell||0)} מכירה`:'?'}\n\nכתוב בעברית: 1.הערכת שווי 2.קטליזטורים 3.סיכונים 4.ציון 1-10 5.המלצה. 9 משפטים.`);
+    const m=text.match(/(\d+)\s*\/\s*10/);if(m&&s){s.aiScore=parseInt(m[1]);save();renderAll();}
+    el.innerHTML=`<div class="ai-text">${text}</div>`;
+  }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה — נסה שוב</div>';}
+}
+
+async function loadAISugg(){
+  const el=document.getElementById('ai-sugg-body');
+  el.innerHTML=aiLoad('מנתח תיק...');
+  const tickers=portfolio.map(s=>s.ticker).join(', ')||'ריק';
+  try{
+    const text=await claudeAsk(`אנליסט השקעות. תיק נוכחי: ${tickers}.\n${portfolioText()}\n\nהמלץ 5 מניות. החזר JSON בלבד:\n[{"ticker":"XXX","name":"שם","reason":"2 משפטים בעברית","fit":"למה מתאים לתיק זה","risk":"סיכון עיקרי"}]`);
+    const data=JSON.parse(text.replace(/\`\`\`json|\`\`\`/g,'').trim());
+    document.getElementById('sugg-container').innerHTML=`<div class="suggest-grid">${data.map(s=>`<div class="suggest-card"><div class="s-top"><div><div class="s-ticker">${s.ticker}</div><div class="s-name">${(s.name||'').substring(0,28)}</div></div><button class="btn success" style="height:28px;font-size:12px;padding:0 10px" onclick="quickAdd('${s.ticker}')">+ הוסף</button></div><div class="s-reason">${s.reason}</div>${s.fit?`<div style="font-size:11px;color:#378ADD;margin-top:4px">✓ ${s.fit}</div>`:''} ${s.risk?`<div style="font-size:11px;color:#e67e22;margin-top:3px">⚠ ${s.risk}</div>`:''}</div>`).join('')}</div>`;
+    el.innerHTML=`<div style="font-size:12px;color:#1a9e6e">✓ ${data.length} המלצות</div>`;
+  }catch(e){el.innerHTML='<div style="color:#c0392b;font-size:13px">שגיאה — נסה שוב</div>';}
+}
+
+function quickAdd(ticker){
+  document.getElementById('inp-ticker').value=ticker;
+  showPage('portfolio',document.querySelector('.nav-tab'));
+  document.getElementById('inp-ticker').focus();
+}
+
+function updateTickerSelect(){
+  const sel=document.getElementById('single-sel');const cur=sel.value;
+  sel.innerHTML='<option value="">בחר...</option>'+portfolio.map(s=>`<option value="${s.ticker}">${s.ticker}</option>`).join('');
+  if(cur)sel.value=cur;
+}
+
+async function showDetail(ticker){
+  const s=portfolio.find(p=>p.ticker===ticker);if(!s)return;
+  document.getElementById('modal-title').textContent=`${s.ticker} — ${(s.company||'').substring(0,25)}`;
+  document.getElementById('modal-body').innerHTML='<div class="loading">טוען...</div>';
+  document.getElementById('modal-overlay').classList.add('open');
+  const[profile,news,hist]=await Promise.all([finn(`/stock/profile2?symbol=${ticker}`),fetchNews(ticker),fetchPriceHistory(ticker)]);
+  const val=s.price&&s.qty?s.price*s.qty:null;
+  const pnl=val&&s.cost?val-s.cost*s.qty:null;
+  document.getElementById('modal-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem">
+      <div class="metric"><div class="label">מחיר</div><div class="value" style="font-size:15px">${s.price?'$'+fmt(s.price):'—'}</div><div class="sub" style="color:#888">${s.price&&ilsRate?'₪'+fmt(s.price*ilsRate):''}</div></div>
+      <div class="metric"><div class="label">שווי פוזיציה</div><div class="value" style="font-size:14px">${val?'$'+fmt(val,0):'—'}</div></div>
+      <div class="metric"><div class="label">רווח/הפסד</div><div class="value" style="font-size:14px;${pnl>0?'color:#1a9e6e':pnl<0?'color:#c0392b':''}">${pnl!=null?(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0):'—'}</div></div>
+    </div>
+    ${profile?.marketCapitalization?`<div style="font-size:11px;color:#888;margin-bottom:.75rem">שווי שוק: $${fmt(profile.marketCapitalization/1000,1)}B · ${profile.finnhubIndustry||''}</div>`:''}
+    ${s.target?`<div style="font-size:13px;margin-bottom:.75rem">🎯 יעד: <strong>$${fmt(s.target,0)}</strong>${s.price?` (${((s.target-s.price)/s.price*100)>=0?'+':''}${fmt((s.target-s.price)/s.price*100,1)}%)`:''}  ${s.aiScore!=null?`· ציון AI: ${scoreCircle(s.aiScore)}`:''}  </div>`:''}
+    ${s.rec?`<div style="margin-bottom:1rem">${recBar(s.rec)}</div>`:''}
+    ${hist?`<div class="section-title">מחיר 90 יום</div><div class="price-chart-wrap"><canvas id="priceChartCanvas"></canvas></div>`:''}
+    <div class="section-title">חדשות</div>
+    ${news.slice(0,5).map(n=>`<div style="padding:7px 0;border-bottom:1px solid #f5f5f0"><div style="font-size:10px;color:#bbb">${new Date(n.datetime*1000).toLocaleDateString('he-IL')} · ${n.source||''}</div><a href="${n.url}" target="_blank" style="font-size:12px;font-weight:500;color:#1a1a1a;line-height:1.4">${n.headline}</a></div>`).join('')}
+  `;
+  if(hist){
+    setTimeout(()=>{
+      const ctx=document.getElementById('priceChartCanvas');if(!ctx)return;
+      if(priceChart)priceChart.destroy();
+      const color=hist.closes[hist.closes.length-1]>=hist.closes[0]?'#1a9e6e':'#c0392b';
+      priceChart=new Chart(ctx,{type:'line',data:{labels:hist.dates,datasets:[{data:hist.closes,borderColor:color,backgroundColor:color+'15',borderWidth:1.5,pointRadius:0,fill:true,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y)}}},scales:{x:{ticks:{maxTicksLimit:6,font:{size:9}}},y:{ticks:{callback:v=>'$'+v}}}}});
+    },100);
+  }
+}
+
+function closeModal(e){if(!e||e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open');}
+
+function loadNewsFilter(){
+  const f=document.getElementById('news-filter');
+  f.innerHTML=['כל הפורטפוליו',...portfolio.map(s=>s.ticker)].map((t,i)=>
+    `<div class="news-chip ${i===0?'active':''}" onclick="loadNews('${t}',this)">${t}</div>`).join('');
+  if(portfolio.length)loadNews('כל הפורטפוליו',f.querySelector('.news-chip'));
+}
+
+async function loadNews(ticker,el){
+  document.querySelectorAll('.news-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');
+  const container=document.getElementById('news-container');container.innerHTML='<div class="loading">טוען...</div>';
+  let all=[];
+  if(ticker==='כל הפורטפוליו'){for(let s of portfolio.slice(0,5)){const n=await fetchNews(s.ticker);all.push(...n.map(x=>({...x,_t:s.ticker})));}all.sort((a,b)=>b.datetime-a.datetime);all=all.slice(0,15);}
+  else{all=(await fetchNews(ticker)).map(x=>({...x,_t:ticker}));}
+  if(!all.length){container.innerHTML='<div class="empty">לא נמצאו חדשות</div>';return;}
+  container.innerHTML=`<div class="news-list">${all.map(n=>`<div class="news-item"><div class="news-meta">${n._t} · ${new Date(n.datetime*1000).toLocaleDateString('he-IL')} · ${n.source||''}</div><a class="news-title" href="${n.url}" target="_blank">${n.headline}</a>${n.summary?`<div class="news-summary">${n.summary.substring(0,150)}...</div>`:''}</div>`).join('')}</div>`;
+}
+
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');el.classList.add('active');
+  if(name==='news')loadNewsFilter();
+}
+
+function exportCSV(){
+  const rows=[['טיקר','חברה','קטגוריה','כמות','כניסה','מחיר','שווי$','שווי₪','רווח$','רווח%','יעד','AI']];
+  for(let s of portfolio){
+    const val=s.price&&s.qty?s.price*s.qty:'';const cost=s.cost&&s.qty?s.cost*s.qty:'';
+    const pnl=val&&cost?val-cost:'';const pnlPct=pnl&&cost?(pnl/cost*100).toFixed(1)+'%':'';
+    rows.push([s.ticker,s.company||'',s.bucket||'',s.qty||'',s.cost||'',s.price||'',val?Math.round(val):'',val&&ilsRate?Math.round(val*ilsRate):'',pnl?Math.round(pnl):'',pnlPct,s.target||'',s.aiScore||'']);
+  }
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));
+  a.download='portfolio_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+}
+
+function resetCountdown(){
+  secondsLeft=60;clearInterval(countdownTimer);
+  countdownTimer=setInterval(()=>{secondsLeft--;document.getElementById('prog').style.width=(secondsLeft/60*100)+'%';if(secondsLeft<=0){clearInterval(countdownTimer);refreshAll();}},1000);
+}
+
+if(sheetsUrl&&apiKey){syncFromSheets().then(ok=>{if(!ok)init();else{document.getElementById('setup-banner').classList.add('hidden');refreshAll();resetCountdown();updateSheetsStatus();}});}
+else{init();}
+</script>
+</body>
+</html>
