@@ -750,13 +750,14 @@ function renderHistory(){
 function renderHistoryPage(){
   const el=document.getElementById('history-body');
   if(!actionHistory.length){el.innerHTML='<div class="empty">אין פעולות עדיין</div>';return;}
-  el.innerHTML=actionHistory.map(h=>`
-    <div class="history-row">
-      <span style="font-size:12px;color:${h.type==='קנייה'?'#1a9e6e':'#c0392b'};font-weight:600">${h.type==='קנייה'?'📈':'📉'} ${h.type}</span>
-      <span style="font-weight:600">${h.ticker}</span>
-      <span style="color:#555;flex:1">${h.details}</span>
-      <span style="color:#aaa;font-size:11px">${h.date} ${h.time}</span>
-    </div>`).join('');
+  el.innerHTML='';
+  actionHistory.forEach(h=>{
+    const div=document.createElement('div');div.className='history-row';
+    const c=h.type==='קנייה'?'#1a9e6e':'#c0392b';
+    const ic=h.type==='קנייה'?'📈':'📉';
+    div.innerHTML='<span style="font-size:12px;color:'+c+';font-weight:600">'+ic+' '+h.type+'</span><span style="font-weight:600">'+h.ticker+'</span><span style="color:#555;flex:1">'+h.details+'</span><span style="color:#aaa;font-size:11px">'+h.date+' '+h.time+'</span>';
+    el.appendChild(div);
+  });
 }
 
 function openEdit(btn){showEdit(btn.getAttribute('data-ticker'));}
@@ -878,34 +879,45 @@ function updateTickerSelect(){const sel=document.getElementById('single-sel'),cu
 
 async function showDetail(ticker){
   const s=portfolio.find(p=>p.ticker===ticker);if(!s)return;
-  document.getElementById('modal-title').textContent=`${s.ticker} — ${(s.company||'').substring(0,25)}`;
+  document.getElementById('modal-title').textContent=ticker+' — '+(s.company||'').substring(0,25);
   document.getElementById('modal-body').innerHTML='<div class="loading">טוען...</div>';
   document.getElementById('modal-overlay').classList.add('open');
-  const[profile,news,hist]=await Promise.all([finn(`/stock/profile2?symbol=${ticker}`),fetchNews(ticker),fetchPriceHistory(ticker)]);
+  const[profile,news,hist]=await Promise.all([finn('/stock/profile2?symbol='+ticker),fetchNews(ticker),fetchPriceHistory(ticker)]);
   const val=s.price&&s.qty?s.price*s.qty:null,pnl=val&&s.cost?val-s.cost*s.qty:null;
   const holdDays=s.entryDate?Math.round((new Date()-new Date(s.entryDate.split('.').reverse().join('-')))/86400000):null;
-  document.getElementById('modal-body').innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem">
-      <div class="metric"><div class="label">מחיר</div><div class="value" style="font-size:14px">${s.price?'$'+fmt(s.price):'—'}</div><div class="sub" style="color:#888">${s.price&&ilsRate?'₪'+fmt(s.price*ilsRate):''}</div></div>
-      <div class="metric"><div class="label">שווי</div><div class="value" style="font-size:14px">${val?'$'+fmt(val,0):'—'}</div></div>
-      <div class="metric"><div class="label">רווח/הפסד</div><div class="value" style="font-size:13px;${pnl>0?'color:#1a9e6e':pnl<0?'color:#c0392b':''}">${pnl!=null?(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0):'—'}</div></div>
-    </div>
-    <div style="display:flex;gap:12px;font-size:12px;color:#888;margin-bottom:.75rem;flex-wrap:wrap">
-      ${profile?.marketCapitalization?`<span>שווי שוק: $${fmt(profile.marketCapitalization/1000,1)}B</span>`:''}
-      ${profile?.finnhubIndustry?`<span>תעשייה: ${profile.finnhubIndustry}</span>`:''}
-      ${holdDays!=null?`<span>מחזיק: ${holdDays} ימים</span>`:''}
-      ${s.sector?`<span>סקטור: ${s.sector}</span>`:''}
-    </div>
-    ${s.notes?`<div style="background:#f8f8f0;border-radius:8px;padding:8px 10px;font-size:12px;color:#555;margin-bottom:.75rem">📝 ${s.notes}</div>`:''}
-    ${s.alertPrice?`<div style="font-size:12px;color:#e67e22;margin-bottom:.75rem">🔔 התראת שער: $${fmt(s.alertPrice,0)}</div>`:''}
-    ${s.target?`<div style="font-size:13px;margin-bottom:.75rem">🎯 יעד: <strong>$${fmt(s.target,0)}</strong>${s.price?` (${((s.target-s.price)/s.price*100)>=0?'+':''}${fmt((s.target-s.price)/s.price*100,1)}%)`:''}  ${s.aiScore!=null?`· ציון AI: ${scoreCircle(s.aiScore)}`:''}  </div>`:''}
-    ${s.rec?`<div style="margin-bottom:1rem">${recBar(s.rec)}</div>`:''}
-    ${hist?`<div class="section-title">מחיר 90 יום</div><div style="position:relative;height:140px;margin-bottom:.75rem"><canvas id="priceChartCanvas"></canvas></div>`:''}
-    <div class="section-title">חדשות</div>
-    ${news.slice(0,5).map(n=>`<div style="padding:7px 0;border-bottom:1px solid #f5f5f0"><div style="font-size:10px;color:#bbb">${new Date(n.datetime*1000).toLocaleDateString('he-IL')} · ${n.source||''}</div><a href="${n.url}" target="_blank" style="font-size:12px;font-weight:500;color:#1a1a1a;line-height:1.4">${n.headline}</a></div>`).join('')}
-  `;
-  if(hist){setTimeout(()=>{const ctx=document.getElementById('priceChartCanvas');if(!ctx)return;if(priceChart)priceChart.destroy();const color=hist.closes[hist.closes.length-1]>=hist.closes[0]?'#1a9e6e':'#c0392b';priceChart=new Chart(ctx,{type:'line',data:{labels:hist.dates,datasets:[{data:hist.closes,borderColor:color,backgroundColor:color+'15',borderWidth:1.5,pointRadius:0,fill:true,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+fmt(ctx.parsed.y)}}},scales:{x:{ticks:{maxTicksLimit:6,font:{size:9}}},y:{ticks:{callback:v=>'$'+v}}}}});},100);}
-}
+  const body=document.getElementById('modal-body');
+  body.innerHTML='';
+  
+  let html='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem">';
+  html+='<div class="metric"><div class="label">מחיר</div><div class="value" style="font-size:14px">'+(s.price?'$'+fmt(s.price):'—')+'</div>'+(s.price&&ilsRate?'<div class="sub" style="color:#888">₪'+fmt(s.price*ilsRate)+'</div>':'')+'</div>';
+  html+='<div class="metric"><div class="label">שווי</div><div class="value" style="font-size:14px">'+(val?'$'+fmt(val,0):'—')+'</div></div>';
+  html+='<div class="metric"><div class="label">רווח/הפסד</div><div class="value" style="font-size:13px;color:'+(pnl>0?'#1a9e6e':pnl<0?'#c0392b':'inherit')+'">'+(pnl!=null?(pnl>=0?'+':'')+' $'+fmt(Math.abs(pnl),0):'—')+'</div></div>';
+  html+='</div>';
+  
+  const meta=[];
+  if(profile&&profile.marketCapitalization)meta.push('שווי שוק: $'+fmt(profile.marketCapitalization/1000,1)+'B');
+  if(profile&&profile.finnhubIndustry)meta.push('תעשייה: '+profile.finnhubIndustry);
+  if(holdDays!=null)meta.push('מחזיק: '+holdDays+' ימים');
+  if(s.sector)meta.push('סקטור: '+s.sector);
+  if(meta.length)html+='<div style="display:flex;gap:12px;font-size:12px;color:#888;margin-bottom:.75rem;flex-wrap:wrap">'+meta.map(m=>'<span>'+m+'</span>').join('')+'</div>';
+  
+  if(s.notes)html+='<div style="background:#f8f8f0;border-radius:8px;padding:8px 10px;font-size:12px;color:#555;margin-bottom:.75rem">📝 '+s.notes+'</div>';
+  if(s.alertPrice)html+='<div style="font-size:12px;color:#e67e22;margin-bottom:.75rem">🔔 התראת שער: $'+fmt(s.alertPrice,0)+'</div>';
+  if(s.target)html+='<div style="font-size:13px;margin-bottom:.75rem">🎯 יעד: <strong>$'+fmt(s.target,0)+'</strong>'+(s.price?' ('+((s.target-s.price)/s.price*100>=0?'+':'')+fmt((s.target-s.price)/s.price*100,1)+'%)':'')+(s.aiScore!=null?' · ציון AI: '+scoreCircle(s.aiScore):'')+'</div>';
+  if(s.rec)html+='<div style="margin-bottom:1rem">'+recBar(s.rec)+'</div>';
+  if(hist)html+='<div class="section-title">מחיר 90 יום</div><div style="position:relative;height:140px;margin-bottom:.75rem"><canvas id="priceChartCanvas"></canvas></div>';
+  
+  html+='<div class="section-title">חדשות</div>';
+  news.slice(0,5).forEach(n=>{
+    html+='<div style="padding:7px 0;border-bottom:1px solid #f5f5f0">';
+    html+='<div style="font-size:10px;color:#bbb">'+new Date(n.datetime*1000).toLocaleDateString('he-IL')+' · '+(n.source||'')+'</div>';
+    html+='<a href="'+n.url+'" target="_blank" style="font-size:12px;font-weight:500;color:#1a1a1a;line-height:1.4">'+n.headline+'</a>';
+    html+='</div>';
+  });
+  
+  body.innerHTML=html;
+  
+  if(hist){setTimeout(()=>{const ctx=document.getElementById('priceChartCanvas');if(!ctx)return;if(priceChart)priceChart.destroy();const color=hist.closes[hist.closes.length-1]>=hist.closes[0]?'#1a9e6e':'#c0392b';priceChart=new Chart(ctx,{type:'line',data:{labels:hist.dates,datasets:[{data:hist.closes,borderColor:color,backgroundColor:color+'15',borderWidth:1.5,pointRadius:0,fill:true,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:6,font:{size:9}}},y:{ticks:{callback:v=>'$'+v}}}}});},100);}
 
 function closeModal(e){if(!e||e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open');}
 
@@ -989,10 +1001,7 @@ async function sendChat(){
   const loadId='load_'+Date.now();
   messages.innerHTML+=`<div class="chat-msg ai loading" id="${loadId}">מנתח...</div>`;
   messages.scrollTop=messages.scrollHeight;
-  const context=`אתה יועץ השקעות מנוסה. נתוני הפורטפוליו של המשתמש:
-${portfolioText()}
-
-ענה בעברית, קצר וישיר.`;
+  const context='אתה יועץ השקעות מנוסה. נתוני הפורטפוליו של המשתמש:\n'+portfolioText()+'\n\nענה בעברית, קצר וישיר.';
   chatHistory.push({role:'user',content:msg});
   try{
     const text=await claudeAsk(context+'
