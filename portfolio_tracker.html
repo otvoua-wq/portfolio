@@ -353,35 +353,19 @@ let sortField='ticker',sortDir=1;
 let notifGranted=Notification.permission==='granted';
 const COLORS=['#378ADD','#1D9E75','#D85A30','#D4537E','#7F77DD','#639922','#BA7517','#E24B4A','#5DCAA5','#888780','#c0392b','#8e44ad'];
 
-const APPS_SCRIPT=`function doGet(e) {
-  return handleRequest(e, 'GET');
-}
-function doPost(e) {
-  return handleRequest(e, 'POST');
-}
-function handleRequest(e, method) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName('Portfolio') || ss.insertSheet('Portfolio');
-  let action = e.parameter.action;
-  let payload = null;
-  if (method === 'POST' && e.postData) {
-    try { payload = JSON.parse(e.postData.contents); action = payload.action; } catch(err) {}
-  }
-  let result;
-  if (action === 'read') {
-    const data = sheet.getDataRange().getValues();
-    result = JSON.stringify({ok: true, data: data});
-  } else if (action === 'write' && payload) {
-    sheet.clearContents();
-    if (payload.rows && payload.rows.length > 0) {
-      sheet.getRange(1, 1, payload.rows.length, payload.rows[0].length).setValues(payload.rows);
-    }
-    result = JSON.stringify({ok: true});
-  } else {
-    result = JSON.stringify({ok: false, error: 'unknown action'});
-  }
-  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);
-}`;
+const APPS_SCRIPT="function doGet(e){return handleRequest(e,'GET');}\n"+
+"function doPost(e){return handleRequest(e,'POST');}\n"+
+"function handleRequest(e,method){\n"+
+"  const ss=SpreadsheetApp.getActiveSpreadsheet();\n"+
+"  const sheet=ss.getSheetByName('Portfolio')||ss.insertSheet('Portfolio');\n"+
+"  let action=e.parameter.action,payload=null;\n"+
+"  if(method==='POST'&&e.postData){try{payload=JSON.parse(e.postData.contents);action=payload.action;}catch(err){}}\n"+
+"  let result;\n"+
+"  if(action==='read'){const data=sheet.getDataRange().getValues();result=JSON.stringify({ok:true,data:data});}\n"+
+"  else if(action==='write'&&payload){sheet.clearContents();if(payload.rows&&payload.rows.length>0){sheet.getRange(1,1,payload.rows.length,payload.rows[0].length).setValues(payload.rows);}result=JSON.stringify({ok:true});}\n"+
+"  else{result=JSON.stringify({ok:false,error:'unknown action'});}\n"+
+"  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);\n"+
+"}";
 
 document.getElementById('apps-script-code').textContent=APPS_SCRIPT;
 
