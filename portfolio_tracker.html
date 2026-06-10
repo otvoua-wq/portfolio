@@ -367,7 +367,11 @@ function saveSheets(){
   const u=document.getElementById('sheets-url-input').value.trim();
   if(!u)return;
   sheetsUrl=u;localStorage.setItem('sheets_url',u);
-  updateSheetsStatus();syncFromSheets();
+  updateSheetsStatus();
+  fetch(u+'?action=read',{mode:'cors'}).then(r=>r.json()).then(d=>{
+    if(d.ok){document.getElementById('sheets-status').textContent='Sheets: מחובר';document.getElementById('sheets-status').className='sheets-status';syncFromSheets();}
+    else{document.getElementById('sheets-status').textContent='Sheets: שגיאה';document.getElementById('sheets-status').className='sheets-status error';}
+  }).catch(()=>{document.getElementById('sheets-status').textContent='Sheets: שגיאה';document.getElementById('sheets-status').className='sheets-status error';});
 }
 
 function showSettings(){
@@ -389,7 +393,10 @@ function updateSheets(){
   if(!u)return;sheetsUrl=u;localStorage.setItem('sheets_url',u);
   updateSheetsStatus();
   document.getElementById('sheets-test-result').textContent='מתחבר...';
-  syncFromSheets().then(ok=>{document.getElementById('sheets-test-result').textContent=ok?'✅ מחובר!':'❌ שגיאה — בדוק את ה-URL';});
+  fetch(u+'?action=read',{mode:'cors'}).then(r=>r.json()).then(d=>{
+    if(d.ok){document.getElementById('sheets-test-result').textContent='✅ מחובר!';document.getElementById('sheets-status').textContent='Sheets: מחובר';document.getElementById('sheets-status').className='sheets-status';}
+    else{document.getElementById('sheets-test-result').textContent='❌ שגיאה';}
+  }).catch(()=>document.getElementById('sheets-test-result').textContent='❌ שגיאה — בדוק את ה-URL');
 }
 
 function updateSheetsStatus(){
@@ -402,14 +409,14 @@ async function syncToSheets(){
   if(!sheetsUrl||!portfolio.length)return;
   try{
     const rows=[['ticker','qty','cost','bucket','company','price','prevClose','changePct','rec','target','aiScore'],...portfolio.map(s=>[s.ticker,s.qty||0,s.cost||'',s.bucket||'main',s.company||'',s.price||'',s.prevClose||'',s.changePct||'',JSON.stringify(s.rec||null),s.target||'',s.aiScore||''])];
-    await fetch(sheetsUrl,{method:'POST',body:JSON.stringify({action:'write',rows})});
+    await fetch(sheetsUrl,{method:'POST',mode:'cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'write',rows})});
   }catch(e){}
 }
 
 async function syncFromSheets(){
   if(!sheetsUrl)return false;
   try{
-    const r=await fetch(sheetsUrl+'?action=read');
+    const r=await fetch(sheetsUrl+'?action=read',{mode:'cors'});
     const d=await r.json();
     if(!d.ok||!d.data||d.data.length<2)return false;
     const[headers,...rows]=d.data;
@@ -449,7 +456,11 @@ async function claudeAsk(prompt){
 }
 
 async function fetchILS(){
-  try{const d=await finn('/quote?symbol=USDILS');if(d?.c){ilsRate=d.c;document.getElementById('ils-rate').textContent=`₪${d.c.toFixed(3)}`;}}catch(e){}
+  try{
+    const d=await finn('/forex/rates?base=USD');
+    const rate=d?.quote?.ILS;
+    if(rate){ilsRate=rate;document.getElementById('ils-rate').textContent=`₪${rate.toFixed(3)}`;}
+  }catch(e){}
 }
 
 async function fetchQuote(ticker){
@@ -643,7 +654,8 @@ function updateSummary(){
   const pnl=(hv&&hc)?tv-tc:null;
   const pnlPct=(pnl!=null&&tc)?(pnl/tc*100):null;
   document.getElementById('s-value').textContent=hv?'$'+fmt(tv,0):'—';
-  document.getElementById('s-value-ils').textContent=hv&&ilsRate?'₪'+fmt(tv*ilsRate,0):'—';
+  document.getElementById('s-value-ils').textContent=hv&&ilsRate?'₪'+fmt(tv*ilsRate,0):(hv?'טוען...':'—');
+  if(hv&&!ilsRate){fetchILS().then(()=>{if(ilsRate)document.getElementById('s-value-ils').textContent='₪'+fmt(tv*ilsRate,0);});}
   document.getElementById('s-count').textContent=portfolio.length;
   const pe=document.getElementById('s-pnl');
   if(pnl!=null){pe.textContent=(pnl>=0?'+$':'-$')+fmt(Math.abs(pnl),0);pe.className='value '+(pnl>=0?'positive':'negative');document.getElementById('s-pnl-pct').textContent=pnlPct!=null?(pnlPct>=0?'+':'')+fmt(pnlPct,1)+'%':'';document.getElementById('s-pnl-pct').className='sub '+(pnl>=0?'positive':'negative');}
