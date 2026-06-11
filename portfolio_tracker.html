@@ -517,6 +517,33 @@ function fetchILS() {
 }
 
 function fetchQuote(ticker) {
+  var url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + ticker + '?interval=1d&range=1d';
+  var proxies = [
+    'https://corsproxy.io/?' + encodeURIComponent(url),
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent(url)
+  ];
+  function tryProxy(i) {
+    if (i >= proxies.length) return fetchQuoteFinnhub(ticker);
+    return fetch(proxies[i], {signal: AbortSignal.timeout(6000)})
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var q = d && d.chart && d.chart.result && d.chart.result[0];
+        if (!q || !q.meta || !q.meta.regularMarketPrice) return tryProxy(i+1);
+        var meta = q.meta;
+        var prev = meta.chartPreviousClose || meta.previousClose || meta.regularMarketPreviousClose;
+        var chgPct = prev ? ((meta.regularMarketPrice - prev) / prev * 100) : null;
+        return {
+          price: meta.regularMarketPrice,
+          prevClose: prev,
+          changePct: chgPct,
+          company: meta.longName || meta.shortName || ticker
+        };
+      }).catch(function() { return tryProxy(i+1); });
+  }
+  return tryProxy(0);
+}
+
+function fetchQuoteFinnhub(ticker) {
   return Promise.all([finn('/quote?symbol='+ticker), finn('/search?q='+ticker)])
     .then(function(res) {
       var q = res[0], s = res[1];
